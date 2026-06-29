@@ -82,165 +82,102 @@ button:focus, a:focus {outline: none;box-shadow: none}
    admin/product_add.css
    ========================== */
 /* original: staff/styles/admin/product_add.css */
-.container{max-width:420px;margin:20px auto;padding:18px}
-.card{background:#fff;border:1px solid #ddd;padding:18px;border-radius:4px;box-shadow:none}
-.header-title{color:#3b82f6;font-size:14px;margin-bottom:12px}
-.form-row{margin:14px 0}
-.form-row label{display:block;font-size:16px;margin-bottom:8px}
-.input-text{width:100%;padding:8px;border:1px solid #ccc;border-radius:2px}
-.required{color:#e55353;font-size:12px;margin-left:6px}
-.small-note{font-size:12px;color:#666;margin-top:6px}
-.actions{display:flex;justify-content:space-between;margin-top:18px}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 18px;border:1px solid #999;background:#eee;border-radius:4px;text-decoration:none;color:#222}
-.btn-primary{background:#eee}
-.tip{display:inline-block;background:#2b6cb0;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;margin-left:8px}
+.container{width:min(560px,100%);margin:24px auto;padding:0 16px}
+.container .card{background:#fff;border:1px solid rgba(148,163,184,0.24);padding:0;border-radius:24px;box-shadow:0 24px 60px rgba(15,23,42,0.12);overflow:hidden}
+.container .header-title{margin:0;padding:24px 24px 16px;font-size:20px;font-weight:700;color:#2563eb;border-bottom:1px solid rgba(148,163,184,0.18)}
+.container .form-row{padding:18px 24px}
+.container .form-row:first-of-type{padding-top:24px}
+.container .form-row:last-of-type{padding-bottom:24px}
+.container .form-row label{display:block;margin-bottom:10px;font-size:15px;font-weight:600;color:#1f2937}
+.container .input-text,.container input[type="file"]{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
+.container .input-text:focus,.container input[type="file"]:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
+.container .required{color:#dc2626;font-size:12px;margin-left:6px}
+.container .small-note{font-size:12px;color:#64748b;margin-top:6px}
+.container .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0 24px 24px;align-items:center}
+.container .btn,.container .btn-primary{min-height:48px;padding:0 18px;border-radius:14px;border:1px solid transparent;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;width:100%;min-width:0}
+.container .btn{background:#f8fafc;color:#1f2937;border-color:#cbd5e1}
+.container .btn:hover,.container .btn:focus{background:#e2e8f0}
+.container .btn-primary{background:#2563eb;color:#fff}
+.container .btn-primary:hover,.container .btn-primary:focus{background:#1d4ed8}
+.container .tip{display:inline-block;margin-left:8px;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:12px;font-weight:700}
+.container .error-msg{display:block;color:#dc2626;font-size:12px;margin-top:8px}
 
-/* product_add modal */
-#confirmAddModal{display:none}
+#confirmAddModal{display:none;position:fixed;inset:0;z-index:50}
 #confirmAddModal[aria-hidden="false"]{display:block}
-.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.15)}
-.modal-dialog{position:fixed;left:50%;top:40%;transform:translate(-50%,-40%);width:320px;max-width:90%;}
-.modal-content{background:#e9eef3;border:3px solid #2f2f2f;padding:20px;border-radius:6px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
-.modal-content h2{margin:0 0 18px 0;font-size:18px;color:#222}
-.modal-actions{display:flex;justify-content:space-around}
-.modal-actions button{min-width:100px;padding:8px 12px;border:1px solid #666;background:#fff;border-radius:4px;cursor:pointer}
-#okAddBtn{background:#fff}
-
-.error-msg{display:block;color:#e55353;font-size:12px;margin-top:4px}
-
-/* focus removal for inputs */
-.btn:focus, .btn:active, button:focus, a:focus, input:focus {outline: none;box-shadow: none}
+#confirmAddModal .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.24)}
+#confirmAddModal .modal-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,90%);z-index:10}
+#confirmAddModal .modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
+#confirmAddModal .modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
+#confirmAddModal .modal-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;justify-content:center}
+#confirmAddModal .modal-actions button{min-height:44px;min-width:110px;padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;cursor:pointer;font-weight:700;font-size:15px}
+#cancelAddBtn{background:#fff;border-color:#cbd5e1;color:#1f2937}
+#okAddBtn{background:#2563eb;color:#fff;border-color:#2563eb}
 
 /* ==========================
    admin/product_delete.css
    ========================== */
-html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #edf2f7; color: #1f2937}
-body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
-.container {width: min(520px, 100%)}
-.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 68px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.16); overflow: hidden}
-.header-title {margin: 0; padding: 24px 24px 16px; font-size: 20px; font-weight: 700; color: #111827; border-bottom: 1px solid rgba(148, 163, 184, 0.16)}
-.form-row {padding: 18px 24px}
-.search-row {padding-top: 22px}
-.search-field {position: relative}
-.input-text {width: 100%; min-height: 48px; padding: 14px 18px; border-radius: 16px; border: 1px solid #d1d5db; background: #ffffff; font-size: 15px; color: #0f172a; box-sizing: border-box}
-.input-text::placeholder {color: #6b7280}
-.search-button {position: absolute; top: 50%; right: 10px; transform: translateY(-50%); border: none; background: #2563eb; color: #ffffff; width: 44px; height: 44px; border-radius: 14px; cursor: pointer; font-size: 16px}
-.search-button:hover, .search-button:focus {background: #1d4ed8}
-.list-box {max-height: 220px; border: 1px solid #d1d5db; border-radius: 18px; background: #ffffff; padding: 16px; overflow: auto}
-.list-box label {display: block; padding: 12px 0; font-size: 15px; color: #1f2937}
-.list-box label + label {border-top: 1px solid rgba(148, 163, 184, 0.18)}
-.actions {display: grid;grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px; align-items: center; justify-items: stretch}
-.btn, .btn-primary {min-height: 50px; padding: 0 20px; border-radius: 16px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0}
-.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
-.btn:hover, .btn:focus {background: #e2e8f0}
-.btn-primary {background: #2563eb; color: #ffffff}
-.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
-.error-msg {display: none; color: #dc2626; font-size: 12px; margin-top: 8px}
+.container .search-row{padding-top:24px}
+.container .search-field{position:relative}
+.container .input-text{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
+.container .input-text::placeholder{color:#64748b}
+.container .search-button{position:absolute;top:50%;right:8px;transform:translateY(-50%);border:none;background:#2563eb;color:#fff;width:44px;height:44px;border-radius:14px;cursor:pointer;font-size:16px}
+.container .search-button:hover,.container .search-button:focus{background:#1d4ed8}
+.container .list-box{max-height:240px;border:1px solid #dbeafe;border-radius:18px;background:#f8fafc;padding:16px;overflow:auto}
+.container .list-box label{display:flex;align-items:center;gap:12px;padding:12px 0;font-size:15px;color:#1f2937}
+.container .list-box label + label{border-top:1px solid rgba(148,163,184,0.18)}
+.container .list-box input[type="checkbox"]{accent-color:#2563eb;width:18px;height:18px}
 
-#confirmDeleteModal {display:none; position:fixed; inset:0;}
-#confirmDeleteModal[aria-hidden="false"] { display:block; }
-.modal-backdrop {position:absolute; inset:0;background:rgba(0,0,0,.5);}
-.modal-dialog {position:relative; width:320px; margin:200px auto;}
-.modal-content {background:#fff; padding:20px;border-radius:12px; text-align:center;}
-.modal-actions {margin-top:15px;display:flex; justify-content:space-around;}
-
-@media (max-width: 460px) {.card {border-radius: 18px} .header-title {font-size: 18px; padding: 20px 18px 14px} .form-row, .actions {padding-left: 18px; padding-right: 18px}}
+#confirmDeleteModal{display:none;position:fixed;inset:0;z-index:50}
+#confirmDeleteModal[aria-hidden="false"]{display:block}
+#confirmDeleteModal .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.24)}
+#confirmDeleteModal .modal-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,90%);z-index:10}
+#confirmDeleteModal .modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
+#confirmDeleteModal .modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
+#confirmDeleteModal .modal-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#confirmDeleteModal .modal-actions button{min-height:44px;min-width:110px;padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;cursor:pointer;font-weight:700;font-size:15px}
+#cancelDeleteBtn{background:#fff;border-color:#cbd5e1;color:#1f2937}
+#okDeleteBtn{background:#2563eb;color:#fff;border-color:#2563eb}
 
 /* ==========================
    admin/product_edit_form.css
    ========================== */
-/* original: staff/styles/admin/product_edit_form.css */
-html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
-body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
-.container {width: min(520px, 100%)}
-.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
-.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
-.form-row {padding: 18px 24px}
-.form-row:first-of-type {padding-top: 24px}
-.form-row:last-of-type {padding-bottom: 24px}
-.form-row label {display: block; margin-bottom: 10px; font-size: 14px; color: #1f2937}
-.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
-input[type="file"] {width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; box-sizing: border-box}
-.input-text:focus, input[type="file"]:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
-.error-msg {display: block; color: #dc2626; font-size: 12px; margin-top: 8px}
-actions {display: grid;grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px; align-items: center; justify-items: stretch}
-.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0}
-.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
-.btn:hover, .btn:focus {background: #e2e8f0}
-.btn-primary {background: #2563eb; color: #ffffff}
-.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+.container .form-row:first-of-type{padding-top:24px}
+.container .form-row:last-of-type{padding-bottom:24px}
+.container .form-row label{display:block;margin-bottom:10px;font-size:15px;font-weight:600;color:#1f2937}
+.container .input-text,.container input[type="file"]{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
+.container .input-text:focus,.container input[type="file"]:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
+.container .error-msg{display:block;color:#dc2626;font-size:12px;margin-top:8px}
 
-#confirmEditModal{display:none}
+#confirmEditModal{display:none;position:fixed;inset:0;z-index:50}
 #confirmEditModal[aria-hidden="false"]{display:block}
-.modal-backdrop{position:fixed;inset:0;background:rgba(23,33,61,0.24)}
-.modal-dialog{position:fixed;left:50%;top:44%;transform:translate(-50%,-44%);width:88%;max-width:360px}
-.modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
-.modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
-.modal-actions{display:flex;justify-content:center;gap:14px}
-.modal-actions button{min-width:110px;padding:12px 14px;border-radius:12px;border:1px solid #8f99ab;background:#ffffff;cursor:pointer;font-weight:700}
-
-@media (max-width: 460px) {.card{border-radius:18px}.header-title{font-size:18px;padding:20px 18px 14px}.form-row,.actions{padding-left:18px;padding-right:18px}}
+#confirmEditModal .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.24)}
+#confirmEditModal .modal-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,90%);z-index:10}
+#confirmEditModal .modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
+#confirmEditModal .modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
+#confirmEditModal .modal-actions{display:flex;justify-content:center;gap:14px}
+#confirmEditModal .modal-actions button{min-height:44px;min-width:110px;padding:12px 14px;border-radius:12px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;cursor:pointer;font-weight:700;font-size:15px}
+#cancelEditBtn{background:#fff;border-color:#cbd5e1;color:#1f2937}
+#okEditBtn{background:#2563eb;color:#fff;border-color:#2563eb}
 
 /* ==========================
    admin/product_edit_review.css
    ========================== */
-/* original: staff/styles/admin/product_edit_review.css */
-html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
-body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
-.container {width: min(520px, 100%)}
-.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
-.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
-.form-row {padding: 18px 24px}
-.form-row:first-of-type {padding-top: 24px}
-.form-row:last-of-type {padding-bottom: 24px}
-.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
-.input-text:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
-.list-box {background: #f8fafc; border: 1px solid #dbeafe; border-radius: 18px; padding: 18px; min-height: 56px}
-.list-box {font-size: 15px; color: #1f2937}
-.actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px}
-.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none}
-.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
-.btn:hover, .btn:focus {background: #e2e8f0}
-.btn-primary {background: #2563eb; color: #ffffff}
-.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
-
-button {font: inherit}
-.error-msg {display: none; color: #dc2626; font-size: 12px; margin-top: 8px}
-
-@media (max-width: 460px) {.card {border-radius: 18px}.header-title {font-size: 18px; padding: 20px 18px 14px}.form-row, .actions {padding-left: 18px; padding-right: 18px}}
+.container .list-box{background:#f8fafc;border:1px solid #dbeafe;border-radius:18px;padding:18px;min-height:72px;font-size:15px;color:#1f2937}
+.container .error-msg{display:none;color:#dc2626;font-size:12px;margin-top:8px}
 
 /* ==========================
    admin/product_edit_select.css
    ========================== */
-/* original: staff/styles/admin/product_edit_select.css */
-html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
-body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
-.container {width: min(520px, 100%)}
-.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
-.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
-.form-row {padding: 18px 24px}
-.form-row:first-of-type {padding-top: 24px}
-.form-row:last-of-type {padding-bottom: 24px}
-.form-row > div[style] {position: relative}
-.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
-.input-text:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
-#searchBtn {position: absolute; right: 6px; top: 4px; padding: 10px 12px; border-radius: 12px; border: none; background: #2563eb; color: #ffffff; cursor: pointer; font-size: 16px; line-height: 1}
-#searchBtn:hover, #searchBtn:focus {background: #1d4ed8}
-.list-box {background: #f8fafc; border: 1px solid #dbeafe; border-radius: 18px; padding: 18px}
-.list-box label {display: flex; align-items: center; gap: 12px; font-size: 15px; color: #1f2937; margin-bottom: 14px}
-.list-box label:last-child {margin-bottom: 0}
-.list-box input[type="radio"] {accent-color: #2563eb; width: 18px; height: 18px}
-.actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px}
-.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none}
-.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
-.btn:hover, .btn:focus {background: #e2e8f0}
-.btn-primary {background: #2563eb; color: #ffffff}
-.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+.container .form-row > div[style]{position:relative}
+.container .input-text{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
+.container #searchBtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);padding:10px 12px;border-radius:14px;border:none;background:#2563eb;color:#fff;cursor:pointer;font-size:16px;line-height:1}
+.container #searchBtn:hover,.container #searchBtn:focus{background:#1d4ed8}
+.container .list-box{background:#f8fafc;border:1px solid #dbeafe;border-radius:18px;padding:18px}
+.container .list-box label{display:flex;align-items:center;gap:12px;font-size:15px;color:#1f2937;margin-bottom:14px}
+.container .list-box label:last-child{margin-bottom:0}
+.container .list-box input[type="radio"]{accent-color:#2563eb;width:18px;height:18px}
 
-button, a {font: inherit}
-
-@media (max-width: 460px) {.card {border-radius: 18px}.header-title {font-size: 18px; padding: 20px 18px 14px}.form-row, .actions {padding-left: 18px; padding-right: 18px}}
-
+@media (max-width: 460px){.container{padding:0 12px}.container .card{border-radius:18px}.container .header-title{font-size:18px;padding:20px 18px 14px}.container .form-row,.container .actions{padding-left:18px;padding-right:18px}.container .actions{grid-template-columns:1fr}}
 /* ==========================
    parttime/menu.css
    ========================== */

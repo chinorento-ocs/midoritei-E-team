@@ -10,4 +10,13 @@
   ok.addEventListener('click', function(e){ e.preventDefault(); window.location.href = '../../login.html'; });
   modal.querySelector('.modal-backdrop').addEventListener('click', hide);
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden')==='false'){ hide(); } });
+  
+  // メニューボタンの遷移処理
+  var menuButtons = document.querySelectorAll('.menu-button[data-target]');
+  menuButtons.forEach(function(btn){
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      window.location.href = btn.getAttribute('data-target');
+    });
+  });
 })();

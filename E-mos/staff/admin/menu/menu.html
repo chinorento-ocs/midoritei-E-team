@@ -7,38 +7,40 @@
   <link rel="stylesheet" href="../../styles/style.css">
 </head>
 <body>
-  <div class="wrap">
-    <div class="card" role="main">
+  <header class="top">
+  </header>
+
+  <main class="content">
+    <div class="page-card" role="main">
       <button class="gear" id="gearBtn" aria-label="ログアウト" title="ログアウト">⚙</button>
-      <div class="title">みどり亭　メニュー管理システム</div>
-      <div class="subtitle">社員用</div>
+      <div class="heading">
+        <p class="brand">みどり亭</p>
+        <p class="subtitle">メニュー管理システム<br>社員用</p>
+      </div>
 
-      <div class="spacer"></div>
-      <a class="menu-btn" href="../product_add/product_add.html">商品追加</a>
-      <a class="menu-btn" href="../product_delete/product_delete.html">商品削除</a>
-      <a class="menu-btn" href="../product_edit/product_edit_select.html">商品変更</a>
-      <a class="menu-btn menu-btn-dark" href="../../parttime/menu/menu.html">アルバイト用</a>
+      <nav class="button-list">
+        <button class="menu-button" data-target="../product_add/product_add.html">商品追加</button>
+        <button class="menu-button" data-target="../product_delete/product_delete.html">商品削除</button>
+        <button class="menu-button" data-target="../product_edit/product_edit_select.html">商品変更</button>
+        <button class="menu-button" data-target="../../parttime/menu/menu.html">アルバイト用</button>
+      </nav>
     </div>
-  </div>
+  </main>
 
-  <div class="page-num">2-1</div>
-
-    <!-- 確認モーダル -->
-    <div id="confirmModal" class="modal hidden" aria-hidden="true">
-      <div class="modal-backdrop"></div>
-      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
-        <div class="modal-content">
-          <h2 id="confirmTitle">ログアウトしますか？</h2>
-          <div class="modal-actions">
-            <button id="cancelBtn">いいえ</button>
-            <button id="okBtn">はい</button>
-          </div>
+  <!-- 確認モーダル -->
+  <div id="confirmModal" class="modal hidden" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal-content">
+        <h2 id="confirmTitle">ログアウトしますか？</h2>
+        <div class="modal-actions">
+          <button id="cancelBtn">いいえ</button>
+          <button id="okBtn">はい</button>
         </div>
       </div>
     </div>
+  </div>
 
-    
-
-    <script src="menu.js" defer></script>
+  <script src="menu.js" defer></script>
 </body>
 </html>
