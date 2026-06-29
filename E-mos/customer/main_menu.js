@@ -36,8 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
     return partyCount >= 4 ? 20 : Math.min(20, partyCount * 5);
   }
 
-  const maxOrderQuantity = getMaxOrderQuantity();
-
   function getCartTotalQuantity() {
     return cartItems.reduce(function (sum, item) {
       return sum + Number(item.quantity || 0);
@@ -94,15 +92,20 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    const max = getMaxOrderQuantity();
+    const maxOrderQuantity = getMaxOrderQuantity();
     const totalQuantity = getCartTotalQuantity();
+    const remainingCapacity = Math.max(0, maxOrderQuantity - totalQuantity);
     const currentValue = Number(quantityInput.value || "0");
-    const safeValue = Math.min(Math.max(0, currentValue), max);
+    let safeValue = Math.min(Math.max(0, currentValue), remainingCapacity);
+
+    if (safeValue === 0 && remainingCapacity > 0) {
+      safeValue = 1;
+    }
 
     quantityInput.value = String(safeValue);
-    quantityInput.max = String(max);
+    quantityInput.max = String(remainingCapacity);
 
-    const isAtMax = safeValue >= max;
+    const isAtMax = safeValue >= remainingCapacity;
     const isAtMin = safeValue <= 0;
     decreaseButton.disabled = isAtMin;
     increaseButton.disabled = isAtMax;
@@ -118,6 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const imageLabel = card.querySelector(".menu-card__image")?.textContent.trim() || "商品";
     modalTitle.textContent = title;
     modalImage.textContent = imageLabel;
+    if (quantityInput) {
+      quantityInput.value = "1";
+    }
     updateQuantityControls();
     menuModal.classList.remove("hidden");
   }
@@ -256,6 +262,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       const totalQuantity = getCartTotalQuantity();
       const nextTotal = totalQuantity - existing.quantity + quantity;
+      const maxOrderQuantity = getMaxOrderQuantity();
 
       if (nextTotal > maxOrderQuantity) {
         showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
@@ -275,6 +282,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const totalQuantity = getCartTotalQuantity();
+    const maxOrderQuantity = getMaxOrderQuantity();
 
     if (totalQuantity + quantity > maxOrderQuantity) {
       showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
@@ -330,8 +338,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   increaseButton?.addEventListener("click", function () {
     const value = Number(quantityInput.value || "0");
-    const max = getMaxOrderQuantity();
-    if (value < max) {
+    const maxOrderQuantity = getMaxOrderQuantity();
+    const totalQuantity = getCartTotalQuantity();
+    const remainingCapacity = Math.max(0, maxOrderQuantity - totalQuantity);
+    if (value < remainingCapacity) {
       quantityInput.value = String(value + 1);
     }
     updateQuantityControls();
@@ -339,19 +349,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   modalBackButton?.addEventListener("click", closeMenuModal);
   modalConfirmButton?.addEventListener("click", function () {
-    const count = Math.min(Number(quantityInput.value || "0"), getMaxOrderQuantity());
+    const maxOrderQuantity = getMaxOrderQuantity();
+    const totalQuantity = getCartTotalQuantity();
+    const remainingCapacity = Math.max(0, maxOrderQuantity - totalQuantity);
+    const count = Math.min(Number(quantityInput.value || "0"), remainingCapacity);
     const price = currentModalCard ? Number(currentModalCard.dataset.price || 0) : 0;
 
-    const totalQuantity = getCartTotalQuantity();
-
-    if (totalQuantity >= maxOrderQuantity) {
-      quantityInput.value = "0";
-      updateQuantityControls();
-      showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
-      return;
-    }
-
-    if (totalQuantity + count > maxOrderQuantity) {
+    if (remainingCapacity <= 0 || count <= 0) {
       quantityInput.value = "0";
       updateQuantityControls();
       showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
