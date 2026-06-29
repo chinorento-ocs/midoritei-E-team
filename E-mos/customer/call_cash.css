@@ -1,0 +1,241 @@
+.action-group {
+  display: grid;
+  gap: 18px;
+}
+.action-card {
+  background: #fff9f1;
+  border: 1px solid #f3c49a;
+  border-radius: 20px;
+  padding: 24px 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.action-card button {
+  width: 100%;
+  border: 2px solid #4f2a00;
+  border-radius: 16px;
+  background: #fff4e6;
+  color: #4f2a00;
+  font-size: 1.1rem;
+  font-weight: 700;
+  padding: 16px 0;
+  cursor: pointer;
+}
+.action-card button:hover {
+  background: #ffe4ca;
+}
+.return-link {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  margin: 18px auto 0;
+  width: min(220px, 100%);
+  border: 1px solid #4f2a00;
+  border-radius: 16px;
+  background: #fff4e6;
+  color: #4f2a00;
+  padding: 12px 0;
+  font-weight: 700;
+}
+.return-link:hover {
+  background: #ffe4ca;
+}
+.call-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+.call-modal.hidden {
+  display: none;
+}
+.call-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+.call-modal__dialog {
+  position: relative;
+  width: min(92vw, 440px);
+  background: #fff3e8;
+  border: 1px solid #f3c49a;
+  border-radius: 28px;
+  padding: 44px 36px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  z-index: 1;
+  text-align: center;
+  display: grid;
+  gap: 22px;
+}
+.call-modal__message {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #8c4303;
+}
+.call-modal__submessage {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #9a4f10;
+}
+.call-modal__icon {
+  font-size: 4.5rem;
+  line-height: 1;
+}
+.call-modal__button {
+  border: 1px solid #d9c0a2;
+  border-radius: 14px;
+  background: #fff2e6;
+  padding: 14px 26px;
+  color: #8c4303;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 10px;
+}
+.call-modal__button:hover {
+  background: #ffe7cf;
+}
+.pay-modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+.pay-modal.hidden {
+  display: none;
+}
+.pay-modal__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+}
+.pay-modal__dialog {
+  position: relative;
+  width: min(92vw, 420px);
+  background: transparent;
+  border-radius: 30px;
+  padding: 0;
+  z-index: 1;
+  text-align: center;
+  display: grid;
+  gap: 16px;
+}
+.pay-card {
+  background: #fff7ef;
+  border-radius: 34px;
+  padding: 34px 28px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+  display: grid;
+  gap: 20px;
+  border: 1px solid #f3c49a;
+}
+.pay-card__header {
+  display: grid;
+  gap: 14px;
+  align-items: center;
+}
+.pay-card__table,
+.pay-card__amount,
+.pay-card__yen {
+  margin: 0;
+  color: #6b2f03;
+}
+.pay-card__table {
+  font-size: 1.4rem;
+  font-weight: 800;
+}
+.pay-card__amount {
+  font-size: 1.15rem;
+}
+.pay-card__yen {
+  font-size: 2.4rem;
+  font-weight: 900;
+}
+.pay-card__barcode {
+  width: 100%;
+  max-width: 320px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 16px;
+  background: #fff7ef;
+}
+.pay-card__footer {
+  display: grid;
+  gap: 4px;
+  color: #7b4c28;
+  font-size: 1rem;
+}
+.pay-modal__button {
+  border: 1px solid #f0c7a1;
+  border-radius: 16px;
+  background: #fff4e5;
+  padding: 16px 26px;
+  color: #8c4303;
+  cursor: pointer;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-top: 10px;
+}
+.pay-modal__button:hover {
+  background: #ffe7cf;
+}
+
+@media (max-width: 380px) {
+  .call-modal__dialog,
+  .pay-modal__dialog {
+    width: min(90vw, 340px);
+    padding: 24px 18px;
+  }
+
+  .pay-card {
+    padding: 22px 18px;
+    gap: 16px;
+  }
+
+  .pay-card__header {
+    gap: 10px;
+  }
+
+  .pay-card__table {
+    font-size: 1.25rem;
+  }
+
+  .pay-card__amount {
+    font-size: 1rem;
+  }
+
+  .pay-card__yen {
+    font-size: 1.75rem;
+  }
+
+  .pay-card__footer {
+    font-size: 0.9rem;
+  }
+
+  .pay-card__barcode {
+    max-width: 280px;
+  }
+
+  .pay-modal__button,
+  .call-modal__button {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+  }
+}
+
+.content-area {
+  grid-template-columns: 1fr;
+}
+.sidebar {
+  display: none;
+}
+.menu-list {
+  padding: 24px 18px 18px;
+}
+.section-title {
+  margin-bottom: 28px;
+}

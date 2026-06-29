@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ログイン - みどり亭 メニュー管理システム</title>
+  <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main">
+      <div class="title">みどり亭　メニュー管理システム</div>
+
+      <form id="loginForm" aria-label="ログインフォーム" novalidate>
+        <div class="form-row">
+          <label for="userId">ユーザーID ：</label>
+          <input id="userId" name="userId" class="input-box" type="text" autocomplete="username" aria-required="true">
+          <div class="required-box"><span class="required">※必須</span></div>
+        </div>
+
+        <div class="form-row">
+          <label for="password">パスワード ：</label>
+          <input id="password" name="password" class="input-box" type="password" autocomplete="current-password" aria-required="true">
+          <div class="required-box"><span class="required">※必須</span></div>
+        </div>
+
+        <button type="submit" class="btn">ログイン</button>
+      </form>
+
+      <!-- ※青い吹き出しは不要とのことで省略しました -->
+    </div>
+  </div>
+
+</div>
+  <div class="footer-num">1</div>
+
+  <script src="login.js" defer></script>
+</body>
+</html>

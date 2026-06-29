@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>みどり亭 メニュー管理システム</title>
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+    <header class="top">
+    </header>
+
+    <main class="content">
+        <div class="page-card">
+            <button class="gear" id="gearBtn" aria-label="ログアウト" title="ログアウト">⚙</button>
+            <div class="heading">
+                <p class="brand">みどり亭</p>
+                <p class="subtitle">メニュー管理システム<br>アルバイト用</p>
+            </div>
+
+            <nav class="button-list">
+                <button class="menu-button" data-target="../table/table_menu.html">テーブル管理</button>
+                <button class="menu-button" data-target="../soldout/soldout.html">売り切れ設定</button>
+                <button class="menu-button" data-target="../free_drink_plan/free_drink_plan.html">飲み放題登録</button>
+                <button class="menu-button" data-target="../order/order.html">注文</button>
+                <button class="menu-button" data-target="../order_cancel/order_cancel.html">注文キャンセル</button>
+                <button class="menu-button" data-target="../order_status_change/order_status_change.html">提供済み変更</button>
+                <button class="menu-button" data-target="../order_all/order_all.html">オーダー一覧</button>
+                <button class="menu-button" data-target="../staff_call/staff_call.html">店員呼び出し</button>
+            </nav>
+        </div>
+    </main>
+
+    <!-- 確認モーダル -->
+    <div id="confirmModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-backdrop"></div>
+      <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+        <div class="modal-content">
+          <h2 id="confirmTitle">ログアウトしますか？</h2>
+          <div class="modal-actions">
+            <button id="cancelBtn">いいえ</button>
+            <button id="okBtn">はい</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="menu.js"></script>
+</body>
+</html>

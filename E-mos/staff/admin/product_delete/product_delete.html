@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>商品削除 - みどり亭</title>
+  <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header-title">商品削除</div>
+
+      <div class="form-row search-row">
+        <div class="search-field">
+          <input class="input-text" type="text" placeholder="カテゴリを入れて件名を絞り検索が可能">
+          <button type="button" class="search-button" aria-label="検索">🔍</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="list-box">
+          <label><input type="checkbox"> かわ</label>
+          <label><input type="checkbox" checked> もも</label>
+        </div>
+        <span class="error-msg" id="deleteError">削除する商品を選択してください</span>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="../menu/menu.html">戻る</a>
+        <button class="btn btn-primary" id="deleteBtn">削除</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 確認モーダル -->
+  <div id="confirmDeleteModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="deleteConfirmTitle">
+      <div class="modal-content">
+        <h2 id="deleteConfirmTitle">商品の削除を許可しますか？</h2>
+        <div class="modal-actions">
+          <button id="cancelDeleteBtn">いいえ</button>
+          <button id="okDeleteBtn">はい</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="product_delete.js" defer></script>
+</body>
+</html>

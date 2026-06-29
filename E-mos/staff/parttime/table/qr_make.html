@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>QRコード生成</title>
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+    <main class="content">
+        <div class="page-card">
+            <div class="heading">
+                <p class="brand">QRコード生成</p>
+            </div>
+
+            <p class="lead">QRコードと紐づけるテーブル番号を入力</p>
+            <input id="tableInput" class="table-input" type="text" aria-label="テーブル番号入力">
+
+            <div class="actions">
+                <button id="btnBack" class="btn outline">戻る</button>
+                <button id="btnIssue" class="btn primary">発行</button>
+            </div>
+
+            <div id="confirmationModal" class="modal hidden">
+                <div class="modal-content">
+                    <p>QRコードを生成しますか？</p>
+                    <div class="modal-actions">
+                        <button id="btnCancel" class="btn outline">いいえ</button>
+                        <button id="btnConfirm" class="btn primary">はい</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="qrArea" class="qr-area hidden">
+                <p class="qr-note">生成されたQRコードを読み取ってください。</p>
+                <img id="qrImage" alt="QRコード" class="qr-image" src="">
+            </div>
+        </div>
+    </main>
+
+    <script src="qr_make.js"></script>
+</body>
+</html>

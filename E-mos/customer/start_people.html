@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>人数選択</title>
+  <link rel="stylesheet" href="start_people.css" />
+  <style>
+    :root {
+      --card: rgba(255, 255, 255, 0.96);
+      --line: #efe3cf;
+      --heading: #c45d0c;
+      --body-text: #7a3f08;
+      --brown: var(--heading);
+      --text: var(--body-text);
+      --muted: var(--body-text);
+      --accent: #ffbf4d;
+      --accent-strong: #ff9f1c;
+      --shadow: 0 18px 36px rgba(110, 83, 42, 0.15);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Yu Gothic", "Hiragino Sans", "Segoe UI", sans-serif;
+      color: var(--body-text);
+      background: linear-gradient(180deg, #fffaf4 0%, #fff3de 100%);
+      display: flex;
+      justify-content: center;
+      align-items: stretch;
+      padding: 0;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      border-radius: 0;
+      overflow: hidden;
+      background: linear-gradient(160deg, rgba(255,255,255,0.98), rgba(255,247,235,0.98));
+      border: none;
+      box-shadow: none;
+    }
+
+    .hero {
+      padding: 18px 14px 14px;
+      background: linear-gradient(135deg, #fffdf9 0%, #ffeecf 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 7vw, 2.1rem);
+      line-height: 1.15;
+      color: var(--heading);
+    }
+
+    .content {
+      padding: 12px;
+    }
+
+    .panel {
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: var(--card);
+      padding: 14px;
+      box-shadow: 0 8px 18px rgba(126, 98, 55, 0.08);
+    }
+
+    .top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .top-row strong {
+      font-size: 1.18rem;
+      line-height: 1.3;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 7px 10px;
+      background: #fff7e8;
+      border: 1px solid #efe2c6;
+      color: var(--body-text);
+      font-size: 0.9rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 12px 10px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fffaf2 0%, #fff4db 100%);
+      border: 1px solid #efdcbf;
+    }
+
+    .label {
+      font-size: 1rem;
+      font-weight: 900;
+      color: var(--body-text);
+    }
+
+    .counter {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 6px;
+      box-shadow: 0 8px 14px rgba(120, 96, 54, 0.08);
+    }
+
+    .round-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+      color: var(--body-text);
+      font-size: 1.35rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 14px rgba(255, 171, 35, 0.24);
+    }
+
+    .round-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.45;
+      box-shadow: none;
+    }
+
+    .number-display {
+      min-width: 44px;
+      text-align: center;
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--body-text);
+    }
+
+    .total-box {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #fffaf2;
+      border: 1px solid #efe2ca;
+      color: var(--body-text);
+      font-weight: 800;
+    }
+
+    .helper-text {
+      min-height: 1.2em;
+      margin: 8px 0 0;
+      color: #b24d08;
+      font-size: 0.95rem;
+      font-weight: 800;
+    }
+
+    .confirm-wrap {
+      margin-top: 14px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .confirm-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 20px;
+      min-width: 180px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+      color: var(--body-text);
+      font-size: 1rem;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 10px 18px rgba(255, 171, 35, 0.24);
+    }
+
+    .confirm-btn:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+      box-shadow: none;
+    }
+
+    @media (max-width: 640px) {
+      body { align-items: stretch; }
+      .page { min-height: 100vh; }
+      .hero { padding: 18px 12px 14px; }
+      .content { padding: 10px; min-height: calc(100vh - 86px); }
+      .panel { padding: 12px; border-radius: 18px; min-height: 100%; }
+      .row { grid-template-columns: 1fr; gap: 8px; }
+      .counter { justify-content: center; width: 100%; }
+      .top-row { align-items: flex-start; flex-direction: column; }
+      .round-btn { width: 52px; height: 52px; font-size: 1.45rem; }
+      .number-display { font-size: 1.45rem; min-width: 48px; }
+    }
+
+    @media (max-width: 430px) {
+      .hero { padding: 16px 10px 12px; }
+      .content { padding: 8px; min-height: calc(100vh - 82px); }
+      .panel { padding: 10px; }
+      .top-row strong { font-size: 1.02rem; }
+      .label { font-size: 0.98rem; }
+      .round-btn { width: 50px; height: 50px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <h1>みどり亭へようこそ</h1>
+    </section>
+
+    <section class="content">
+      <article class="panel">
+        <div class="top-row">
+          <strong>人数を選択してください</strong>
+        </div>
+
+        <div class="row">
+          <div class="label">大人</div>
+          <div class="counter" aria-label="大人の人数">
+            <button class="round-btn" id="adultMinus" type="button" aria-label="大人を減らす">−</button>
+            <div class="number-display" id="adultCount">0</div>
+            <button class="round-btn" id="adultPlus" type="button" aria-label="大人を増やす">＋</button>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="label">子供</div>
+          <div class="counter" aria-label="子供の人数">
+            <button class="round-btn" id="childMinus" type="button" aria-label="子供を減らす">−</button>
+            <div class="number-display" id="childCount">0</div>
+            <button class="round-btn" id="childPlus" type="button" aria-label="子供を増やす">＋</button>
+          </div>
+        </div>
+
+        <div class="total-box" id="totalBox">合計 0人</div>
+        <p class="helper-text" id="helperText" aria-live="polite">人数が入力されていません</p>
+
+        <div class="confirm-wrap">
+          <button class="confirm-btn" id="confirmBtn" type="button">人数を確定</button>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script src="start_people.js"></script>
+</body>
+</html>

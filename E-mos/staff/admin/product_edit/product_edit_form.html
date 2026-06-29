@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>商品変更 - 編集</title>
+  <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header-title">商品変更 — 編集</div>
+
+      <form id="editForm" action="#" method="post">
+        <div class="form-row">
+          <label>商品名：</label>
+          <input class="input-text" id="editName" type="text" name="name" value="">
+          <span class="error-msg" id="nameError" style="display:none">商品名を入力してください</span>
+        </div>
+        <div class="form-row">
+          <label>カテゴリー：</label>
+          <input class="input-text" id="editCategory" type="text" name="category" value="">
+          <span class="error-msg" id="categoryError" style="display:none">カテゴリーを入力してください</span>
+        </div>
+        <div class="form-row">
+          <label>値段：</label>
+          <input class="input-text" id="editPrice" type="number" name="price" value="">
+          <span class="error-msg" id="priceError" style="display:none">値段を入力してください</span>
+        </div>
+        <div class="form-row">
+          <label>写真：</label>
+          <input class="input-text" id="editPhoto" type="file" name="photo">
+        </div>
+        <div class="form-row">
+          <label>備考欄：</label>
+          <input class="input-text" id="editNote" type="text" name="note" value="">
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn" id="backToReview">戻る</button>
+          <button type="button" class="btn btn-primary" id="submitBtn">変更</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 確認モーダル -->
+  <div id="confirmEditModal" aria-hidden="true">
+    <div class="modal-backdrop"></div>
+    <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="editConfirmTitle">
+      <div class="modal-content">
+        <h2 id="editConfirmTitle">商品の変更を許可しますか？</h2>
+        <div class="modal-actions">
+          <button id="cancelEditBtn">いいえ</button>
+          <button id="okEditBtn">はい</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="product_edit_form.js" defer></script>
+</body>
+</html>

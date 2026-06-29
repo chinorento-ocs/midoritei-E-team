@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>商品変更 - 選択</title>
+  <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header-title">商品変更 — 選択</div>
+
+      <div class="form-row">
+        <div style="position:relative;">
+          <input class="input-text" id="searchInput" type="text" placeholder="カテゴリを入れて検索">
+          <button type="button" id="searchBtn" style="position:absolute;right:6px;top:4px;padding:6px 8px;border-radius:4px;">🔍</button>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="list-box" id="selectList">
+          <label><input type="radio" name="sel" value="かわ"> かわ</label>
+          <label><input type="radio" name="sel" value="もも"> もも</label>
+          <label><input type="radio" name="sel" value="つくね"> つくね</label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <a class="btn" href="../menu/menu.html">戻る</a>
+        <button type="button" class="btn btn-primary" id="toReview">次へ</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="product_edit_select.js" defer></script>
+</body>
+</html>

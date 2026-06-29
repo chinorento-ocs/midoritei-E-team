@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>注文キャンセル - 注文履歴</title>
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+    <main class="center">
+        <div class="page-card">
+            <header class="top">
+                <h1>注文キャンセル</h1>
+                <div class="table-number">卓番：○○</div>
+            </header>
+            <div class="order-header">
+                <span class="col-name">注文履歴</span>
+                <span class="col-count">点数</span>
+            </div>
+            <div class="order-list">
+                <div class="order-row completed" data-item="フライドポテト" data-order-count="1">
+                    <span class="checkbox-placeholder"></span>
+                    <span class="item-name">フライドポテト</span>
+                    <span class="item-count">1点</span>
+                </div>
+                <div class="order-row" data-item="ポテトサラダ" data-order-count="2">
+                    <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
+                    <span class="item-name">ポテトサラダ</span>
+                    <span class="item-count">2点</span>
+                </div>
+                <div class="order-row" data-item="鳥めし" data-order-count="1">
+                    <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
+                    <span class="item-name">鳥めし</span>
+                    <span class="item-count">1点</span>
+                </div>
+                <div class="order-row" data-item="キャベツの塩だれ" data-order-count="1">
+                    <label class="order-checkbox"><input type="checkbox" class="order-check" checked></label>
+                    <span class="item-name">キャベツの塩だれ</span>
+                    <span class="item-count">1点</span>
+                </div>
+                <div class="order-row" data-item="きゅうりの一本漬け" data-order-count="1">
+                    <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
+                    <span class="item-name">きゅうりの一本漬け</span>
+                    <span class="item-count">1点</span>
+                </div>
+                <div class="order-row" data-item="だし巻き" data-order-count="1">
+                    <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
+                    <span class="item-name">だし巻き</span>
+                    <span class="item-count">1点</span>
+                </div>
+                <div class="order-row completed" data-item="鶏の唐揚げ" data-order-count="1">
+                    <span class="checkbox-placeholder"></span>
+                    <span class="item-name">鶏の唐揚げ</span>
+                    <span class="item-count">1点</span>
+                </div>
+                <div class="order-row" data-item="タコのから揚げ" data-order-count="1">
+                    <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
+                    <span class="item-name">タコのから揚げ</span>
+                    <span class="item-count">1点</span>
+                </div>
+            </div>
+            <div class="actions">
+                <button id="btnBack" class="menu-btn outline">戻る</button>
+                <button id="btnNext" class="menu-btn">次へ</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="order_caccel_select.js"></script>
+</body>
+</html>

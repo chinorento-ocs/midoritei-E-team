@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>商品変更 - 確認</title>
+  <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header-title">商品変更 — 確認</div>
+
+      <div class="form-row">
+        <label>変更前</label>
+        <div class="list-box" id="beforeBox">--</div>
+      </div>
+
+      <div class="form-row">
+        <label>変更後</label>
+        <input class="input-text" id="afterInput" type="text" value="" required>
+        <span class="error-msg" id="afterError" style="display:none">変更後の項目を入力してください</span>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn" id="backToSelect">戻る</button>
+        <button type="button" class="btn btn-primary" id="toEdit">次へ</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="product_edit_review.js" defer></script>
+</body>
+</html>

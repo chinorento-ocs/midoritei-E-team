@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>売り切れ設定</title>
+    <link rel="stylesheet" href="../../styles/style.css">
+</head>
+<body>
+    <main class="content">
+        <div class="page-card">
+            <div class="heading">
+                <p class="brand">売り切れ設定</p>
+            </div>
+
+            <div class="soldout-search-box">
+                <input id="searchInput" class="soldout-search-input" type="text" placeholder="">
+                <button id="searchBtn" class="soldout-search-btn">🔍</button>
+            </div>
+
+            <label class="soldout-label">検索結果</label>
+            <div id="searchResults" class="soldout-results-box"></div>
+
+            <div class="actions">
+                <button id="btnBack" class="menu-btn outline">戻る</button>
+                <button id="btnChange" class="menu-btn">変更</button>
+            </div>
+
+            <!-- 確認モーダル -->
+            <div id="confirmModal" class="modal hidden">
+                <div class="modal-content">
+                    <p>売り切れ表示の変更を許可しますか？</p>
+                    <div class="modal-actions">
+                        <button id="btnCancel" class="btn outline">いいえ</button>
+                        <button id="btnConfirm" class="btn primary">はい</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="soldout.js"></script>
+</body>
+</html>

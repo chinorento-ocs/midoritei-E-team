@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>注文履歴</title>
+  <style>
+    :root {
+      --bg: #fffaf4;
+      --panel: rgba(255, 255, 255, 0.96);
+      --line: #efe3cf;
+      --heading: #c45d0c;
+      --text: #7a3f08;
+      --muted: #8f6b48;
+      --accent: #ffbf4d;
+      --accent-strong: #ff9f1c;
+      --ok: #3e8f5b;
+      --warn: #a35512;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      overflow-x: hidden;
+      background: linear-gradient(180deg, #fffaf4 0%, #fff3de 100%);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Yu Gothic", "Hiragino Sans", "Segoe UI", sans-serif;
+      color: var(--text);
+    }
+
+    .page {
+      min-height: 100vh;
+      background: linear-gradient(160deg, rgba(255,255,255,0.98), rgba(255,247,235,0.98));
+    }
+
+    .hero {
+      padding: 18px 14px 12px;
+      background: linear-gradient(135deg, #fffdf9 0%, #ffeecf 100%);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .hero-accent {
+      width: 56px;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+      margin-bottom: 8px;
+    }
+
+    .hero-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--warn);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 4px 0 0;
+      color: var(--heading);
+      font-size: clamp(1.4rem, 6vw, 2rem);
+      line-height: 1.15;
+    }
+
+    .back-btn {
+      border: 1px solid #efd7b9;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f4c16b 0%, #d98d2b 100%);
+      color: #fffaf4;
+      padding: 10px 14px;
+      font-weight: 800;
+      box-shadow: 0 8px 14px rgba(120, 96, 54, 0.08);
+      cursor: pointer;
+    }
+
+    .content {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      background: var(--panel);
+      box-shadow: 0 12px 26px rgba(126, 98, 55, 0.08);
+      padding: 14px;
+    }
+
+    .summary-card {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .mini-card {
+      border-radius: 18px;
+      background: linear-gradient(135deg, #fffaf2 0%, #fff4db 100%);
+      border: 1px solid #efdcbf;
+      padding: 12px;
+      box-shadow: 0 6px 12px rgba(120, 96, 54, 0.05);
+    }
+
+    .mini-label {
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .mini-value {
+      margin-top: 6px;
+      color: var(--heading);
+      font-size: 1.15rem;
+      font-weight: 900;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 2px 0 10px;
+      color: var(--heading);
+      font-weight: 900;
+      font-size: 1rem;
+    }
+
+    .history-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .seat-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .seat-card {
+      border-radius: 18px;
+      border: 1px solid #efe2c6;
+      background: linear-gradient(135deg, #fffdf9 0%, #fff7ea 100%);
+      padding: 12px;
+      box-shadow: 0 8px 14px rgba(120, 96, 54, 0.06);
+    }
+
+    .info-note {
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .seat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .seat-label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .seat-name {
+      margin: 2px 0 0;
+      color: var(--heading);
+      font-size: 1.05rem;
+      font-weight: 900;
+    }
+
+    .seat-chip {
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fff;
+      border: 1px solid #efe2c6;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .menu-list {
+      display: grid;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .menu-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 6px;
+      padding: 6px 0;
+      border-top: 1px dashed #eadbc3;
+    }
+
+    .menu-copy {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    .menu-meta {
+      display: grid;
+      justify-items: end;
+      gap: 4px;
+      text-align: right;
+      align-self: flex-start;
+    }
+
+    .menu-time {
+      display: inline-flex;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 800;
+      background: #fff7e8;
+      border: 1px solid #efe2c6;
+      border-radius: 999px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+
+    .menu-qty {
+      display: inline-flex;
+      align-items: center;
+      color: var(--heading);
+      font-size: 0.78rem;
+      font-weight: 900;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      white-space: nowrap;
+    }
+
+    .menu-note {
+      display: inline-flex;
+      align-items: center;
+      color: #a35512;
+      font-size: 0.78rem;
+      font-weight: 800;
+      line-height: 1.2;
+      background: #fff3df;
+      border: 1px solid #efd6b1;
+      border-radius: 999px;
+      padding: 3px 8px;
+      white-space: nowrap;
+    }
+
+    .menu-status {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 4px 8px;
+      background: #fff3df;
+      border: 1px solid #efd6b1;
+      color: #a35512;
+      font-size: 0.78rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .menu-item:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+
+    .menu-name {
+      color: var(--text);
+      font-size: 0.95rem;
+      font-weight: 900;
+    }
+
+    .menu-price {
+      color: var(--heading);
+      font-size: 0.95rem;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+
+    .history-item {
+      border-radius: 18px;
+      border: 1px solid #efe2c6;
+      background: linear-gradient(135deg, #fffdf9 0%, #fff7ea 100%);
+      padding: 12px;
+      box-shadow: 0 8px 14px rgba(120, 96, 54, 0.06);
+    }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .date-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #fff;
+      border: 1px solid #efe2c6;
+      color: var(--text);
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #fff;
+      background: linear-gradient(135deg, #46a56b 0%, #2a8e57 100%);
+    }
+
+    .history-grid {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 12px;
+      align-items: center;
+    }
+
+    .order-label {
+      color: var(--muted);
+      font-size: 0.92rem;
+      font-weight: 800;
+    }
+
+    .order-value {
+      color: var(--text);
+      font-size: 0.98rem;
+      font-weight: 900;
+      text-align: right;
+    }
+
+    .order-total {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px dashed #eadbc3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      color: var(--heading);
+      font-weight: 900;
+      font-size: 1rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    .order-total strong {
+      color: var(--accent-strong);
+      font-size: 1.05rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .tag {
+      border-radius: 999px;
+      padding: 5px 8px;
+      background: #fff7e8;
+      border: 1px solid #efe2c6;
+      color: var(--text);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+
+    @media (max-width: 640px) {
+      .hero-inner { align-items: flex-start; flex-direction: column; }
+      .summary-card { grid-template-columns: 1fr; }
+      .history-grid { grid-template-columns: 1fr; }
+      .history-top, .section-title { align-items: flex-start; flex-direction: column; }
+      .order-total { align-items: center; flex-direction: row; }
+      .order-value { text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="hero-accent"></div>
+          <div class="eyebrow"></div>
+          <h1>注文履歴</h1>
+        </div>
+        <button class="back-btn" type="button" onclick="window.location.href='main_menu.html'">メニューへ戻る</button>
+      </div>
+    </section>
+
+    <section class="content">
+      <article class="panel">
+        <div class="summary-card">
+        </div>
+
+        <div class="section-title"></div>
+        <div class="history-list">
+          <article class="seat-card">
+            <div class="seat-header">
+              <div></div>
+            </div>
+            <ul class="menu-list">
+              <li class="menu-item">
+                <div class="menu-copy">
+                  <span class="menu-name">焼き鳥盛り合わせ</span>
+                  <span class="menu-note">済</span>
+                </div>
+                <div class="menu-meta">
+                  <span class="menu-price">¥1,280</span>
+                </div>
+              </li>
+              <li class="menu-item">
+                <div class="menu-copy">
+                  <span class="menu-name">唐揚げセット</span>
+                  <span class="menu-note">済</span>
+                </div>
+                <div class="menu-meta">
+                  <span class="menu-price">¥980</span>
+                </div>
+              </li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="order-total">
+          <span>合計金額</span>
+          <strong>¥2,260</strong>
+        </div>
+      </article>
+    </section>
+  </main>
+  <script src="order_history.js"></script>
+</body>
+</html>

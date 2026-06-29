@@ -1,0 +1,448 @@
+/*
+  Consolidated staff styles
+  - 共通部分はまとめ、個別スタイルの先頭に元ファイル名をコメントで記載
+  - 元ファイル: admin/menu.css
+  - 元ファイル: admin/product_add.css
+  - 元ファイル: admin/product_delete.css
+  - 元ファイル: admin/product_edit_form.css
+  - 元ファイル: admin/product_edit_review.css
+  - 元ファイル: admin/product_edit_select.css
+  - 元ファイル: parttime/menu.css
+  - 元ファイル: parttime/order_all_count.css
+  - 元ファイル: parttime/order_all_list.css
+  - 元ファイル: parttime/order_all.css
+  - 元ファイル: parttime/staff_call.css
+  - 元ファイル: parttime/qr_make.css
+  - 元ファイル: parttime/table_menu.css
+  - 元ファイル: parttime/tablenumber_change.css
+  - 元ファイル: login.css
+  - 元ファイル: parttime/free_drink_plan.css
+  - 元ファイル: parttime/free_drink_plan.select.css
+
+  ルール:
+  - 個別セクションは "/* --- [path] --- " で区切る　
+  - 共通で使う変数は上部にまとめる
+*/
+
+/* ==========================
+   共通変数 / リセット
+   ========================== */
+:root{
+  --bg:#f2f4f8;
+  --card:#ffffff;
+  --text:#1f2937;
+  --accent:#2563eb;
+  --button:#eff6ff;
+  --border:#cbd5e1;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;padding:0;font-family:Meiryo,"Yu Gothic UI",sans-serif;color:var(--text);background:var(--bg);width:100%}
+body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font:inherit}
+
+main{width:min(100%,420px);margin:0 auto}
+main.center, main.content{display:flex;justify-content:center;align-items:flex-start;padding:20px;min-height:100vh;}
+main.center > .page-card, main.content > .page-card{width:100%;margin:0}
+.page-card{width:100%;max-width:420px;margin:0 auto}
+
+/* ==========================
+   admin/menu.css
+   ========================== */
+/* original: staff/styles/admin/menu.css */
+html,body{height:100%;margin:0;font-family:Meiryo,"Yu Gothic UI",sans-serif;background:#f5f5f5}
+.wrap{display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:360px;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:32px 24px;position:relative}
+.title{font-size:16px;color:#222;text-align:center;margin-bottom:20px}
+.subtitle{font-size:14px;color:#666;text-align:center;margin-top:-4px}
+.gear{position:absolute;right:14px;top:12px;display:inline-flex;align-items:center;justify-content:center;background:transparent;color:#222;border:none;padding:0;margin:0;font-size:20px;line-height:1;width:auto;height:auto;border-radius:0;cursor:pointer}
+.menu-btn{display:block;width:280px;box-sizing:border-box;margin:14px auto;padding:14px 0;background:#eee;border:1px solid #bfbfbf;border-radius:6px;color:#222;cursor:pointer;text-decoration:none;text-align:center;font-size:15px}
+.menu-btn-dark{display:block;width:280px;margin:14px auto;padding:14px 0;background:#555;color:#fff;border:1px solid #444;border-radius:6px;text-align:center;font-size:15px}
+.page-num{position:fixed;right:18px;bottom:10px;color:#999;font-size:12px}
+.spacer{height:24px}
+
+/* モーダルスタイル */
+#confirmModal{display:none}
+#confirmModal[aria-hidden="false"]{display:block}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.15)}
+.modal-dialog{position:fixed;left:50%;top:40%;transform:translate(-50%,-40%);width:320px;max-width:90%;}
+.modal-content{background:#e9eef3;border:3px solid #2f2f2f;padding:20px;border-radius:6px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+.modal-content h2{margin:0 0 18px 0;font-size:18px;color:#222}
+.modal-actions{display:flex;justify-content:space-around}
+.modal-actions button{min-width:100px;padding:8px 12px;border:1px solid #666;background:#fff;border-radius:4px;cursor:pointer}
+#okBtn{background:#fff}
+
+/* focus outline removal */
+.menu-btn:focus, .menu-btn:active,
+.btn:focus, .btn:active,
+.gear:focus, .gear:active,
+button:focus, a:focus {outline: none;box-shadow: none}
+
+/* ==========================
+   admin/product_add.css
+   ========================== */
+/* original: staff/styles/admin/product_add.css */
+.container{max-width:420px;margin:20px auto;padding:18px}
+.card{background:#fff;border:1px solid #ddd;padding:18px;border-radius:4px;box-shadow:none}
+.header-title{color:#3b82f6;font-size:14px;margin-bottom:12px}
+.form-row{margin:14px 0}
+.form-row label{display:block;font-size:16px;margin-bottom:8px}
+.input-text{width:100%;padding:8px;border:1px solid #ccc;border-radius:2px}
+.required{color:#e55353;font-size:12px;margin-left:6px}
+.small-note{font-size:12px;color:#666;margin-top:6px}
+.actions{display:flex;justify-content:space-between;margin-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 18px;border:1px solid #999;background:#eee;border-radius:4px;text-decoration:none;color:#222}
+.btn-primary{background:#eee}
+.tip{display:inline-block;background:#2b6cb0;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;margin-left:8px}
+
+/* product_add modal */
+#confirmAddModal{display:none}
+#confirmAddModal[aria-hidden="false"]{display:block}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.15)}
+.modal-dialog{position:fixed;left:50%;top:40%;transform:translate(-50%,-40%);width:320px;max-width:90%;}
+.modal-content{background:#e9eef3;border:3px solid #2f2f2f;padding:20px;border-radius:6px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+.modal-content h2{margin:0 0 18px 0;font-size:18px;color:#222}
+.modal-actions{display:flex;justify-content:space-around}
+.modal-actions button{min-width:100px;padding:8px 12px;border:1px solid #666;background:#fff;border-radius:4px;cursor:pointer}
+#okAddBtn{background:#fff}
+
+.error-msg{display:block;color:#e55353;font-size:12px;margin-top:4px}
+
+/* focus removal for inputs */
+.btn:focus, .btn:active, button:focus, a:focus, input:focus {outline: none;box-shadow: none}
+
+/* ==========================
+   admin/product_delete.css
+   ========================== */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #edf2f7; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 68px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.16); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 16px; font-size: 20px; font-weight: 700; color: #111827; border-bottom: 1px solid rgba(148, 163, 184, 0.16)}
+.form-row {padding: 18px 24px}
+.search-row {padding-top: 22px}
+.search-field {position: relative}
+.input-text {width: 100%; min-height: 48px; padding: 14px 18px; border-radius: 16px; border: 1px solid #d1d5db; background: #ffffff; font-size: 15px; color: #0f172a; box-sizing: border-box}
+.input-text::placeholder {color: #6b7280}
+.search-button {position: absolute; top: 50%; right: 10px; transform: translateY(-50%); border: none; background: #2563eb; color: #ffffff; width: 44px; height: 44px; border-radius: 14px; cursor: pointer; font-size: 16px}
+.search-button:hover, .search-button:focus {background: #1d4ed8}
+.list-box {max-height: 220px; border: 1px solid #d1d5db; border-radius: 18px; background: #ffffff; padding: 16px; overflow: auto}
+.list-box label {display: block; padding: 12px 0; font-size: 15px; color: #1f2937}
+.list-box label + label {border-top: 1px solid rgba(148, 163, 184, 0.18)}
+.actions {display: grid;grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px; align-items: center; justify-items: stretch}
+.btn, .btn-primary {min-height: 50px; padding: 0 20px; border-radius: 16px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+.error-msg {display: none; color: #dc2626; font-size: 12px; margin-top: 8px}
+
+#confirmDeleteModal {display:none; position:fixed; inset:0;}
+#confirmDeleteModal[aria-hidden="false"] { display:block; }
+.modal-backdrop {position:absolute; inset:0;background:rgba(0,0,0,.5);}
+.modal-dialog {position:relative; width:320px; margin:200px auto;}
+.modal-content {background:#fff; padding:20px;border-radius:12px; text-align:center;}
+.modal-actions {margin-top:15px;display:flex; justify-content:space-around;}
+
+@media (max-width: 460px) {.card {border-radius: 18px} .header-title {font-size: 18px; padding: 20px 18px 14px} .form-row, .actions {padding-left: 18px; padding-right: 18px}}
+
+/* ==========================
+   admin/product_edit_form.css
+   ========================== */
+/* original: staff/styles/admin/product_edit_form.css */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
+.form-row {padding: 18px 24px}
+.form-row:first-of-type {padding-top: 24px}
+.form-row:last-of-type {padding-bottom: 24px}
+.form-row label {display: block; margin-bottom: 10px; font-size: 14px; color: #1f2937}
+.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
+input[type="file"] {width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; box-sizing: border-box}
+.input-text:focus, input[type="file"]:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
+.error-msg {display: block; color: #dc2626; font-size: 12px; margin-top: 8px}
+actions {display: grid;grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px; align-items: center; justify-items: stretch}
+.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+
+#confirmEditModal{display:none}
+#confirmEditModal[aria-hidden="false"]{display:block}
+.modal-backdrop{position:fixed;inset:0;background:rgba(23,33,61,0.24)}
+.modal-dialog{position:fixed;left:50%;top:44%;transform:translate(-50%,-44%);width:88%;max-width:360px}
+.modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
+.modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
+.modal-actions{display:flex;justify-content:center;gap:14px}
+.modal-actions button{min-width:110px;padding:12px 14px;border-radius:12px;border:1px solid #8f99ab;background:#ffffff;cursor:pointer;font-weight:700}
+
+@media (max-width: 460px) {.card{border-radius:18px}.header-title{font-size:18px;padding:20px 18px 14px}.form-row,.actions{padding-left:18px;padding-right:18px}}
+
+/* ==========================
+   admin/product_edit_review.css
+   ========================== */
+/* original: staff/styles/admin/product_edit_review.css */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
+.form-row {padding: 18px 24px}
+.form-row:first-of-type {padding-top: 24px}
+.form-row:last-of-type {padding-bottom: 24px}
+.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
+.input-text:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
+.list-box {background: #f8fafc; border: 1px solid #dbeafe; border-radius: 18px; padding: 18px; min-height: 56px}
+.list-box {font-size: 15px; color: #1f2937}
+.actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px}
+.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+
+button {font: inherit}
+.error-msg {display: none; color: #dc2626; font-size: 12px; margin-top: 8px}
+
+@media (max-width: 460px) {.card {border-radius: 18px}.header-title {font-size: 18px; padding: 20px 18px 14px}.form-row, .actions {padding-left: 18px; padding-right: 18px}}
+
+/* ==========================
+   admin/product_edit_select.css
+   ========================== */
+/* original: staff/styles/admin/product_edit_select.css */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
+.form-row {padding: 18px 24px}
+.form-row:first-of-type {padding-top: 24px}
+.form-row:last-of-type {padding-bottom: 24px}
+.form-row > div[style] {position: relative}
+.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
+.input-text:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
+#searchBtn {position: absolute; right: 6px; top: 4px; padding: 10px 12px; border-radius: 12px; border: none; background: #2563eb; color: #ffffff; cursor: pointer; font-size: 16px; line-height: 1}
+#searchBtn:hover, #searchBtn:focus {background: #1d4ed8}
+.list-box {background: #f8fafc; border: 1px solid #dbeafe; border-radius: 18px; padding: 18px}
+.list-box label {display: flex; align-items: center; gap: 12px; font-size: 15px; color: #1f2937; margin-bottom: 14px}
+.list-box label:last-child {margin-bottom: 0}
+.list-box input[type="radio"] {accent-color: #2563eb; width: 18px; height: 18px}
+.actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px}
+.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+
+button, a {font: inherit}
+
+@media (max-width: 460px) {.card {border-radius: 18px}.header-title {font-size: 18px; padding: 20px 18px 14px}.form-row, .actions {padding-left: 18px; padding-right: 18px}}
+
+/* ==========================
+   parttime/menu.css
+   ========================== */
+/* original: staff/styles/parttime/menu.css */
+:root{--bg:#f2f4f8;--card:#fff;--text:#1e293b;--accent:#2563eb;--border:#cbd5e1}
+body{margin:0;font-family:"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;background:var(--bg);color:var(--text);display:flex;justify-content:center;align-items:center;min-height:100vh;}
+.content{width:100%;display:flex;justify-content:center}
+.page-card{width:100%;max-width:420px;background:var(--card);border-radius:28px;box-shadow:0 22px 40px rgba(15,23,42,.08);padding:24px;display:flex;flex-direction:column;gap:18px;position:relative}
+.button-list{display:flex;flex-direction:column;gap:12px}
+.menu-button{width:100%;padding:16px;border-radius:16px;border:1px solid var(--border);background:#d1d5db;cursor:pointer;transition:.15s}
+.menu-button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08)}
+@media(max-width:420px){.page-card{padding:20px;border-radius:24px}.menu-button{padding:14px;font-size:14px}}
+
+/* ==========================
+   parttime/order_all_count.css
+   ========================== */
+/* original: staff/styles/parttime/order_all_count.css */
+:root{--badge-ok:#fef3c7;--badge-ok-text:#b45309}
+.table-number{font-size:15px;color:#0f172a;font-weight:700}
+.page-card{width:100%;max-width:420px;background:var(--card);border-radius:28px;box-shadow:0 22px 40px rgba(15,23,42,0.08);padding:24px;display:flex;flex-direction:column;gap:24px}
+.selected-items{padding:0}
+.item-label{margin:0 0 16px;color:#64748b;font-size:14px}
+.items-container{display:flex;flex-direction:column;gap:16px}
+.count-item{display:grid;grid-template-columns:1.8fr 1fr auto;align-items:center;gap:12px;padding:18px 16px;border-radius:20px;background:#f8fafc;border:1px solid #d1d5db}
+.count-item-name{font-size:16px;font-weight:700;line-height:1.4;color:#0f172a}
+.count-control{display:flex;align-items:center;gap:12px}
+.count-btn{width:42px;height:42px;border-radius:50%;border:1px solid var(--border);background:#fff;color:var(--text);font-size:20px;font-weight:700;cursor:pointer;transition:transform .15s ease,background-color .15s ease}
+.count-btn:hover{transform:translateY(-1px);background:#eef2ff}
+.count-value{min-width:44px;text-align:center;font-size:18px;font-weight:700}
+.count-limit{font-size:12px;color:#94a3b8;text-align:right}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.menu-btn{width:100%;padding:16px 18px;font-size:16px;text-align:center;border:1px solid var(--border);border-radius:16px;background:#eff6ff;cursor:pointer;color:var(--text);transition:transform .15s ease,box-shadow .15s ease}
+.menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08)}
+.menu-btn.outline{background:#fff;border-color:var(--border)}
+
+@media(max-width:420px){.count-btn{width:42px;height:42px}}
+
+/* ==========================
+   parttime/order_all_list.css
+   ========================== */
+/* original: staff/styles/parttime/order_all_list.css */
+.order-header{display:grid;grid-template-columns:32px 1.7fr .8fr .8fr;gap:12px;font-weight:700;color:#0f172a;padding:8px 0;border-bottom:1px solid #e2e8f0}
+.order-header .col-checkbox{display:block;width:20px;height:20px}
+.order-list{display:flex;flex-direction:column;gap:10px}
+.order-row{display:grid;grid-template-columns:32px 1.7fr .8fr .8fr;gap:12px;align-items:center;padding:14px 12px;border-radius:18px;background:#f8fafc;border:1px solid #d1d5db;cursor:pointer}
+.order-row.completed{background:#f1f5f9;color:#64748b;cursor:default}
+.order-row.completed .order-checkbox{display:none}
+.order-row.completed .checkbox-placeholder{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:6px;background:#c7d2fe;color:#1d4ed8;font-size:12px;font-weight:700}
+.order-row.completed .checkbox-placeholder::before{content:'✓'}
+.order-row input.order-check{width:20px;height:20px;margin:0}
+.order-checkbox{display:flex;align-items:center;justify-content:center;width:20px;height:20px}
+.order-row:hover{background:#eef2ff}
+.order-row.completed:hover{background:#f1f5f9}
+.item-name{font-size:15px;line-height:1.4}
+.item-count,.item-served{font-size:15px;text-align:center}
+.badge{display:inline-flex;align-items:center;justify-content:center;padding:4px 10px;border-radius:999px;background:var(--badge-ok);color:var(--badge-ok-text);font-size:13px;font-weight:700}
+
+@media(max-width:420px){.order-header{grid-template-columns:1.8fr .8fr .8fr}.order-row{grid-template-columns:32px 1.7fr .8fr .8fr}}
+
+/* ==========================
+   parttime/order_all.css
+   ========================== */
+/* original: staff/styles/parttime/order_all.css */
+.order-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.order-card{min-height:160px;padding:16px;border-radius:20px;background:#f8fafc;border:1px solid #d1d5db;display:flex;flex-direction:column;gap:8px;text-align:left;cursor:pointer;border:none;appearance:none;font:inherit;color:inherit}
+.order-label{font-size:16px;font-weight:700;color:#0f172a}
+.order-meta{font-size:14px;color:#475569;line-height:1.5}
+
+@media(max-width:420px){.order-grid{grid-template-columns:1fr}.order-card{min-height:140px}}
+
+/* ==========================
+   parttime/qr_make.css
+   ========================== */
+/* original: staff/styles/parttime/qr_make.css */
+.lead{text-align:center;font-size:16px;margin:0;color:#334155;line-height:1.6}
+.table-input{width:100%;height:54px;border:2px solid #d1d5db;border-radius:16px;padding:0 18px;font-size:17px;text-align:left}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.btn{width:100%;padding:16px 18px;border-radius:16px;font-size:16px;cursor:pointer;border:1px solid var(--border);background:var(--button);color:var(--text);transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08)}
+.btn.outline{background:#fff}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.qr-area{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px;padding:18px;border:1px solid #e2e8f0;border-radius:22px;background:#f8fafc}
+
+@media(max-width:420px){.qr-image{width:220px;height:220px}.modal-content{padding:18px}}
+
+/* ==========================
+   parttime/table_menu.css
+   ========================== */
+/* original: staff/styles/parttime/table_menu.css */
+.page-card{width:100%;max-width:420px;background:var(--card);border-radius:28px;box-shadow:0 20px 40px rgba(15,23,42,0.08);padding:24px;display:flex;flex-direction:column;gap:16px}
+.menu-btn{width:100%;padding:16px 18px;font-size:16px;border:1px solid var(--button-border);background:var(--button);border-radius:16px;cursor:pointer;text-align:center;color:var(--text);transition:transform .15s ease,box-shadow .15s ease}
+.menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08)}
+
+@media(max-width:420px){.page-card{padding:20px;border-radius:24px}}
+
+/* ==========================
+   parttime/tablenumber_change.css
+   ========================== */
+/* original: staff/styles/parttime/tablenumber_change.css */
+.field{display:flex;flex-direction:column;gap:8px;width:100%}
+.label{font-size:15px;color:#475569}
+.value-box,.table-input{width:100%;min-height:58px;border:2px solid #d1d5db;border-radius:16px;padding:14px 16px;font-size:16px;background:#fff;display:flex;align-items:center}
+.value-box{background:#f8fafc;justify-content:flex-start}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(199,210,232,0.6);display:flex;align-items:center;justify-content:center;padding:20px;z-index:10}
+.modal.hidden{display:none}
+.modal-content{width:100%;max-width:360px;padding:32px 24px;border-radius:12px;background:#c7d2e8;border:3px solid #5a6b8a;box-shadow:0 24px 48px rgba(15,23,42,0.12);text-align:center}
+.modal-content p{margin:0 0 28px;font-size:20px;color:#2f2f2f;line-height:1.6;font-weight:500}
+.modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;justify-content:center}
+.modal-actions button{min-width:90px;padding:12px 20px;border-radius:8px;border:2px solid #7a8ba8;background:#c7d2e8;color:#2f2f2f;font-size:16px;font-weight:700;cursor:pointer;transition:background-color .15s ease}
+
+@media(max-width:420px){.actions{grid-template-columns:1fr}.table-input,.value-box{min-height:52px}}
+
+/* ==========================
+   login.css
+   ========================== */
+/* original: staff/styles/login.css */
+:root{--card-w:320px;--accent:#e6eef8;--muted:#777}
+html,body{height:100%;margin:0;font-family: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;background:#f5f5f5}
+.wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:var(--card-w);background:#fff;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.08);padding:26px 28px;box-sizing:border-box}
+.title{font-size:14px;color:var(--muted);text-align:left;margin-bottom:18px}
+.form-row{margin-bottom:18px}
+label{display:block;font-size:18px;color:#222;margin-bottom:8px}
+.input-box{border:2px solid #222;padding:10px 12px;border-radius:2px;height:44px;box-sizing:border-box;font-size:16px;width:100%}
+.required-box{width:100%;text-align:center;margin-top:8px}
+.required-box .required{display:inline-block;border:1px solid #222;padding:6px 24px;color:#c00;background:transparent;font-size:12px}
+.btn{display:block;width:100%;padding:12px 0;margin-top:6px;background:#e9e9e9;border:1px solid #bfbfbf;border-radius:4px;font-size:18px;cursor:pointer}
+.hint{font-size:12px;color:#fff;background:#2f6fbf;padding:8px;border-radius:6px;display:inline-block;margin-top:12px}
+.footer-num{position:fixed;right:14px;bottom:8px;color:#999;font-size:12px}
+.field-error{color:#c00;font-size:13px;margin-top:6px}
+
+@media (max-width:360px){.card{width:92%}}
+
+/* ==========================
+   parttime/soldout.css
+   ========================== */
+.soldout-search-box{display:flex;gap:12px;margin-bottom:16px}
+.soldout-search-input{flex:1;padding:12px 14px;border:1px solid #cbd5e1;border-radius:14px;font-size:15px;color:#0f172a;background:#f8fafc}
+.soldout-search-input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
+.soldout-search-btn{width:48px;height:48px;padding:0;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-size:18px;transition:transform .15s ease}
+.soldout-search-btn:hover{transform:translateY(-1px)}
+.soldout-label{display:block;margin-bottom:12px;font-size:14px;color:#64748b;font-weight:700}
+.soldout-results-box{min-height:120px;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;margin-bottom:16px}
+.soldout-list{display:flex;flex-direction:column;gap:12px}
+.soldout-item{display:flex;align-items:center;gap:12px;padding:12px;background:#fff;border-radius:12px;cursor:pointer;border:1px solid #e2e8f0;transition:background-color .15s ease}
+.soldout-item:hover{background:#eff6ff}
+.soldout-checkbox{width:20px;height:20px;cursor:pointer;flex-shrink:0}
+.soldout-name{font-size:15px;color:#0f172a;flex:1}
+
+/* soldout modal */
+#confirmModal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(15,23,42,0.2);z-index:20}
+#confirmModal.hidden{display:none}
+#confirmModal .modal-content{width:min(360px,100%);margin:auto;padding:32px 24px;border-radius:18px;background:#d4d9e7;border:3px solid #5a6b8a;box-shadow:0 24px 48px rgba(15,23,42,0.12);text-align:center}
+#confirmModal .modal-content p{margin:0 0 28px;font-size:20px;color:#2f2f2f;line-height:1.6;font-weight:500}
+#confirmModal .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;justify-content:center}
+#confirmModal .modal-actions button{min-width:100px;padding:12px 18px;border-radius:10px;border:2px solid #7a8ba8;background:#c7d2e8;color:#2f2f2f;font-size:16px;font-weight:700;cursor:pointer;transition:background-color .15s ease}
+#confirmModal .modal-actions button:hover{background:#b3bed3}
+
+/* ==========================
+   parttime/staff_call.css
+   ========================== */
+/* original: staff/styles/staff_call.css */
+:root{--button-strong:#3b82f6}
+main.content{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:20px;gap:18px}
+.table-list{display:flex;flex-direction:column;gap:14px}
+.table-btn{width:100%;padding:18px 20px;font-size:16px;color:var(--text);background:#dbeafe;border:1px solid #93c5fd;border-radius:18px;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
+.table-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(59,130,246,0.16)}
+.table-btn.hidden{display:none}
+
+.staff-call-page .page-card{width:min(320px,100%);max-width:320px;padding:28px 22px;display:flex;flex-direction:column;gap:20px}
+.staff-call-page .call-title{font-size:18px;font-weight:700;color:#1f2937;text-align:center;padding:16px 14px;border:1px solid #cbd5e1;border-radius:18px;background:#eff6ff}
+.staff-call-page .table-list{display:flex;flex-direction:column;gap:14px}
+.staff-call-page .menu-btn{width:100%}
+
+@media(max-width:420px){.page-card{padding:20px;border-radius:24px}.table-btn{padding:16px 18px;font-size:15px}}
+
+/* ==========================
+   parttime/free_drink_plan.css
+   ========================== */
+/* original: staff/styles/parttime/free_drink_plan/free_drink_plan.css */
+:root{--button:#e2e8f0}
+.page-card{width:100%;max-width:420px;background:var(--card);border-radius:28px;box-shadow:0 22px 40px rgba(15,23,42,0.08);padding:28px;display:flex;flex-direction:column;gap:24px}
+.form-group{display:flex;flex-direction:column;gap:12px}
+.form-label{margin:0;color:#475569;font-size:14px;line-height:1.5}
+.form-input{width:100%;padding:18px 16px;font-size:16px;border:1px solid var(--border);border-radius:18px;background:#f8fafc;color:var(--text);outline:none}
+.form-input:focus{border-color:var(--accent);box-shadow:0 0 0 4px rgba(59,130,246,0.12)}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+@media(max-width:420px){.page-card{padding:20px;border-radius:24px}.form-input{padding:16px 14px}.menu-btn{padding:14px 16px}}
+
+/* ==========================
+   parttime/free_drink_plan.select.css
+   ========================== */
+/* original: staff/styles/parttime/free_drink_plan/free_drink_plan.select.css */
+.form-display{width:100%;padding:18px 16px;font-size:16px;border:1px solid var(--border);border-radius:18px;background:#f8fafc;color:var(--text);min-height:50px;display:flex;align-items:center}
+.plan-options{display:flex;flex-direction:column;gap:12px}
+.option-label{display:flex;align-items:center;gap:12px;padding:16px;border:2px solid var(--border);border-radius:16px;background:#fff;cursor:pointer;transition:border-color .15s ease,background-color .15s ease}
+.option-label:hover{border-color:var(--accent);background:#f0f9ff}
+.option-radio{width:20px;height:20px;margin:0;cursor:pointer;accent-color:var(--accent)}
+.option-name{font-size:15px;font-weight:700;color:var(--text)}
+
+@media(max-width:420px){.page-card{padding:20px;border-radius:24px}.form-display{padding:16px 14px}.option-label{padding:14px}.menu-btn{padding:14px 16px}}
+
+/* End of consolidated file */
