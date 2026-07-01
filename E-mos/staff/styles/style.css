@@ -209,8 +209,12 @@ body{margin:0;font-family:"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;backgrou
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .menu-btn{width:100%;padding:16px 18px;font-size:16px;text-align:center;border:1px solid #cbd5e1;border-radius:16px;background:#f8fafc;cursor:pointer;color:#1f2937;transition:transform .15s ease,box-shadow .15s ease}
 .menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08);background:#e2e8f0}
-.menu-btn.outline{background:#fff;border-color:var(--border)}
-
+.menu-btn.outline{background:#fff;border-color:var(--border)}    .actions .menu-btn{border:1px solid transparent;min-height:52px;border-radius:18px}
+    .actions .menu-btn:not(.outline){background:#2563eb;color:#fff;border-color:#2563eb}
+    .actions .menu-btn.outline{background:#fff;color:#1f2937;border-color:#cbd5e1}
+    .actions .menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08)}
+    .actions .menu-btn:not(.outline):hover{background:#1d4ed8}
+    .actions .menu-btn.outline:hover{background:#f8fafc}
 @media(max-width:420px){.count-btn{width:42px;height:42px}}
 
 /* ==========================
