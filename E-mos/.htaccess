@@ -1,0 +1,5 @@
+RewriteEngine On
+
+# customer/ や staff/ 配下の HTML/JS から php/xxx.php と書いた場合に
+# 実際の PHP ファイルへ転送する
+RewriteRule ^(?:customer|staff)(?:/.*)?/php/([^/]+\.php)$ php/$1 [L,NC,QSA]
