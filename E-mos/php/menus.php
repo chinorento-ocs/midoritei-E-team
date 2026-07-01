@@ -36,4 +36,14 @@ function setPhotoPath($menuId, $photoPath) {
         ':photoPath' => $photoPath
     ]);
 }
+function updateStatus($menuId, $status) {
+    require_once 'connection.php';
+
+    $sql = "UPDATE menus SET status = :status WHERE menuId = :menuId";
+    $stmt = $pdo->prepare($sql);
+
+    $stmt->execute([
+        ':status' => $status
+    ]);
+}
 ?>
