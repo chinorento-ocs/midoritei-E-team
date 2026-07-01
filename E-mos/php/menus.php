@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json; charset=utf-8');
+
 function setMenus($menuId, $menuName, $categoryName, $unitPrice, $taxRate) {
     require_once 'connection.php';
 
@@ -12,6 +14,16 @@ function setMenus($menuId, $menuName, $categoryName, $unitPrice, $taxRate) {
         ':unitPrice' => $unitPrice,
         ':taxRate' => $taxRate,
     ]);
+}
+
+function getMenus() {
+    require_once 'connection.php';
+
+    $stmt = $pdo->prepare("SELECT * FROM menus");
+    $stmt->execute();
+    $menusData = $stmt->fetchAll();
+
+    return $menusData;
 }
 
 function getMenuData($menuId) {
@@ -45,5 +57,16 @@ function updateStatus($menuId, $status) {
     $stmt->execute([
         ':status' => $status
     ]);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    require_once 'connection.php';
+
+    $stmt = $pdo->prepare("SELECT menuId, menuName, categoryName, unitPrice, taxRate, status FROM menus");
+    $stmt->execute();
+    $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    echo json_encode($menus, JSON_UNESCAPED_UNICODE);
+    exit;
 }
 ?>

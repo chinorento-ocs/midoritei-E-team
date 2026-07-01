@@ -1,10 +1,5 @@
 (function(){
-    // モックデータ - サーバーから取得する想定で、ここでは仮のデータを使用
-    const mockProducts = [
-        { id: 1, name: 'かわ', category: 'メニュー', isSoldout: false },
-        { id: 2, name: 'もも', category: 'メニュー', isSoldout: true },
-    ];
-
+    let mockProducts = [];
     let searchResults = [];
     let selectedItems = new Set();
 
@@ -75,10 +70,26 @@
         searchResultsDiv.appendChild(container);
     }
 
+    async function loadProducts() {
+        try {
+            const response = await fetch('../../php/menus.php');
+            if (!response.ok) {
+                throw new Error('商品データの取得に失敗しました');
+            }
+
+            const data = await response.json();
+            mockProducts = Array.isArray(data) ? data : [];
+            searchResults = [...mockProducts];
+            renderResults();
+        } catch (error) {
+            console.error(error);
+            searchResultsDiv.innerHTML = '<p style="padding:16px;color:#999;">商品データを取得できませんでした</p>';
+        }
+    }
+
     // 初期表示 - 全商品を表示
     function initDisplay() {
-        searchResults = mockProducts;
-        renderResults();
+        loadProducts();
     }
 
     // 検索ボタンクリック
