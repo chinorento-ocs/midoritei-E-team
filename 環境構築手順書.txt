@@ -1,0 +1,53 @@
+# 環境構築手順書
+
+この手順書は、Windows 環境でこのシステムをローカル実行するための簡易構築手順です。  
+前提として、Web サーバーは Apache、PHP は XAMPP で動かす構成を想定しています。
+
+## 1. 必要なソフトウェア
+
+以下をインストールしてください。
+
+- XAMPP for Windows
+  - Apache
+  - MySQL
+  - PHP
+  - phpMyAdmin
+
+## 2. XAMPP のインストール
+
+1. XAMPP の公式サイトからインストールファイルをダウンロードします。
+URL https://sourceforge.net/projects/xampp/files/XAMPP%20Windows/8.2.12/xampp-portable-windows-x64-8.2.12-0-VS16.zip/download
+2. 展開後、XAMPP Control Panel を起動します。
+3. Apache と MySQL の「Start」ボタンを押して起動します。
+
+## 3. プロジェクトファイルの配置
+
+1. このプロジェクトフォルダを XAMPP の公開フォルダへ配置します。
+2. 例: C:\xampp\htdocs\midoritei-E-team
+
+## 4. ブラウザで確認する
+
+Apache が起動できていれば、ブラウザで次の URL にアクセスできます。
+
+- http://localhost/midoritei-E-team/
+
+対象のページは、たとえば次のように開けます。
+
+- http://localhost/midoritei-E-team/E-mos/customer/main_menu.html
+- http://localhost/midoritei-E-team/E-mos/staff/login.html
+
+## 5. データベースの準備
+
+このシステムで MySQL を使用する場合は、次の手順でデータベースを作成します。
+
+1. XAMPP Control Panel で MySQL を起動します。
+2. ブラウザで http://localhost/phpmyadmin/ にアクセスします。
+3. 「新規作成」からデータベース名を作成します。
+4. こちらが用意している SQL ファイルをインポートします。
+
+## 6. 変更後の確認ポイント
+
+- Apache が起動していること
+- MySQL が起動していること
+- ブラウザで localhost へアクセスできること
+- PHP / HTML ファイルが htdocs 配下に配置されていること
