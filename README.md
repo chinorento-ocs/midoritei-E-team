@@ -17,247 +17,124 @@ test
 AIを使うときは必ずこのreadmeを参照するようにさせ、ID,命名規則などはAPI仕様書を参考にするようにする。
 
 以下API仕様書
-API 仕様書
-作成者 株式会社 MSC
-Ver. 2.1.0
-作成日 2025 年 12 月 19 日
-更新日 2026 年 2 月 2 日
-1. API 概要
-本 API は、モバイルオーダーシステム（以下、MOS）がレジシステムに対して提供す
-る注文連携インターフェースである。
-レジは本 API を用いて以下を行う。
-• MOS 側からの注文データの取得
-• 注文データごとの会計状況の更新
-2. 共通仕様
-2.1 通信方式
-• プロトコル: HTTP
-• メソッド: POST
-• エンドポイント: /api/orders
-2.2 データ形式
-• リクエスト: JSON
-• レスポンス: JSON
-• 文字コード: UTF-8
-2.3 共通ヘッダ
-項目 値
-Content-Type application/json
-Accept application/json
- 
-3. API 一覧
-No API 名 メソッド パス method 値 概要
-1
-注文取得
-API
-POST
-/api/orde
-rs
-getOrders
-受付中の注文データ（全件／特
-定注文）を取得する
-2 会計状況更 POST /api/orde updateStatus 対象注文の会計状況
-No API 名 メソッド パス method 値 概要
-新 API rs （billStatus）を更新する
- 
-4. 注文取得 API（getOrders）
-4.1 概要
-• レジが MOS に対して注文データを取得するための API。
-4.2 HTTP 仕様
-• メソッド: POST
-• パス: /api/orders
-4.3 リクエスト
-4.3.1 ボディ形式
-顧客 ID を指定することで一意の注文データを特定することができる。
-また、会計状況および取得対象日時から、返却対象となる注文データを絞り込むことがで
-きる。
-顧客 ID が null でない場合は指定された顧客 ID に紐づく 1 件の注文データのみ返却し、
-顧客 ID が null の場合、指定された条件に該当するすべての注文データを返却する。
-会計状況は複数指定可能とし、null が指定された場合はすべての会計状況を対象とする。
-取得対象日時を指定しない場合は null を指定する。
-例 1）
+
+## API 仕様書
+- 作成者: 株式会社 MSC
+- Ver: 2.1.0
+- 作成日: 2025/12/19
+- 更新日: 2026/02/02
+
+### 1. 目的
+この API は、モバイルオーダーシステム（MOS）からレジシステムへ注文情報を連携するためのインターフェースです。
+
+### 2. 共通仕様
+- 通信方式: HTTP
+- メソッド: POST
+- エンドポイント: /api/orders
+- データ形式: JSON
+- 文字コード: UTF-8
+
+#### 共通ヘッダー
+- Content-Type: application/json
+- Accept: application/json
+
+### 3. API 一覧
+| API名 | メソッド | パス | method値 | 概要 |
+| --- | --- | --- | --- | --- |
+| 注文取得 API | POST | /api/orders | getOrders | 受付中の注文データを取得する |
+| 会計状況更新 API | POST | /api/orders | updateStatus | 注文の会計状況を更新する |
+
+### 4. 注文取得 API（getOrders）
+#### 4.1 リクエスト内容
+| 項目 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| method | string | ○ | 固定値: getOrders |
+| customerId | string | - | 指定するとその顧客の注文のみ取得 |
+| billStatus | int | - | 会計状況の絞り込み |
+| fromTime | string | - | 取得開始日時 |
+| toTime | string | - | 取得終了日時 |
+
+#### 4.2 リクエスト例
+```json
 {
- "method": "getOrders",
- "customerId": "0000001",
- "billStatus": 15,
- "fromTime": null,
- "toTime": "2025-11-25T01:00:00"
+  "method": "getOrders",
+  "customerId": "0000001",
+  "billStatus": 15,
+  "fromTime": null,
+  "toTime": "2025-11-25T01:00:00"
 }
-例 2）
-{
- "method": "getOrders",
- "customerId": null,
- “billStatus”: 9,
- "fromTime": "2025-11-24T19:00:00",
- "toTime": "2025-11-25T01:00:00"
-}
-4.3.2 リクエスト項目定義
-項目名 データ型 必須 説明
-method VARCHAR(32) ○ 処理種別。固定値："getOrders"
-customerId CHAR(7) ○ 特定顧客 ID。null の場合は「全注文」が対象。
-billStatus int ○
-会計状況（複合指定可能）。 null の場合は「全状
-態」が対象。
-fromTime CHAR(19) ○
-取得対象の開始日時（ISO8601）。なお、この日時
-のデータを含むものとする。null の場合は取得対
-象日時を指定しない。
-toTime CHAR(19) ○
-取得対象の終了日時（ISO8601）。なお、この日時
-のデータを含むものとする。 null の場合は取得対
-象日時を指定しない。
-4.4 レスポンス
-4.4.1 正常系（HTTP 200）
-リクエストで指定された注文データを返却する。
-例）
+```
+
+#### 4.3 レスポンス例
+```json
 [
- {
- "hash": "0c192fff778a2d4c78b68599c3c4658418359d117e7c903feb46c9ef2112752e",
- "storeId": "AA",
- "entryTime": "2025-11-24T19:12:00",
- "customerId": "0000001",
- "billStatus": 1,
- "items": [
- {
- "orderTime": "2025-11-24T19:12:00",
- "menuName": "瓶ビール",
- "unitPrice": 600,
- "taxRate": 10,
- "orderQty": 2,
- "offerQty": 2,
- "categoryName": "ビール"
- },
- {
- "orderTime": "2025-11-24T19:12:00",
- "menuName": "えだまめ"
- "unitPrice": 300,
- "taxRate": 10,
- "orderQty": 1,
- "offerQty": 1,
- "categoryName": "おつまみ"
- }
- ]
- }
+  {
+    "hash": "0c192fff778a2d4c78b68599c3c4658418359d117e7c903feb46c9ef2112752e",
+    "storeId": "AA",
+    "entryTime": "2025-11-24T19:12:00",
+    "customerId": "0000001",
+    "billStatus": 1,
+    "items": [
+      {
+        "menuName": "瓶ビール",
+        "unitPrice": 600,
+        "taxRate": 10,
+        "orderQty": 2,
+        "offerQty": 2,
+        "categoryName": "ビール"
+      }
+    ]
+  }
 ]
-4.4.2 レスポンス項目定義（配列要素）
-トップレベル要素
-項目名 データ型 必須 説明
-hash VARCHAR(64) ○ 注文データを一意に識別するハッシュ値
-storeId CHAR(2) ○ 店番号
-entryTime CHAR(19) ○ 入店日時（ISO8601）
-customerId CHAR(7) ○ 一意となる顧客 ID
-billStatus int ○
-会計状況（1:受付中, 2:会計済み, 4:未収金, 8:会計
-中）
-items Array ○ 注文行配列
-items 要素
-項目名 データ型 必須 説明
-orderTime CHAR(19) ○ 注文行の注文日時（ISO8601）
-menuName VARCHAR(64) ○ メニュー名
-unitPrice int ○ 単価（税抜）
-項目名 データ型 必須 説明
-taxRate int ○ 税率（例：10）
-orderQty int ○ 注文数量
-offerQty int ○ 提供数量（途中退店等で差が出る場合に使用）
-categoryNa
-me
-VARCHAR(16) ○
-カテゴリ名（例：「ビール」「おつまみ」）
-カテゴリ名を定義しない場合は null
-4.4.3 異常系
-エラーが出た場合、エラーコードとメッセージをレジに返却する。
-エラーコードの詳細は後述に記載。メッセージについては例を参考に MOS 側で定義する
-こと。
-例）
+```
+
+### 5. 会計状況更新 API（updateStatus）
+#### 5.1 リクエスト内容
+| 項目 | 型 | 必須 | 説明 |
+| --- | --- | --- | --- |
+| method | string | ○ | 固定値: updateStatus |
+| customerId | string | ○ | 対象顧客 ID |
+| hash | string | - | 同一性判定用ハッシュ |
+| billStatus | int | ○ | 更新後の会計状況 |
+
+#### 5.2 リクエスト例
+```json
 {
- "errorCode": " INVALID_JSON_FORMAT ",
- "message": " The request format is invalid. "
+  "method": "updateStatus",
+  "customerId": "0000001",
+  "hash": null,
+  "billStatus": 8
 }
-5. 会計状況更新 API（updateStatus）
-5.1 概要
-• MOS は受信した会計状況に基づき、該当注文のステータスを更新する。
-• 必要に応じて注文データのハッシュ値を用いた同一性判定を行う。
-5.2 HTTP 仕様
-• メソッド: POST
-• パス : /api/orders
-5.3 リクエスト
-5.3.1 ボディ形式
-顧客 ID に紐づく会計状況を指定されたステータスに更新する。
-ハッシュ値が null でない場合、会計状況を更新する前に注文データから算出したハッシュ
-値と、リクエストで指定されたハッシュ値を比較し、同一性判定を行う。
-注文データを取得した後に注文データが変わっていなければ、両ハッシュ値は一致し、会
-計状況の更新は成功する。
-一方、注文データに変化が生じた際は、再計算されたハッシュ値がリクエストのハッシュ
-値と不一致となるため、同一性判定エラーとして会計状況の更新は失敗する。
-なお、ハッシュ値が null の場合は同一性判定を行わず、会計状況の更新を実施する。
-例 1）
+```
+
+#### 5.3 レスポンス
+正常時はレスポンスボディを空にします。
+
+### 6. billStatus の意味
+| 値 | 意味 |
+| --- | --- |
+| 1 | 受付中 |
+| 2 | 会計済み |
+| 4 | 未収金 |
+| 8 | 会計中 |
+
+### 7. エラーコード
+- 4xx: リクエスト内容に問題がある場合
+- 5xx: サーバー側でエラーが発生した場合
+- 命名規則: UPPER_SNAKE_CASE
+
+#### 例
+```json
 {
- "method": "updateStatus",
- "customerId": "0000001",
- "hash": null,
- "billStatus": 8
+  "errorCode": "INVALID_JSON_FORMAT",
+  "message": "The request format is invalid."
 }
-例 2）
-{
- "method": "updateStatus",
- "customerId": "0000001",
- "hash": "0c192fff778a2d4c78b68599c3c4658418359d117e7c903feb46c9ef2112752e",
- "billStatus": 2
-}
-5.3.2 リクエスト項目定義
-項目名 データ型 必須 説明
-method VARCHAR(32) ○ 処理種別。固定値："updateStatus"
-customerId CHAR(7) ○ 一意となる顧客 ID
-hash VARCHAR(64) ○
-同一性判定で使用するハッシュ値（同一性判定を
-行わない場合は null）
-billStatus int ○
-更新後の会計状況（1:受付中, 2:会計済み, 4:未収
-金, 8:会計中）
-5.4 レスポンス
-5.4.1 正常系（HTTP 200）
-レスポンスボディは空にする。
-5.4.2 異常系
-エラーが出た場合、エラーコードとメッセージをレジに返却する。
-エラーコードの詳細は後述に記載。メッセージについては例を参考に MOS 側で定義する
-こと。
-例）
-{
- "errorCode": " INVALID_JSON_FORMAT ",
- "message": " The request format is invalid. "
-}
-会計状況（billStatus）値
-値 意味 用途例
-1 受付中 MOS 側の初期状態。注文取得 API 返却前の値。
-2 会計済み MOS 側の最終状態。会計システムの会計処理完了後の値。
-4 未収金
-会計未収の状態。会計済みにならない状態で翌営業日の営業を開始し
-た時点で設定される値。
-8 会計中
-注文取得 API 返却時に設定する値。会計処理開始後から完了前までの
-一時状態。
-6. 性能・非機能要件
-6.1 想定負荷
-• ピーク時：1 店舗あたり同時利用レジ端末 1〜2 台
-• MOS 側へのアクセス数：百件未満／分程度を想定
-6.2 レスポンスタイム（目標）
-• MOS 側の API 応答（＝MOS が API リクエストを受理してから、API レスポンスを送
-信するまで。ネットワーク回線等の通信遅延は含めない。）
-目標：受信後 300 ミリ秒以内
-最大：3 秒以内
-7．エラーコード
-7.1 HTTP ステータスとの関係
-• 4xx：リクエスト起因（入力値不備・権限不足など）
-• 5xx：サーバ／システム起因（内部エラー、外部連携エラーなど）
-7.2 エラーコード命名規則
-• 形式：UPPER_SNAKE_CASE
-• 種別ごとにエラーが想像できる名前にすること
-入力系：INVALID_***
-注文系：ORDER_***
-システム系：SYSTEM_***, SERVICE_***
-7.3 エラーコード一覧
-7.3.1 共通／リクエスト不備系（4xx）
-errorCode HTTP
-想定
-API
-説明
+```
+
+### 8. 補足
+- 主要な開発対象は注文取得と会計状況更新です。
+- 実装時は、JSON のキー名と型を一致させてください。
+
 INVALID_JSON_FORMAT 400 全 API
 JSON としてパースできない／構造が不
 正

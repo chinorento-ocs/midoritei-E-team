@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartConfirmButton = document.querySelector(".cart-drawer__button--primary");
   const cartList = document.querySelector(".cart-drawer__list");
   const cartEmptyText = document.querySelector(".cart-drawer__empty");
+  const cartCountBadge = document.querySelector(".bottom-nav__cart-count");
+  const lastOrderText = document.querySelector("#lastOrderText");
   const orderHistoryKey = "orderHistory";
   const modalBackButton = document.querySelector(".menu-modal__button--secondary");
   const modalConfirmButton = document.querySelector(".menu-modal__button--primary");
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let cartItems = [];
   let currentModalCard = null;
+  const pageOpenedAt = new Date();
 
   function getPartyCount() {
     const stored = Number(localStorage.getItem("partySize") || "1");
@@ -40,6 +43,16 @@ document.addEventListener("DOMContentLoaded", function () {
     return cartItems.reduce(function (sum, item) {
       return sum + Number(item.quantity || 0);
     }, 0);
+  }
+
+  function updateCartCountBadge() {
+    if (!cartCountBadge) {
+      return;
+    }
+
+    const totalQuantity = getCartTotalQuantity();
+    cartCountBadge.textContent = String(totalQuantity);
+    cartCountBadge.style.display = totalQuantity > 0 ? "inline-flex" : "none";
   }
 
   // LocalStorage からカート情報を復元
@@ -61,6 +74,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ページ読み込み時にカートを復元
   loadCartFromStorage();
+  updateCartCountBadge();
+  updateLastOrderDisplay();
+  setInterval(updateLastOrderDisplay, 1000);
 
   function showToast(message) {
     const toast = document.createElement("div");
@@ -161,6 +177,51 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  function formatTimeLabel(date) {
+    if (!date || Number.isNaN(date.getTime())) {
+      return "--:--";
+    }
+
+    return date.toLocaleTimeString("ja-JP", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false
+    });
+  }
+
+  function getLastOrderDeadlineText() {
+    const now = new Date();
+    const deadline = new Date(pageOpenedAt.getTime() + 2 * 60 * 60 * 1000);
+    const remainingMs = deadline.getTime() - now.getTime();
+    const remainingSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
+    const hours = Math.floor(remainingSeconds / 3600);
+    const minutes = Math.floor((remainingSeconds % 3600) / 60);
+    const seconds = remainingSeconds % 60;
+    const timeLabel = formatTimeLabel(deadline);
+
+    if (remainingSeconds <= 0) {
+      return "終了";
+    }
+
+    if (hours > 0) {
+      return `${timeLabel}（あと${hours}時間${minutes}分${seconds}秒）`;
+    }
+
+    if (minutes > 0) {
+      return `${timeLabel}（あと${minutes}分${seconds}秒）`;
+    }
+
+    return `${timeLabel}（あと${seconds}秒）`;
+  }
+
+  function updateLastOrderDisplay() {
+    if (!lastOrderText) {
+      return;
+    }
+
+    lastOrderText.textContent = getLastOrderDeadlineText();
+  }
+
   function saveConfirmedOrder(items) {
     const history = getStoredOrderHistory();
     history.unshift({
@@ -175,6 +236,7 @@ document.addEventListener("DOMContentLoaded", function () {
       })
     });
     sessionStorage.setItem(orderHistoryKey, JSON.stringify(history));
+    updateLastOrderDisplay();
   }
 
   function renderCartItems() {
@@ -274,6 +336,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderCartItems();
     saveCartToStorage();
+    updateCartCountBadge();
   }
 
   function addToCartItem(title, price, quantity) {
@@ -300,6 +363,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     saveCartToStorage();
+    updateCartCountBadge();
   }
 
   function openCartDrawer() {
@@ -379,6 +443,7 @@ document.addEventListener("DOMContentLoaded", function () {
     cartItems = [];
     saveCartToStorage();
     renderCartItems();
+    updateCartCountBadge();
     showToast("注文を確定しました。");
     closeCartDrawer();
   });
