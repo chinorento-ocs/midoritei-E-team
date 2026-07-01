@@ -8,6 +8,13 @@
 </head>
 <body>
   <main class="page-container">
+    <section class="status-bar" aria-label="現在の案内">
+      <div class="status-bar__item">
+        <span class="status-bar__label">ラストオーダー</span>
+        <span class="status-bar__value" id="lastOrderText">未注文</span>
+      </div>
+    </section>
+
     <section class="content-area">
       <aside class="sidebar">
         <nav class="category-nav">
@@ -309,9 +316,12 @@
   </main>
 
   <nav class="bottom-nav">
-    <button>呼び出し・会計</button>
-    <button>注文履歴</button>
-    <button>カート確認</button>
+    <button type="button">呼び出し・会計</button>
+    <button type="button">注文履歴</button>
+    <button type="button" class="bottom-nav__cart-button">
+      <span>カート確認</span>
+      <span class="bottom-nav__cart-count" id="cartCountBadge">0</span>
+    </button>
   </nav>
 
   <div class="cart-drawer hidden" id="cartDrawer">
