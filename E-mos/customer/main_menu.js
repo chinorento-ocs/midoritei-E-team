@@ -1,4 +1,77 @@
 document.addEventListener("DOMContentLoaded", function () {
+
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  // 制限時間 / ラストオーダー設定
+  // - 制限時間は「現在時刻」からの経過で設定（分）
+  // - ラストオーダーは制限時間の30分前に表示されます
+  const DURATION_MINUTES = 90; // 制限時間（分）
+  const LAST_ORDER_BEFORE_END_MINUTES = 30; // ラストオーダーは制限時間の何分前か
+  // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+  // ここで終了時刻（制限時間）を決定（ページ読み込み時点からの相対時間）
+  const END_TIME = new Date();
+  END_TIME.setMinutes(END_TIME.getMinutes() + DURATION_MINUTES);
+
+  const currentTimeEl       = document.getElementById("currentTime");
+  const lastOrderTimeEl     = document.getElementById("lastOrderTime");
+  const lastOrderRemainingEl = document.getElementById("lastOrderRemaining");
+
+  // ラストオーダー時刻を "HH:MM" 形式で表示（制限時間の30分前）
+  if (lastOrderTimeEl) {
+    const lo = new Date(END_TIME.getTime() - LAST_ORDER_BEFORE_END_MINUTES * 60 * 1000);
+    const hh = String(lo.getHours()).padStart(2, "0");
+    const mm = String(lo.getMinutes()).padStart(2, "0");
+    lastOrderTimeEl.textContent = `${hh}:${mm}`;
+  }
+
+  function updateClock() {
+    const now   = new Date();
+
+    // 終了時間までの残り秒（90分から減っていくカウントダウン表示）
+    const remainingSec = Math.max(0, Math.floor((END_TIME.getTime() - now.getTime()) / 1000));
+
+    if (currentTimeEl) {
+      if (remainingSec <= 0) {
+        currentTimeEl.textContent = "0分";
+      } else {
+        const remainingMin = Math.ceil(remainingSec / 60);
+        currentTimeEl.textContent = `${remainingMin}分`;
+      }
+    }
+
+    // ラストオーダー時刻（END_TIME - LAST_ORDER_BEFORE_END_MINUTES）までの残り秒
+    const diffSec = Math.floor((END_TIME.getTime() - LAST_ORDER_BEFORE_END_MINUTES * 60 * 1000 - now.getTime()) / 1000);
+
+    if (lastOrderRemainingEl) {
+      // クラスをリセット
+      lastOrderRemainingEl.className = "time-bar__remaining";
+
+      if (diffSec <= 0) {
+        // 終了済み
+        lastOrderRemainingEl.textContent = "受付終了";
+        lastOrderRemainingEl.classList.add("time-bar__remaining--over");
+      } else {
+        const diffMin = Math.ceil(diffSec / 60);
+        const dispH   = Math.floor(diffMin / 60);
+        const dispM   = diffMin % 60;
+        const text    = dispH > 0 ? `あと ${dispH}時間${dispM}分` : `あと ${dispM}分`;
+        lastOrderRemainingEl.textContent = text;
+
+        if (diffMin <= 10) {
+          lastOrderRemainingEl.classList.add("time-bar__remaining--soon");
+        } else if (diffMin <= 30) {
+          lastOrderRemainingEl.classList.add("time-bar__remaining--warn");
+        } else {
+          lastOrderRemainingEl.classList.add("time-bar__remaining--ok");
+        }
+      }
+    }
+  }
+
+  updateClock();
+  setInterval(updateClock, 1000);
+
+  // ─────────────────────────────────────────
   const categoryButtons = document.querySelectorAll(".category-nav .category");
   const sectionTitle = document.querySelector(".section-title");
   const bottomNavButtons = document.querySelectorAll(".bottom-nav button");
@@ -11,8 +84,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const cartConfirmButton = document.querySelector(".cart-drawer__button--primary");
   const cartList = document.querySelector(".cart-drawer__list");
   const cartEmptyText = document.querySelector(".cart-drawer__empty");
-  const cartCountBadge = document.querySelector(".bottom-nav__cart-count");
-  const lastOrderText = document.querySelector("#lastOrderText");
+  const cartBadge = document.querySelector("#cartBadge");
   const orderHistoryKey = "orderHistory";
   const modalBackButton = document.querySelector(".menu-modal__button--secondary");
   const modalConfirmButton = document.querySelector(".menu-modal__button--primary");
@@ -24,10 +96,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let cartItems = [];
   let currentModalCard = null;
-  const pageOpenedAt = new Date();
 
   function getPartyCount() {
-    const stored = Number(localStorage.getItem("partySize") || "1");
+    const storedValue = sessionStorage.getItem("partySize") || localStorage.getItem("partySize") || "1";
+    const stored = Number(storedValue);
     if (!Number.isFinite(stored) || stored <= 0) {
       return 1;
     }
@@ -39,25 +111,31 @@ document.addEventListener("DOMContentLoaded", function () {
     return partyCount >= 4 ? 20 : Math.min(20, partyCount * 5);
   }
 
+  const maxOrderQuantity = getMaxOrderQuantity();
+
   function getCartTotalQuantity() {
     return cartItems.reduce(function (sum, item) {
       return sum + Number(item.quantity || 0);
     }, 0);
   }
 
-  function updateCartCountBadge() {
-    if (!cartCountBadge) {
+  // バッジ表示（カート確認ボタンの赤丸）を最新の合計個数に更新
+  function updateCartBadge() {
+    if (!cartBadge) {
       return;
     }
-
-    const totalQuantity = getCartTotalQuantity();
-    cartCountBadge.textContent = String(totalQuantity);
-    cartCountBadge.style.display = totalQuantity > 0 ? "inline-flex" : "none";
+    const total = getCartTotalQuantity();
+    if (total > 0) {
+      cartBadge.textContent = total > 99 ? "99+" : String(total);
+      cartBadge.classList.remove("hidden");
+    } else {
+      cartBadge.classList.add("hidden");
+    }
   }
 
-  // LocalStorage からカート情報を復元
+  // SessionStorage からカート情報を復元（タブ/セッション単位で管理）
   function loadCartFromStorage() {
-    const stored = localStorage.getItem("cartItems");
+    const stored = sessionStorage.getItem("cartItems");
     if (stored) {
       try {
         cartItems = JSON.parse(stored);
@@ -67,16 +145,15 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // LocalStorage にカート情報を保存
+  // SessionStorage にカート情報を保存し、バッジ表示も同期させる
   function saveCartToStorage() {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    sessionStorage.setItem("cartItems", JSON.stringify(cartItems));
+    updateCartBadge();
   }
 
   // ページ読み込み時にカートを復元
   loadCartFromStorage();
-  updateCartCountBadge();
-  updateLastOrderDisplay();
-  setInterval(updateLastOrderDisplay, 1000);
+  updateCartBadge();
 
   function showToast(message) {
     const toast = document.createElement("div");
@@ -104,27 +181,25 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function updateQuantityControls() {
-    if (!quantityInput || !decreaseButton || !increaseButton) {
+    if (!quantityInput || !decreaseButton || !increaseButton || !modalConfirmButton) {
       return;
     }
 
-    const maxOrderQuantity = getMaxOrderQuantity();
+    const max = getMaxOrderQuantity();
     const totalQuantity = getCartTotalQuantity();
-    const remainingCapacity = Math.max(0, maxOrderQuantity - totalQuantity);
+    const remaining = Math.max(0, max - totalQuantity);
     const currentValue = Number(quantityInput.value || "0");
-    let safeValue = Math.min(Math.max(0, currentValue), remainingCapacity);
-
-    if (safeValue === 0 && remainingCapacity > 0) {
-      safeValue = 1;
-    }
+    const initialValue = currentValue > 0 ? currentValue : (remaining > 0 ? 1 : 0);
+    const safeValue = Math.min(initialValue, remaining);
 
     quantityInput.value = String(safeValue);
-    quantityInput.max = String(remainingCapacity);
+    quantityInput.max = String(remaining);
 
-    const isAtMax = safeValue >= remainingCapacity;
+    const isAtMax = safeValue >= remaining;
     const isAtMin = safeValue <= 0;
     decreaseButton.disabled = isAtMin;
     increaseButton.disabled = isAtMax;
+    modalConfirmButton.disabled = remaining <= 0 || isAtMin;
   }
 
   function openMenuModal(card) {
@@ -137,9 +212,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const imageLabel = card.querySelector(".menu-card__image")?.textContent.trim() || "商品";
     modalTitle.textContent = title;
     modalImage.textContent = imageLabel;
-    if (quantityInput) {
-      quantityInput.value = "1";
-    }
     updateQuantityControls();
     menuModal.classList.remove("hidden");
   }
@@ -177,51 +249,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  function formatTimeLabel(date) {
-    if (!date || Number.isNaN(date.getTime())) {
-      return "--:--";
-    }
-
-    return date.toLocaleTimeString("ja-JP", {
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false
-    });
-  }
-
-  function getLastOrderDeadlineText() {
-    const now = new Date();
-    const deadline = new Date(pageOpenedAt.getTime() + 2 * 60 * 60 * 1000);
-    const remainingMs = deadline.getTime() - now.getTime();
-    const remainingSeconds = Math.max(0, Math.ceil(remainingMs / 1000));
-    const hours = Math.floor(remainingSeconds / 3600);
-    const minutes = Math.floor((remainingSeconds % 3600) / 60);
-    const seconds = remainingSeconds % 60;
-    const timeLabel = formatTimeLabel(deadline);
-
-    if (remainingSeconds <= 0) {
-      return "終了";
-    }
-
-    if (hours > 0) {
-      return `${timeLabel}（あと${hours}時間${minutes}分${seconds}秒）`;
-    }
-
-    if (minutes > 0) {
-      return `${timeLabel}（あと${minutes}分${seconds}秒）`;
-    }
-
-    return `${timeLabel}（あと${seconds}秒）`;
-  }
-
-  function updateLastOrderDisplay() {
-    if (!lastOrderText) {
-      return;
-    }
-
-    lastOrderText.textContent = getLastOrderDeadlineText();
-  }
-
   function saveConfirmedOrder(items) {
     const history = getStoredOrderHistory();
     history.unshift({
@@ -236,7 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
       })
     });
     sessionStorage.setItem(orderHistoryKey, JSON.stringify(history));
-    updateLastOrderDisplay();
   }
 
   function renderCartItems() {
@@ -324,7 +350,6 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
       const totalQuantity = getCartTotalQuantity();
       const nextTotal = totalQuantity - existing.quantity + quantity;
-      const maxOrderQuantity = getMaxOrderQuantity();
 
       if (nextTotal > maxOrderQuantity) {
         showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
@@ -336,7 +361,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     renderCartItems();
     saveCartToStorage();
-    updateCartCountBadge();
   }
 
   function addToCartItem(title, price, quantity) {
@@ -345,7 +369,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     const totalQuantity = getCartTotalQuantity();
-    const maxOrderQuantity = getMaxOrderQuantity();
 
     if (totalQuantity + quantity > maxOrderQuantity) {
       showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
@@ -363,7 +386,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     saveCartToStorage();
-    updateCartCountBadge();
   }
 
   function openCartDrawer() {
@@ -402,10 +424,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   increaseButton?.addEventListener("click", function () {
     const value = Number(quantityInput.value || "0");
-    const maxOrderQuantity = getMaxOrderQuantity();
-    const totalQuantity = getCartTotalQuantity();
-    const remainingCapacity = Math.max(0, maxOrderQuantity - totalQuantity);
-    if (value < remainingCapacity) {
+    const max = getMaxOrderQuantity();
+    if (value < max) {
       quantityInput.value = String(value + 1);
     }
     updateQuantityControls();
@@ -413,21 +433,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
   modalBackButton?.addEventListener("click", closeMenuModal);
   modalConfirmButton?.addEventListener("click", function () {
-    const maxOrderQuantity = getMaxOrderQuantity();
-    const totalQuantity = getCartTotalQuantity();
-    const remainingCapacity = Math.max(0, maxOrderQuantity - totalQuantity);
-    const count = Math.min(Number(quantityInput.value || "0"), remainingCapacity);
+    const count = Number(quantityInput.value || "0");
     const price = currentModalCard ? Number(currentModalCard.dataset.price || 0) : 0;
+    const max = getMaxOrderQuantity();
+    const totalQuantity = getCartTotalQuantity();
+    const remaining = Math.max(0, max - totalQuantity);
 
-    if (remainingCapacity <= 0 || count <= 0) {
+    if (remaining <= 0) {
       quantityInput.value = "0";
       updateQuantityControls();
-      showToast(`人数に応じて最大${maxOrderQuantity}個までです。`);
+      showToast(`人数に応じて最大${max}個までです。`);
       return;
     }
 
-    addToCartItem(modalTitle.textContent, price, count);
-    showToast(`${modalTitle.textContent}を${count}個カートに追加しました。`);
+    const safeCount = Math.min(Math.max(1, count), remaining);
+
+    if (totalQuantity + safeCount > max) {
+      quantityInput.value = "0";
+      updateQuantityControls();
+      showToast(`人数に応じて最大${max}個までです。`);
+      return;
+    }
+
+    addToCartItem(modalTitle.textContent, price, safeCount);
+    showToast(`${modalTitle.textContent}を${safeCount}個カートに追加しました。`);
     closeMenuModal();
   });
 
@@ -443,7 +472,6 @@ document.addEventListener("DOMContentLoaded", function () {
     cartItems = [];
     saveCartToStorage();
     renderCartItems();
-    updateCartCountBadge();
     showToast("注文を確定しました。");
     closeCartDrawer();
   });

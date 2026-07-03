@@ -4,16 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>みどり亭 - メニュー</title>
+  <link rel="stylesheet" href="common.css" />
   <link rel="stylesheet" href="main_menu.css" />
 </head>
 <body>
   <main class="page-container">
-    <section class="status-bar" aria-label="現在の案内">
-      <div class="status-bar__item">
-        <span class="status-bar__label">ラストオーダー</span>
-        <span class="status-bar__value" id="lastOrderText">未注文</span>
+    <div class="time-bar">
+      <div class="time-bar__current">
+        <span class="time-bar__label">終了時間</span>
+        <span class="time-bar__value" id="currentTime">--:--</span>
       </div>
-    </section>
+      <div class="time-bar__divider"></div>
+      <div class="time-bar__last-order">
+        <span class="time-bar__label">ラストオーダー</span>
+        <span class="time-bar__value" id="lastOrderTime">--:--</span>
+        <span class="time-bar__remaining" id="lastOrderRemaining"></span>
+      </div>
+    </div>
 
     <section class="content-area">
       <aside class="sidebar">
@@ -316,11 +323,13 @@
   </main>
 
   <nav class="bottom-nav">
-    <button type="button">呼び出し・会計</button>
-    <button type="button">注文履歴</button>
-    <button type="button" class="bottom-nav__cart-button">
-      <span>カート確認</span>
-      <span class="bottom-nav__cart-count" id="cartCountBadge">0</span>
+    <button>呼び出し・会計</button>
+    <button>注文履歴</button>
+    <button class="bottom-nav__cart-btn">
+      <span class="bottom-nav__label">
+        カート確認
+        <span class="cart-badge hidden" id="cartBadge">0</span>
+      </span>
     </button>
   </nav>
 
