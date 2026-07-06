@@ -8,7 +8,7 @@
   var cancel = document.getElementById('cancelEditBtn');
   var ok = document.getElementById('okEditBtn');
 
-  // populate
+  var editProductId = sessionStorage.getItem('product_edit_id') || '';
   var after = sessionStorage.getItem('product_edit_after') || sessionStorage.getItem('product_edit_selected') || '';
   if(editName) editName.value = after;
 
@@ -42,7 +42,37 @@
 
   if(submitBtn){ submitBtn.addEventListener('click', function(e){ e.preventDefault(); if(validate()){ showModal(); } }); }
   if(cancel) cancel.addEventListener('click', function(e){ e.preventDefault(); hideModal(); });
-  if(ok) ok.addEventListener('click', function(e){ e.preventDefault(); sessionStorage.removeItem('product_edit_selected'); sessionStorage.removeItem('product_edit_after'); window.location.href='../menu/menu.html'; });
+  if(ok) ok.addEventListener('click', async function(e){
+    e.preventDefault();
+    var payload = new FormData();
+    payload.set('action', 'update');
+    payload.set('product', JSON.stringify({
+      id: editProductId,
+      name: editName ? editName.value.trim() : '',
+      category: editCategory ? editCategory.value.trim() : '',
+      price: editPrice ? editPrice.value.trim() : '',
+      note: ''
+    }));
+
+    try {
+      var response = await fetch('../../../php/menus.php', {
+        method: 'POST',
+        body: payload
+      });
+      var result = await response.json();
+
+      if (response.ok && result.success) {
+        sessionStorage.removeItem('product_edit_selected');
+        sessionStorage.removeItem('product_edit_after');
+        sessionStorage.removeItem('product_edit_id');
+        window.location.href='../menu/menu.html';
+      } else {
+        alert(result.message || '更新に失敗しました。');
+      }
+    } catch (error) {
+      alert('更新に失敗しました。');
+    }
+  });
   if(modal) modal.querySelector('.modal-backdrop').addEventListener('click', hideModal);
   window.addEventListener('pageshow', function(){ hideModal(); });
 

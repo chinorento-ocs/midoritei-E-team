@@ -5,7 +5,6 @@ $dbname = 'sample';
 $user = 'root';
 $password = '';
 
-
 try {
     $pdo = new PDO(
         "mysql:host=$host;dbname=$dbname;charset=utf8mb4",
@@ -16,8 +15,6 @@ try {
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         ]
     );
-
-    echo "接続成功";
 } catch (PDOException $e) {
     die("接続エラー: " . $e->getMessage());
 }
