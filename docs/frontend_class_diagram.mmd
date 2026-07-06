@@ -1,0 +1,125 @@
+%% Frontend class diagram (Mermaid)
+classDiagram
+%% customer modules
+class MainMenu {
+  +getPartyCount()
+  +getMaxOrderQuantity()
+  +getCartTotalQuantity()
+  +updateCartCountBadge()
+  +loadCartFromStorage()
+  +saveCartToStorage()
+  +showToast(message)
+  +updateQuantityControls()
+  +openMenuModal(card)
+  +closeMenuModal()
+  +filterMenuByCategory(category)
+  +formatPrice(amount)
+  +saveConfirmedOrder(items)
+  +renderCartItems()
+  +updateCartItemQuantity(title, quantity)
+  +addToCartItem(title, price, quantity)
+  +openCartDrawer()
+  +closeCartDrawer()
+}
+
+class CallCash {
+  +showToast(message)
+  +openCallModal()
+  +closeCallModal()
+  +openPayModal()
+  +closePayModal()
+}
+
+class OrderHistory {
+  +getStoredOrderHistory()
+  +formatCurrency(amount)
+  +formatOrderTime(value)
+  +renderHistory()
+}
+
+class StartPeople {
+  +updateUI()
+}
+
+%% staff/admin modules
+class AdminMenu {
+  +show()
+  +hide()
+}
+
+class ProductAdd {
+  +show()
+  +hide()
+  +validate()
+}
+
+class ProductDelete {
+  +show()
+  +hide()
+  +validate()
+}
+
+class ProductEditForm {
+  +showModal()
+  +hideModal()
+  +validate()
+}
+
+%% staff/parttime modules
+class ParttimeMenu {
+  +show()
+  +hide()
+}
+
+class OrderModule {
+  +goToOrderScreen()
+}
+
+class Soldout {
+  +performSearch()
+  +renderResults()
+  +initDisplay()
+  +openConfirmModal()
+  +closeConfirmModal()
+}
+
+class QRMake {
+  +buildPayload()
+  +makeQrUrl(data, size)
+  +openConfirmation()
+  +issue()
+}
+
+class TableNumberChange {
+  +openConfirmation()
+  +changeTableNumber()
+}
+
+%% Data model classes (from API spec)
+class Customer {
+  +customerId: string
+  +seatId: string
+  +entryTime: string
+  +headcountAdult: int
+  +headcountYoung: int
+}
+
+class Order {
+  +orderId: string
+  +customerId: string
+  +storeId: string
+  +orderTime: string
+  +status: string
+  +hash: string
+}
+
+%% Associations (簡易的な利用関係)
+MainMenu --> OrderHistory : uses
+MainMenu --> CallCash : interacts
+StartPeople --> MainMenu : entry
+AdminMenu <|-- ProductAdd
+AdminMenu <|-- ProductDelete
+AdminMenu <|-- ProductEditForm
+ParttimeMenu --> OrderModule : navigates
+ParttimeMenu --> Soldout : manages
+QRMake --> TableNumberChange : related
