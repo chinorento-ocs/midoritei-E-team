@@ -19,7 +19,7 @@
     
     gear.addEventListener('click', function(e){ e.preventDefault(); show(); });
     cancel.addEventListener('click', function(e){ e.preventDefault(); hide(); });
-    ok.addEventListener('click', function(e){ e.preventDefault(); window.location.href = '../../login.html'; });
+    ok.addEventListener('click', function(e){ e.preventDefault(); window.location.replace('../../login.html'); });
     modal.querySelector('.modal-backdrop').addEventListener('click', hide);
     document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden')==='false'){ hide(); } });
 })();

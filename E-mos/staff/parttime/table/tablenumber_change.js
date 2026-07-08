@@ -27,6 +27,7 @@
         const value = input.value.trim();
         confirmModal.classList.add('hidden');
         alert(`${current} を ${value} に変更しました。`);
+        window.location.href = '../menu/menu.html';
     }
 
     btnSave.addEventListener('click', openConfirmation);
