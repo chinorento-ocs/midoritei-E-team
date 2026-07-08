@@ -19,16 +19,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($userId === '' || $password === '') {
             http_response_code(400);
-            echo json_encode(['success' => false]);
+            echo json_encode(['success' => false, 'message' => 'ユーザーIDとパスワードを入力してください。']);
             exit;
         }
 
         $userData = getusers($userId, $password);
-        echo json_encode(['success' => !empty($userData)]);
+        echo json_encode([
+            'success' => true,
+            'message' => 'ログイン情報を受け取りました。',
+            'received' => ['userId' => $userId, 'password' => $password, 'matched' => !empty($userData)]
+        ]);
         exit;
     } catch (Exception $e) {
         http_response_code(500);
-        echo json_encode(['success' => false]);
+        echo json_encode(['success' => false, 'message' => '受信に失敗しました。']);
         exit;
     }
 }

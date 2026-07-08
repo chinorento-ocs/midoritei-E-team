@@ -86,18 +86,26 @@ function updateStatus($menuId, $status) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    require_once 'connection.php';
+    try {
+        require_once 'connection.php';
 
-    $stmt = $pdo->prepare("SELECT menuId, menuName, categoryName, unitPrice, taxRate, status FROM menus");
-    $stmt->execute();
-    $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stmt = $pdo->prepare("SELECT menuId, menuName, categoryName, unitPrice, taxRate, status FROM menus ORDER BY menuId ASC");
+        $stmt->execute();
+        $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    echo json_encode($menus, JSON_UNESCAPED_UNICODE);
-    exit;
+        echo json_encode($menus, JSON_UNESCAPED_UNICODE);
+        exit;
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => '商品情報の取得に失敗しました。' . $e->getMessage()]);
+        exit;
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
+        require_once 'connection.php';
+
         $action = trim($_POST['action'] ?? 'create');
         $payload = $_POST['product'] ?? '';
         $productData = [];
@@ -115,16 +123,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $categoryName = trim($productData['category'] ?? ($_POST['category'] ?? ''));
             $unitPrice = trim($productData['price'] ?? ($_POST['price'] ?? ''));
             $menuDescription = trim($productData['note'] ?? ($_POST['note'] ?? ''));
+            $taxRate = isset($productData['taxRate']) ? trim($productData['taxRate']) : '0.1';
+            $product = [
+                'id' => $menuId,
+                'name' => $menuName,
+                'category' => $categoryName,
+                'price' => $unitPrice,
+                'note' => $menuDescription,
+            ];
 
             if ($menuId <= 0 || $menuName === '' || $categoryName === '' || $unitPrice === '') {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'message' => '必須項目を入力してください。']);
+                echo json_encode(['success' => false, 'message' => '必須項目を入力してください。', 'product' => $product]);
                 exit;
             }
 
-            updateMenus($menuId, $menuName, $categoryName, (int)$unitPrice, 10, $menuDescription);
-
-            echo json_encode(['success' => true, 'message' => '商品を更新しました。']);
+            updateMenus($menuId, $menuName, $categoryName, $unitPrice, $taxRate, $menuDescription);
+            echo json_encode(['success' => true, 'message' => '更新しました。', 'product' => $product]);
             exit;
         }
 
@@ -135,15 +150,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $menuIds = array_values(array_filter(array_map('intval', $productIds)));
+            $product = ['ids' => $menuIds];
             if (empty($menuIds)) {
                 http_response_code(400);
-                echo json_encode(['success' => false, 'message' => '削除対象を選択してください。']);
+                echo json_encode(['success' => false, 'message' => '削除対象を選択してください。', 'product' => $product]);
                 exit;
             }
 
             deleteMenus($menuIds);
-
-            echo json_encode(['success' => true, 'message' => '商品を削除しました。']);
+            echo json_encode(['success' => true, 'message' => '削除しました。', 'product' => $product]);
             exit;
         }
 
@@ -151,16 +166,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $categoryName = trim($productData['category'] ?? ($_POST['category'] ?? ''));
         $unitPrice = trim($productData['price'] ?? ($_POST['price'] ?? ''));
         $menuDescription = trim($productData['note'] ?? ($_POST['note'] ?? ''));
+        $taxRate = isset($productData['taxRate']) ? trim($productData['taxRate']) : '0.1';
+        $product = [
+            'name' => $menuName,
+            'category' => $categoryName,
+            'price' => $unitPrice,
+            'note' => $menuDescription,
+        ];
 
         if ($menuName === '' || $categoryName === '' || $unitPrice === '') {
             http_response_code(400);
-            echo json_encode(['success' => false, 'message' => '必須項目を入力してください。']);
+            echo json_encode(['success' => false, 'message' => '必須項目を入力してください。', 'product' => $product]);
             exit;
         }
 
-        setMenus($menuName, $categoryName, (int)$unitPrice, 10, $menuDescription);
-
-        echo json_encode(['success' => true, 'message' => '商品を登録しました。']);
+        setMenus($menuName, $categoryName, $unitPrice, $taxRate, $menuDescription);
+        echo json_encode(['success' => true, 'message' => '登録しました。', 'product' => $product]);
         exit;
     } catch (Exception $e) {
         http_response_code(500);

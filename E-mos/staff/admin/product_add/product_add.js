@@ -66,9 +66,11 @@
 
       if (response.ok && result.success) {
         window.location.href = '../menu/menu.html';
+      } else {
+        alert(result.message || '登録に失敗しました。');
       }
     } catch (error) {
-      window.location.href = '../menu/menu.html';
+      alert('登録に失敗しました。');
     }
   });
   modal.querySelector('.modal-backdrop').addEventListener('click', hide);

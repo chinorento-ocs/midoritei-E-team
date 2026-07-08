@@ -16,5 +16,5 @@ try {
         ]
     );
 } catch (PDOException $e) {
-    die("接続エラー: " . $e->getMessage());
+    throw new PDOException($e->getMessage(), (int)$e->getCode());
 }

@@ -4,11 +4,19 @@
   var toEdit = document.getElementById('toEdit');
   var back = document.getElementById('backToSelect');
 
-  // load selection
   var sel = sessionStorage.getItem('product_edit_selected');
+  var product = null;
+  try {
+    product = JSON.parse(sessionStorage.getItem('product_edit_product') || 'null');
+  } catch (error) {
+    product = null;
+  }
+
   if(!sel){ window.location.href = 'product_edit_select.html'; }
-  if(beforeBox) beforeBox.textContent = sel || '--';
-  if(afterInput) afterInput.value = sel || '';
+
+  var displayName = product && product.menuName ? product.menuName : (sel || '--');
+  if(beforeBox) beforeBox.textContent = displayName || '--';
+  if(afterInput) afterInput.value = displayName || '';
 
   var afterError = document.getElementById('afterError');
 
