@@ -72,7 +72,7 @@
 
     async function loadProducts() {
         try {
-            const response = await fetch('../../php/menus.php');
+            const response = await fetch('../../../php/menus.php');
             if (!response.ok) {
                 throw new Error('商品データの取得に失敗しました');
             }
