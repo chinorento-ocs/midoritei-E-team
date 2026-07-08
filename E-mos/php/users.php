@@ -1,5 +1,7 @@
 <?php
-function getusers($userId,$password) {
+header('Content-Type: application/json; charset=utf-8');
+
+function getusers($userId, $password) {
     require_once 'connection.php';
 
     $stmt = $pdo->prepare("SELECT * FROM users WHERE userId = :userId AND password = :password");
@@ -7,8 +9,27 @@ function getusers($userId,$password) {
         ':userId' => $userId,
         ':password' => $password
     ]);
-    $userData = $stmt->fetchAll();
+    return $stmt->fetchAll();
+}
 
-    return $userData;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $userId = trim($_POST['userId'] ?? '');
+        $password = trim($_POST['password'] ?? '');
+
+        if ($userId === '' || $password === '') {
+            http_response_code(400);
+            echo json_encode(['success' => false]);
+            exit;
+        }
+
+        $userData = getusers($userId, $password);
+        echo json_encode(['success' => !empty($userData)]);
+        exit;
+    } catch (Exception $e) {
+        http_response_code(500);
+        echo json_encode(['success' => false]);
+        exit;
+    }
 }
 ?>

@@ -33,10 +33,44 @@
     
     return !hasError;
   }
+
+  function buildProductPayload(){
+    var formData = new FormData(form);
+    var product = {
+      name: (formData.get('name') || '').toString().trim(),
+      category: (formData.get('category') || '').toString().trim(),
+      price: (formData.get('price') || '').toString().trim(),
+      note: (formData.get('note') || '').toString().trim(),
+      photo: (formData.get('photo') || '').toString().trim()
+    };
+
+    formData.set('product', JSON.stringify(product));
+    return formData;
+  }
   
   form.addEventListener('submit', function(e){ e.preventDefault(); if(validate()){ show(); } });
   cancel.addEventListener('click', function(e){ e.preventDefault(); hide(); });
-  ok.addEventListener('click', function(e){ e.preventDefault(); modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; window.location.href = '../menu/menu.html'; });
+  ok.addEventListener('click', async function(e){
+    e.preventDefault();
+    modal.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+
+    var payload = buildProductPayload();
+
+    try {
+      var response = await fetch(form.action, {
+        method: form.method,
+        body: payload
+      });
+      var result = await response.json();
+
+      if (response.ok && result.success) {
+        window.location.href = '../menu/menu.html';
+      }
+    } catch (error) {
+      window.location.href = '../menu/menu.html';
+    }
+  });
   modal.querySelector('.modal-backdrop').addEventListener('click', hide);
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.getAttribute('aria-hidden')==='false'){ hide(); } });
 })();

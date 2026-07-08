@@ -6,6 +6,8 @@
 
     const params = new URLSearchParams(window.location.search);
     const table = params.get('table');
+    const orderIds = params.getAll('orderId');
+    const menuIds = params.getAll('menuId');
     const items = params.getAll('item');
     const orderCounts = params.getAll('orderCount');
     const servedCounts = params.getAll('servedCount');
@@ -17,16 +19,20 @@
     const selectedItems = items.map((item, index) => {
         const orderCount = parseInt(orderCounts[index] || '1', 10) || 1;
         const servedCount = parseInt(servedCounts[index] || '0', 10) || 0;
-        return { item, orderCount, servedCount };
+        const orderId = orderIds[index];
+        const menuId = menuIds[index];
+        return { item, orderCount, servedCount, orderId, menuId };
     });
 
     if(selectedItems.length === 0){
         itemsContainer.innerHTML = '<p>選択された商品がありません。</p>';
     } else {
-        selectedItems.forEach(({ item, orderCount, servedCount }) => {
+        selectedItems.forEach(({ item, orderCount, servedCount, orderId, menuId }, index) => {
             const row = document.createElement('div');
             row.className = 'count-item';
-            row.dataset.item = item;
+            row.dataset.index = String(index);
+            row.dataset.orderId = orderId;
+            row.dataset.menuId = menuId;
             row.dataset.orderCount = orderCount;
             row.dataset.servedCount = servedCount;
             row.innerHTML = `
@@ -62,8 +68,41 @@
         window.history.back();
     });
 
-    btnConfirm.addEventListener('click', ()=>{
-        alert('配膳数を確定しました。');
-        window.location.href = '../menu/menu.html';
+    btnConfirm.addEventListener('click', async ()=>{
+        // 配膳数を確定して、全件DBに記録
+        try {
+            const rows = document.querySelectorAll('.count-item');
+            let allSuccess = true;
+
+            for (const row of rows) {
+                const orderId = row.dataset.orderId;
+                const menuId = row.dataset.menuId;
+                const servedQty = parseInt(row.querySelector('.count-value').textContent, 10) || 0;
+
+                const response = await fetch('../../php/orders.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `action=updateServed&orderId=${encodeURIComponent(orderId)}&menuId=${encodeURIComponent(menuId)}&servedQty=${encodeURIComponent(servedQty)}`
+                });
+
+                const result = await response.json();
+                if (!result.success) {
+                    allSuccess = false;
+                    console.error('配膳数更新失敗:', result.error);
+                }
+            }
+
+            if (allSuccess) {
+                alert('配膳数を確定しました。');
+                window.location.href = '../menu/menu.html';
+            } else {
+                alert('一部の配膳数更新に失敗しました。');
+            }
+        } catch (error) {
+            console.error('配膳数更新エラー:', error);
+            alert('エラーが発生しました。');
+        }
     });
 })();

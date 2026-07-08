@@ -6,6 +6,8 @@
     const btnConfirm = document.getElementById('btnConfirm');
 
     const table = params.get('table');
+    const orderIds = params.getAll('orderId');
+    const menuIds = params.getAll('menuId');
     const items = params.getAll('item');
     const orderCounts = params.getAll('orderCount');
     const servedCounts = params.getAll('servedCount');
@@ -15,6 +17,8 @@
     }
 
     const selected = items.map((item, index) => ({
+        orderId: orderIds[index],
+        menuId: menuIds[index],
         item,
         orderCount: Math.max(parseInt(orderCounts[index] || '1', 10) || 1, 1),
         servedCount: Math.min(Math.max(parseInt(servedCounts[index] || '0', 10) || 0, 0), Math.max(parseInt(orderCounts[index] || '1', 10) || 1, 1))
@@ -26,6 +30,8 @@
         const row = document.createElement('div');
         row.className = 'count-item';
         row.dataset.index = String(index);
+        row.dataset.orderId = entry.orderId;
+        row.dataset.menuId = entry.menuId;
 
         const name = document.createElement('div');
         name.className = 'count-item-name';
@@ -42,7 +48,6 @@
             if(state[index].servedCount > 0){
                 state[index].servedCount -= 1;
                 value.textContent = state[index].servedCount;
-                info.textContent = `注文数 ${state[index].orderCount} / 配膳数 ${state[index].servedCount}`;
             }
         });
 
@@ -58,7 +63,6 @@
             if(state[index].servedCount < state[index].orderCount){
                 state[index].servedCount += 1;
                 value.textContent = state[index].servedCount;
-                info.textContent = `注文数 ${state[index].orderCount} / 配膳数 ${state[index].servedCount}`;
             }
         });
 
@@ -95,9 +99,47 @@
         window.location.href = url;
     });
 
-    btnConfirm?.addEventListener('click', ()=>{
+    btnConfirm?.addEventListener('click', async ()=>{
         if(state.length === 0) return;
-        let url = 'order_all_list.html';
+
+        try {
+            let allSuccess = true;
+
+            for (let i = 0; i < state.length; i++) {
+                const { orderId, menuId, servedCount } = state[i];
+
+                const response = await fetch('../../php/orders.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `action=updateServed&orderId=${encodeURIComponent(orderId)}&menuId=${encodeURIComponent(menuId)}&servedQty=${encodeURIComponent(servedCount)}`
+                });
+
+                const result = await response.json();
+                if (!result.success) {
+                    allSuccess = false;
+                    console.error('配膳数更新失敗:', result.error);
+                }
+            }
+
+            if (allSuccess) {
+                let url = 'order_all_list.html';
+                const query = new URLSearchParams();
+                if(table){
+                    query.append('table', table);
+                }
+                if(query.toString()) url += `?${query.toString()}`;
+                window.location.href = url;
+            } else {
+                alert('一部の配膳数更新に失敗しました。');
+            }
+        } catch (error) {
+            console.error('配膳数更新エラー:', error);
+            alert('エラーが発生しました。');
+        }
+    });
+})();
         const query = new URLSearchParams();
         state.forEach(({ item, orderCount, servedCount }) => {
             query.append('item', item);
