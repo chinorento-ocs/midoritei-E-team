@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const totalQuantity = getCartTotalQuantity();
     const remaining = Math.max(0, max - totalQuantity);
     const currentValue = Number(quantityInput.value || "0");
-    const initialValue = currentValue > 0 ? currentValue : (remaining > 0 ? 1 : 0);
+    const initialValue = currentValue > 0 ? currentValue : 0;
     const safeValue = Math.min(initialValue, remaining);
 
     quantityInput.value = String(safeValue);
@@ -212,6 +212,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const imageLabel = card.querySelector(".menu-card__image")?.textContent.trim() || "商品";
     modalTitle.textContent = title;
     modalImage.textContent = imageLabel;
+    if (quantityInput) {
+      quantityInput.value = "0";
+    }
     updateQuantityControls();
     menuModal.classList.remove("hidden");
   }
@@ -220,6 +223,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!menuModal) {
       return;
     }
+    if (quantityInput) {
+      quantityInput.value = "0";
+    }
+    updateQuantityControls();
     menuModal.classList.add("hidden");
   }
 
