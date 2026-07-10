@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for order_caccel_count.js');
     const btnBack = document.getElementById('btnBack');
     const btnConfirm = document.getElementById('btnConfirm');
     const tableNumber = document.querySelector('.table-number');

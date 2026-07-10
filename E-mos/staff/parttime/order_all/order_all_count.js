@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for order_all_count.js');
     const params = new URLSearchParams(window.location.search);
     const tableNumber = document.querySelector('.table-number');
     const itemsContainer = document.getElementById('itemsContainer');

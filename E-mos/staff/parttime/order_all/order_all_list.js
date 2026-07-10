@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for order_all_list.js');
     const btnBack = document.getElementById('btnBack');
     const btnNext = document.getElementById('btnNext');
     const tableNumber = document.querySelector('.table-number');

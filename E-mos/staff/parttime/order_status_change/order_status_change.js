@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for order_status_change.js');
     const btnBack = document.getElementById('btnBack');
     const btnConfirm = document.getElementById('btnConfirm');
     const inputTable = document.getElementById('tableInput');

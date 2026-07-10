@@ -1,4 +1,5 @@
 (function() {
+    console.warn('PHP endpoints disabled for order.js');
     const btnBack = document.getElementById('btnBack');
     const btnConfirm = document.getElementById('btnConfirm');
     const tableNumberInput = document.getElementById('tableNumber');

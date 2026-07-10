@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for soldout.js');
     let mockProducts = [];
     let searchResults = [];
     let selectedItems = new Set();

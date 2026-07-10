@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for staff_call.js');
     const tableList = document.querySelector('.table-list');
     const btnBack = document.getElementById('btnBackMenu');
     let pollingInterval = null;
