@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for free_drink_plan.select.js');
     const params = new URLSearchParams(window.location.search);
     const table = params.get('table') || '';
     const tableDisplay = document.getElementById('tableDisplay');

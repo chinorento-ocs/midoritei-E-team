@@ -1,4 +1,5 @@
 (function(){
+    console.warn('PHP endpoints disabled for free_drink_plan.js');
     const btnBack = document.getElementById('btnBack');
     const btnConfirm = document.getElementById('btnConfirm');
     const inputTable = document.getElementById('tableNumberInput');
