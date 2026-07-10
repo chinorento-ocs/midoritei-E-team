@@ -1,5 +1,4 @@
 (function(){
-    console.warn('PHP endpoints disabled for soldout.js');
     let mockProducts = [];
     let searchResults = [];
     let selectedItems = new Set();
@@ -71,21 +70,13 @@
         searchResultsDiv.appendChild(container);
     }
 
-    async function loadProducts() {
-        try {
-            const response = await fetch('../../../php/menus.php');
-            if (!response.ok) {
-                throw new Error('商品データの取得に失敗しました');
-            }
-
-            const data = await response.json();
-            mockProducts = Array.isArray(data) ? data : [];
-            searchResults = [...mockProducts];
-            renderResults();
-        } catch (error) {
-            console.error(error);
-            searchResultsDiv.innerHTML = '<p style="padding:16px;color:#999;">商品データを取得できませんでした</p>';
-        }
+    function loadProducts() {
+        mockProducts = [
+            { id: '1', name: 'かわ' },
+            { id: '2', name: 'もも' }
+        ];
+        searchResults = [...mockProducts];
+        renderResults();
     }
 
     // 初期表示 - 全商品を表示
@@ -120,10 +111,6 @@
 
     // 変更ボタン - モーダル表示
     btnChange.addEventListener('click', function() {
-        if (selectedItems.size === 0) {
-            alert('変更する商品を選択してください');
-            return;
-        }
         openConfirmModal();
     });
 
@@ -141,11 +128,6 @@
 
     // 確認ボタン
     btnConfirm.addEventListener('click', function() {
-        // 実際の処理はサーバーに送信
-        const selectedIds = Array.from(selectedItems);
-        console.log('売り切れを変更:', selectedIds);
-        
-        // 変更完了後、メニューに戻る
         window.location.href = '../menu/menu.html';
     });
 
