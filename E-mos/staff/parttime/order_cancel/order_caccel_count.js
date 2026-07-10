@@ -64,40 +64,11 @@
     });
 
     btnConfirm.addEventListener('click', async ()=>{
-        // キャンセル数を確定して、全件DBに記録
-        try {
-            const rows = document.querySelectorAll('.count-item');
-            let allSuccess = true;
-
-            for (const row of rows) {
-                const orderId = row.dataset.orderId;
-                const menuId = row.dataset.menuId;
-                const cancelQty = parseInt(row.querySelector('.count-value').textContent, 10) || 1;
-
-                const response = await fetch('../../php/orders.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `action=cancelItem&orderId=${encodeURIComponent(orderId)}&menuId=${encodeURIComponent(menuId)}&cancelQty=${encodeURIComponent(cancelQty)}`
-                });
-
-                const result = await response.json();
-                if (!result.success) {
-                    allSuccess = false;
-                    console.error('キャンセル失敗:', result.error);
-                }
-            }
-
-            if (allSuccess) {
-                alert('キャンセル数を確定しました。');
-                window.location.href = '../menu/menu.html';
-            } else {
-                alert('一部のキャンセル処理に失敗しました。');
-            }
-        } catch (error) {
-            console.error('キャンセル処理エラー:', error);
-            alert('エラーが発生しました。');
-        }
+        // サーバーは無効なので、ここではサンプル成功として扱います
+        const rows = document.querySelectorAll('.count-item');
+        if (rows.length === 0) return;
+        console.warn('PHP endpoints disabled: cancelItem skipped');
+        alert('キャンセル数を（サンプルで）確定しました。');
+        window.location.href = '../menu/menu.html';
     });
 })();

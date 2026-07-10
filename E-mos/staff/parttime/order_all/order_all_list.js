@@ -12,91 +12,60 @@
         tableNumber.textContent = `卓番：${table}`;
     }
 
-    // テーブル番号から顧客IDを取得し、その顧客の注文を取得
+    // サーバーが無効なため、サンプル（ダミー）データで表示します
     async function loadOrders() {
-        try {
-            // Step 1: 卓番から顧客IDを取得
-            const customerResponse = await fetch('../../php/orders.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `action=getCustomerIdBySeat&seatId=${encodeURIComponent(table)}`
-            });
+        // サンプルデータ（実運用ではAPIから取得）
+        const ordersResult = {
+            success: true,
+            data: [
+                { orderId: 'A1', menuId: 'm1', menuName: 'フライドポテト', orderQty: 2, servedQty: 2 },
+                { orderId: 'A1', menuId: 'm2', menuName: 'ポテトサラダ', orderQty: 4, servedQty: 1 },
+                { orderId: 'A2', menuId: 'm3', menuName: 'キャベツの塩だれ', orderQty: 3, servedQty: 0 },
+                { orderId: 'A2', menuId: 'm4', menuName: 'だし巻き', orderQty: 2, servedQty: 0 }
+            ]
+        };
 
-            const customerResult = await customerResponse.json();
-            if (!customerResult.success) {
-                orderList.innerHTML = '<p>顧客情報が見つかりませんでした</p>';
-                return;
-            }
+        orderList.innerHTML = '';
+        const groupedByOrderId = {};
+        ordersResult.data.forEach(item => {
+            const orderId = item.orderId;
+            if (!groupedByOrderId[orderId]) groupedByOrderId[orderId] = [];
+            groupedByOrderId[orderId].push(item);
+        });
 
-            const customerId = customerResult.customerId;
+        Object.keys(groupedByOrderId).forEach(orderId => {
+            groupedByOrderId[orderId].forEach(item => {
+                const orderCount = item.orderQty || 1;
+                const servedCount = item.servedQty || 0;
+                const isCompleted = servedCount >= orderCount;
 
-            // Step 2: 顧客IDから注文を取得
-            const ordersResponse = await fetch('../../php/orders.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `action=getOrdersByCustomer&customerId=${encodeURIComponent(customerId)}`
-            });
+                const row = document.createElement('div');
+                row.className = 'order-row';
+                if (isCompleted) row.classList.add('completed');
+                row.dataset.item = item.menuName;
+                row.dataset.orderId = orderId;
+                row.dataset.menuId = item.menuId;
+                row.dataset.orderCount = orderCount;
+                row.dataset.servedCount = servedCount;
 
-            const ordersResult = await ordersResponse.json();
-            if (!ordersResult.success || ordersResult.data.length === 0) {
-                orderList.innerHTML = '<p>注文が見つかりませんでした</p>';
-                return;
-            }
-
-            // Step 3: DBから取得した注文をHTMLに反映
-            orderList.innerHTML = '';
-            const groupedByOrderId = {};
-            ordersResult.data.forEach(item => {
-                const orderId = item.orderId;
-                if (!groupedByOrderId[orderId]) {
-                    groupedByOrderId[orderId] = [];
+                if (isCompleted) {
+                    row.innerHTML = `
+                        <span class="checkbox-placeholder"></span>
+                        <span class="item-name">${item.menuName}</span>
+                        <span class="item-count">${orderCount}</span>
+                        <span class="item-served">${servedCount}</span>
+                    `;
+                } else {
+                    row.innerHTML = `
+                        <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
+                        <span class="item-name">${item.menuName}</span>
+                        <span class="item-count">${orderCount}</span>
+                        <span class="item-served">${servedCount}</span>
+                    `;
                 }
-                groupedByOrderId[orderId].push(item);
+                orderList.appendChild(row);
             });
-
-            Object.keys(groupedByOrderId).forEach(orderId => {
-                groupedByOrderId[orderId].forEach(item => {
-                    const orderCount = item.orderQty || 1;
-                    const servedCount = item.servedQty || 0;
-                    const isCompleted = servedCount >= orderCount;
-                    
-                    const row = document.createElement('div');
-                    row.className = 'order-row';
-                    if (isCompleted) {
-                        row.classList.add('completed');
-                    }
-                    row.dataset.item = item.menuName;
-                    row.dataset.orderId = orderId;
-                    row.dataset.menuId = item.menuId;
-                    row.dataset.orderCount = orderCount;
-                    row.dataset.servedCount = servedCount;
-                    
-                    if (isCompleted) {
-                        row.innerHTML = `
-                            <span class="checkbox-placeholder"></span>
-                            <span class="item-name">${item.menuName}</span>
-                            <span class="item-count">${orderCount}</span>
-                            <span class="item-served">${servedCount}</span>
-                        `;
-                    } else {
-                        row.innerHTML = `
-                            <label class="order-checkbox"><input type="checkbox" class="order-check"></label>
-                            <span class="item-name">${item.menuName}</span>
-                            <span class="item-count">${orderCount}</span>
-                            <span class="item-served">${servedCount}</span>
-                        `;
-                    }
-                    orderList.appendChild(row);
-                });
-            });
-        } catch (error) {
-            console.error('注文情報の取得に失敗しました:', error);
-            orderList.innerHTML = '<p>エラーが発生しました</p>';
-        }
+        });
     }
 
     btnBack.addEventListener('click', ()=>{

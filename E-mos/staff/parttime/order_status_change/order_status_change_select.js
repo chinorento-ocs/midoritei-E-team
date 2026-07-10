@@ -12,81 +12,48 @@
         tableNumber.textContent = `卓番：${table}`;
     }
 
-    // テーブル番号から顧客IDを取得し、その顧客の注文を取得
+    // サーバーは無効のため、サンプル（例）データで表示します
     async function loadOrders() {
-        try {
-            // Step 1: 卓番から顧客IDを取得
-            const customerResponse = await fetch('../../php/orders.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `action=getCustomerIdBySeat&seatId=${encodeURIComponent(table)}`
+        const sample = [
+            { orderId: 'S1', menuId: 'm1', menuName: 'フライドポテト', orderQty: 1, servedQty: 1 },
+            { orderId: 'S1', menuId: 'm2', menuName: 'ポテトサラダ', orderQty: 2, servedQty: 0 },
+            { orderId: 'S2', menuId: 'm3', menuName: '鶏の唐揚げ', orderQty: 1, servedQty: 1 },
+            { orderId: 'S2', menuId: 'm4', menuName: 'だし巻き', orderQty: 1, servedQty: 0 }
+        ];
+
+        orderList.innerHTML = '';
+        const groupedByOrderId = {};
+        sample.forEach(item => {
+            const orderId = item.orderId;
+            if (!groupedByOrderId[orderId]) groupedByOrderId[orderId] = [];
+            groupedByOrderId[orderId].push(item);
+        });
+
+        Object.keys(groupedByOrderId).forEach(orderId => {
+            groupedByOrderId[orderId].forEach(item => {
+                const servedCount = item.servedQty || 0;
+                const orderCount = item.orderQty || 1;
+                const isDisabled = servedCount === 0 ? true : false;
+
+                const row = document.createElement('div');
+                row.className = 'order-row';
+                row.dataset.item = item.menuName;
+                row.dataset.orderId = orderId;
+                row.dataset.menuId = item.menuId;
+                row.dataset.orderCount = orderCount;
+                row.dataset.servedCount = servedCount;
+
+                row.innerHTML = `
+                    <label class="order-checkbox">
+                        <input type="checkbox" class="order-check" ${isDisabled ? 'disabled' : ''}>
+                    </label>
+                    <span class="item-name">${item.menuName}</span>
+                    <span class="item-count">${orderCount}</span>
+                    <span class="item-served">${servedCount}</span>
+                `;
+                orderList.appendChild(row);
             });
-
-            const customerResult = await customerResponse.json();
-            if (!customerResult.success) {
-                orderList.innerHTML = '<p>顧客情報が見つかりませんでした</p>';
-                return;
-            }
-
-            const customerId = customerResult.customerId;
-
-            // Step 2: 顧客IDから注文を取得
-            const ordersResponse = await fetch('../../php/orders.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `action=getOrdersByCustomer&customerId=${encodeURIComponent(customerId)}`
-            });
-
-            const ordersResult = await ordersResponse.json();
-            if (!ordersResult.success || ordersResult.data.length === 0) {
-                orderList.innerHTML = '<p>注文が見つかりませんでした</p>';
-                return;
-            }
-
-            // Step 3: DBから取得した注文をHTMLに反映
-            orderList.innerHTML = '';
-            const groupedByOrderId = {};
-            ordersResult.data.forEach(item => {
-                const orderId = item.orderId;
-                if (!groupedByOrderId[orderId]) {
-                    groupedByOrderId[orderId] = [];
-                }
-                groupedByOrderId[orderId].push(item);
-            });
-
-            Object.keys(groupedByOrderId).forEach(orderId => {
-                groupedByOrderId[orderId].forEach(item => {
-                    const servedCount = item.servedQty || 0;
-                    const orderCount = item.orderQty || 1;
-                    const isDisabled = servedCount === 0 ? true : false;
-                    
-                    const row = document.createElement('div');
-                    row.className = 'order-row';
-                    row.dataset.item = item.menuName;
-                    row.dataset.orderId = orderId;
-                    row.dataset.menuId = item.menuId;
-                    row.dataset.orderCount = orderCount;
-                    row.dataset.servedCount = servedCount;
-                    
-                    row.innerHTML = `
-                        <label class="order-checkbox">
-                            <input type="checkbox" class="order-check" ${isDisabled ? 'disabled' : ''}>
-                        </label>
-                        <span class="item-name">${item.menuName}</span>
-                        <span class="item-count">${orderCount}</span>
-                        <span class="item-served">${servedCount}</span>
-                    `;
-                    orderList.appendChild(row);
-                });
-            });
-        } catch (error) {
-            console.error('注文情報の取得に失敗しました:', error);
-            orderList.innerHTML = '<p>エラーが発生しました</p>';
-        }
+        });
     }
 
     btnBack.addEventListener('click', ()=>{

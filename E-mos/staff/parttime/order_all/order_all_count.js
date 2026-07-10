@@ -103,54 +103,15 @@
     btnConfirm?.addEventListener('click', async ()=>{
         if(state.length === 0) return;
 
-        try {
-            let allSuccess = true;
-
-            for (let i = 0; i < state.length; i++) {
-                const { orderId, menuId, servedCount } = state[i];
-
-                const response = await fetch('../../php/orders.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'
-                    },
-                    body: `action=updateServed&orderId=${encodeURIComponent(orderId)}&menuId=${encodeURIComponent(menuId)}&servedQty=${encodeURIComponent(servedCount)}`
-                });
-
-                const result = await response.json();
-                if (!result.success) {
-                    allSuccess = false;
-                    console.error('配膳数更新失敗:', result.error);
-                }
-            }
-
-            if (allSuccess) {
-                let url = 'order_all_list.html';
-                const query = new URLSearchParams();
-                if(table){
-                    query.append('table', table);
-                }
-                if(query.toString()) url += `?${query.toString()}`;
-                window.location.href = url;
-            } else {
-                alert('一部の配膳数更新に失敗しました。');
-            }
-        } catch (error) {
-            console.error('配膳数更新エラー:', error);
-            alert('エラーが発生しました。');
-        }
-    });
-})();
+        // サーバーは無効のため、ここではサンプル成功処理として扱います
+        console.warn('PHP endpoints disabled: updateServed skipped');
+        alert('配膳数を（サンプルで）確定しました。');
+        let url = 'order_all_list.html';
         const query = new URLSearchParams();
-        state.forEach(({ item, orderCount, servedCount }) => {
-            query.append('item', item);
-            query.append('orderCount', String(orderCount));
-            query.append('servedCount', String(servedCount));
-        });
         if(table){
             query.append('table', table);
         }
-        url += `?${query.toString()}`;
+        if(query.toString()) url += `?${query.toString()}`;
         window.location.href = url;
     });
 })();
