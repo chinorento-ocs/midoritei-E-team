@@ -71,9 +71,31 @@
     }
 
     function loadProducts() {
+        // main_menu.html のメニュー項目を反映
         mockProducts = [
             { id: '1', name: 'かわ' },
-            { id: '2', name: 'もも' }
+            { id: '2', name: 'レバー' },
+            { id: '3', name: '枝豆' },
+            { id: '4', name: 'だし巻き卵' },
+            { id: '5', name: 'プリン' },
+            { id: '6', name: '生ビール（中）' },
+            { id: '7', name: 'ハイボール' },
+            { id: '8', name: '焼酎ソーダ割り' },
+            { id: '9', name: '日本酒（冷酒）' },
+            { id: '10', name: 'チューハイ' },
+            { id: '11', name: 'ウーロン茶' },
+            { id: '12', name: '唐揚げ' },
+            { id: '13', name: 'チーズボール' },
+            { id: '14', name: '冷奴' },
+            { id: '15', name: 'ポテトサラダ' },
+            { id: '16', name: 'キュウリの浅漬け' },
+            { id: '17', name: 'ナッツミックス' },
+            { id: '18', name: 'はつ塩' },
+            { id: '19', name: 'ねぎま塩' },
+            { id: '20', name: 'もも塩' },
+            { id: '21', name: 'ぼんじり塩' },
+            { id: '22', name: 'なんこつ塩' },
+            { id: '23', name: '砂肝塩' }
         ];
         searchResults = [...mockProducts];
         renderResults();

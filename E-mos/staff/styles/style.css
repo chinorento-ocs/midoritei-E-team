@@ -328,6 +328,20 @@ label{display:block;font-size:18px;color:#222;margin-bottom:8px}
 .soldout-search-input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
 .soldout-search-btn{width:48px;height:48px;padding:0;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-size:18px;transition:transform .15s ease}
 .soldout-search-btn:hover{transform:translateY(-1px)}
+
+/* Fix: ensure soldout page's #searchBtn uses inline layout, not absolute positioning
+    (avoids conflict with generic .page-card #searchBtn rule) */
+.page-card .soldout-search-box #searchBtn,
+.soldout-search-btn#searchBtn{
+   position: static !important;
+   top: auto !important;
+   right: auto !important;
+   transform: none !important;
+   margin: 0;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+}
 .soldout-label{display:block;margin-bottom:12px;font-size:14px;color:#64748b;font-weight:700}
 .soldout-results-box{min-height:120px;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;margin-bottom:16px}
 .soldout-list{display:flex;flex-direction:column;gap:12px}
