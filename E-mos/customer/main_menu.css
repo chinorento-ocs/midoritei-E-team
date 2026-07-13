@@ -157,6 +157,14 @@
   font-size: 1rem;
   color: #8a4900;
 }
+
+.menu-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  display: block;
+}
 .menu-card__body h2 {
   margin: 0;
   font-size: 1.05rem;
@@ -195,6 +203,10 @@
   cursor: pointer;
   color: #7b3f16;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .bottom-nav button:hover {
   background: #ffe2c2;
@@ -247,12 +259,14 @@
   box-shadow: -24px 0 80px rgba(0, 0, 0, 0.16);
   padding: 20px;
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   gap: 18px;
   transform: translateX(100%);
   transition: transform 0.32s ease;
   z-index: 1;
   overscroll-behavior: contain;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 .cart-drawer.open .cart-drawer__panel {
   transform: translateX(0);
@@ -263,12 +277,14 @@
   color: #5a2f06;
 }
 .cart-drawer__body {
-  min-height: 100px;
+  min-height: 0;
   display: grid;
   gap: 12px;
   align-items: start;
   overflow-y: auto;
+  overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
+  padding-right: 4px;
 }
 .cart-drawer__empty {
   margin: 0;
@@ -288,6 +304,7 @@
   gap: 12px;
   display: grid;
   width: 100%;
+  align-content: start;
 }
 .cart-drawer__item {
   display: grid;
@@ -299,10 +316,14 @@
   border-radius: 20px;
   background: #fff7ed;
   width: 100%;
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .cart-drawer__item-title {
   font-weight: 700;
   color: #5a2f06;
+  line-height: 1.4;
 }
 .cart-drawer__item-controls {
   display: grid;
@@ -313,6 +334,7 @@
   border: 1px solid #f0d4a1;
   border-radius: 16px;
   padding: 8px 10px;
+  min-width: 0;
 }
 .cart-drawer__qty-button {
   border: 1px solid #d9c0a2;
@@ -322,7 +344,13 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 .cart-drawer__item-quantity {
   color: #7a3f08;
@@ -394,6 +422,14 @@
   place-items: center;
   color: #8a4900;
   font-size: 1.25rem;
+}
+
+.menu-modal__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 24px;
+  display: block;
 }
 .menu-modal__content {
   display: grid;
