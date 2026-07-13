@@ -155,14 +155,6 @@
   font-size: 2.4rem;
   font-weight: 900;
 }
-.pay-card__barcode {
-  width: 100%;
-  max-width: 320px;
-  height: auto;
-  margin: 0 auto;
-  border-radius: 16px;
-  background: #fff7ef;
-}
 .pay-card__footer {
   display: grid;
   gap: 4px;
@@ -214,10 +206,6 @@
 
   .pay-card__footer {
     font-size: 0.9rem;
-  }
-
-  .pay-card__barcode {
-    max-width: 280px;
   }
 
   .pay-modal__button,
