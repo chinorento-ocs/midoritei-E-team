@@ -17,8 +17,9 @@
 
     // 卓情報を取得してボタンを動的に生成
     async function loadSeatIds() {
-        // サンプル席データで表示（PHPは無効）
-        const sampleSeats = ['1','2','3','4','5'];
+        // 実運用ではサーバー側から使用中卓情報を取得するため、
+        // 初期表示でダミーの1〜5番卓は生成しません。
+        const sampleSeats = [];
         if (sampleSeats.length > 0) {
             tableList.innerHTML = '';
             sampleSeats.forEach(seatId => {
