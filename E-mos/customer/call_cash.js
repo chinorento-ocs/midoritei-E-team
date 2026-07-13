@@ -5,6 +5,52 @@ document.addEventListener("DOMContentLoaded", function () {
   const payModal = document.querySelector("#payModal");
   const callModalButton = document.querySelector(".call-modal__button");
   const payModalButton = document.querySelector(".pay-modal__button");
+  const seatLabel = document.querySelector(".pay-card__table");
+  const callMessage = document.querySelector(".call-modal__message");
+  const callSubMessage = document.querySelector(".call-modal__submessage");
+
+  function readStoredArray(key) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+      return Array.isArray(parsed) ? parsed.map(function (value) {
+        return String(value);
+      }) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function getCurrentTableNumber() {
+    const storedValue = sessionStorage.getItem("partySize") || localStorage.getItem("partySize") || "1";
+    const parsed = Number(storedValue);
+    if (!Number.isFinite(parsed) || parsed <= 0) {
+      return "1";
+    }
+    return String(parsed);
+  }
+
+  function applyHandledSeatState() {
+    const handledSeats = new Set(readStoredArray("handled_seats"));
+    const currentTable = getCurrentTableNumber();
+    const isHandled = handledSeats.has(currentTable);
+
+    if (seatLabel) {
+      seatLabel.textContent = isHandled ? `卓番${currentTable}（対応済み）` : `卓番${currentTable}`;
+    }
+
+    if (callMessage) {
+      callMessage.textContent = isHandled ? "スタッフ対応済みです。" : "店員がまいります。";
+    }
+
+    if (callSubMessage) {
+      callSubMessage.textContent = isHandled ? "お待たせしてすみません。" : "しばらくお待ちください。";
+    }
+
+    if (callButton) {
+      callButton.disabled = isHandled;
+      callButton.style.opacity = isHandled ? "0.6" : "1";
+    }
+  }
 
   function showToast(message) {
     const toast = document.createElement("div");
@@ -64,4 +110,9 @@ document.addEventListener("DOMContentLoaded", function () {
   if (payModalButton) {
     payModalButton.addEventListener("click", closePayModal);
   }
+
+  applyHandledSeatState();
+  window.addEventListener("storage", function () {
+    applyHandledSeatState();
+  });
 });

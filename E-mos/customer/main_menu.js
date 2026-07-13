@@ -96,6 +96,73 @@ document.addEventListener("DOMContentLoaded", function () {
 
   let cartItems = [];
   let currentModalCard = null;
+  let soldOutMenuIds = new Set();
+
+  const menuIdByTitle = {
+    "かわ": "1",
+    "レバー": "2",
+    "枝豆": "3",
+    "だし巻き卵": "4",
+    "プリン": "5",
+    "生ビール（中）": "6",
+    "ハイボール": "7",
+    "焼酎ソーダ割り": "8",
+    "日本酒（冷酒）": "9",
+    "チューハイ": "10",
+    "ウーロン茶": "11",
+    "唐揚げ": "12",
+    "チーズボール": "13",
+    "冷奴": "14",
+    "ポテトサラダ": "15",
+    "キュウリの浅漬け": "16",
+    "ナッツミックス": "17",
+    "はつ塩": "18",
+    "ねぎま塩": "19",
+    "もも塩": "20",
+    "ぼんじり塩": "21",
+    "なんこつ塩": "22",
+    "砂肝塩": "23"
+  };
+
+  function readStoredArray(key) {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) || "[]");
+      return Array.isArray(parsed) ? parsed.map(function (value) {
+        return String(value);
+      }) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function assignMenuIds() {
+    menuCards.forEach(function (card) {
+      const title = card.querySelector("h2")?.textContent?.trim() || "";
+      const menuId = menuIdByTitle[title];
+      if (menuId) {
+        card.dataset.menuId = menuId;
+      }
+    });
+  }
+
+  function isSoldOutCard(card) {
+    const menuId = card?.dataset?.menuId || "";
+    return menuId !== "" && soldOutMenuIds.has(menuId);
+  }
+
+  function applySoldOutState() {
+    menuCards.forEach(function (card) {
+      const isSoldOut = isSoldOutCard(card);
+      card.classList.toggle("is-soldout", isSoldOut);
+      card.setAttribute("aria-disabled", String(isSoldOut));
+      card.dataset.soldOut = isSoldOut ? "true" : "false";
+    });
+  }
+
+  function syncSoldOutState() {
+    soldOutMenuIds = new Set(readStoredArray("soldout_items"));
+    applySoldOutState();
+  }
 
   function getPartyCount() {
     const storedValue = sessionStorage.getItem("partySize") || localStorage.getItem("partySize") || "1";
@@ -154,6 +221,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // ページ読み込み時にカートを復元
   loadCartFromStorage();
   updateCartBadge();
+  assignMenuIds();
+  syncSoldOutState();
 
   function showToast(message) {
     const toast = document.createElement("div");
@@ -203,7 +272,12 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function openMenuModal(card) {
-    if (!menuModal) {
+    if (!menuModal || !card) {
+      return;
+    }
+
+    if (card.classList.contains("is-soldout")) {
+      showToast("この商品は売り切れです。");
       return;
     }
 
@@ -417,6 +491,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   menuCards.forEach(function (card) {
     card.addEventListener("click", function () {
+      if (card.classList.contains("is-soldout")) {
+        showToast("この商品は売り切れです。");
+        return;
+      }
       openMenuModal(card);
     });
   });
@@ -440,6 +518,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   modalBackButton?.addEventListener("click", closeMenuModal);
   modalConfirmButton?.addEventListener("click", function () {
+    if (currentModalCard && currentModalCard.classList.contains("is-soldout")) {
+      showToast("この商品は売り切れです。");
+      closeMenuModal();
+      return;
+    }
+
     const count = Number(quantityInput.value || "0");
     const price = currentModalCard ? Number(currentModalCard.dataset.price || 0) : 0;
     const max = getMaxOrderQuantity();
@@ -510,5 +594,9 @@ document.addEventListener("DOMContentLoaded", function () {
         openCartDrawer();
       }
     });
+  });
+
+  window.addEventListener("storage", function () {
+    syncSoldOutState();
   });
 });

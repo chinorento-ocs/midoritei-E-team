@@ -26,6 +26,84 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  function readStoredObject(key) {
+    try {
+      const value = localStorage.getItem(key);
+      if (!value) {
+        return {};
+      }
+      const parsed = JSON.parse(value);
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    } catch (error) {
+      return {};
+    }
+  }
+
+  function normalizeText(value) {
+    return String(value || '')
+      .normalize('NFKC')
+      .replace(/\s+/g, '')
+      .toLowerCase();
+  }
+
+  function extractServedCount(servedData, itemName) {
+    const normalizedName = normalizeText(itemName);
+
+    if (!servedData || typeof servedData !== 'object') {
+      return 0;
+    }
+
+    const entries = Array.isArray(servedData) ? servedData : Object.entries(servedData);
+
+    const matchedEntry = entries.find(([key, value]) => {
+      const source = value && typeof value === 'object' ? value : { value };
+      const candidates = [
+        key,
+        source.menuId,
+        source.menuName,
+        source.name,
+        source.title,
+        source.label,
+        source.itemName,
+        source.productName
+      ];
+      return candidates.some((candidate) => normalizeText(candidate).includes(normalizedName) || normalizedName.includes(normalizeText(candidate)));
+    });
+
+    if (!matchedEntry) {
+      return 0;
+    }
+
+    const [, value] = matchedEntry;
+    if (value && typeof value === 'object') {
+      return Number(value.servedCount ?? value.count ?? value.qty ?? value.quantity ?? value.value ?? 0);
+    }
+    return Number(value || 0);
+  }
+
+  function renderServedStatus() {
+    const tableNumber = sessionStorage.getItem('partySize') || localStorage.getItem('partySize') || '1';
+    const servedData = readStoredObject(`served_${tableNumber}`);
+
+    if (!historyList) {
+      return;
+    }
+
+    const menuItems = historyList.querySelectorAll('.menu-item');
+    menuItems.forEach((item) => {
+      const name = item.querySelector('.menu-name')?.textContent?.trim() || '';
+      const servedCount = extractServedCount(servedData, name);
+      const qtyNode = item.querySelector('.menu-qty');
+      if (!qtyNode) {
+        return;
+      }
+      const currentQty = Number(qtyNode.textContent.replace(/個/g, '') || 0);
+      qtyNode.textContent = servedCount > 0
+        ? `${currentQty}個 / 配膳済み ${servedCount}個`
+        : `${currentQty}個`;
+    });
+  }
+
   function renderHistory() {
     if (!historyList || !summaryCard) {
       return;
@@ -104,4 +182,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   renderHistory();
+  renderServedStatus();
+  window.addEventListener('storage', () => {
+    renderHistory();
+    renderServedStatus();
+  });
 });
