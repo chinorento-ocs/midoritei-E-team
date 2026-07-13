@@ -21,12 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function getCurrentTableNumber() {
-    const storedValue = sessionStorage.getItem("partySize") || localStorage.getItem("partySize") || "1";
-    const parsed = Number(storedValue);
-    if (!Number.isFinite(parsed) || parsed <= 0) {
-      return "1";
-    }
-    return String(parsed);
+    return "1";
   }
 
   function applyHandledSeatState() {
@@ -47,8 +42,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (callButton) {
-      callButton.disabled = isHandled;
-      callButton.style.opacity = isHandled ? "0.6" : "1";
+      callButton.disabled = false;
+      callButton.removeAttribute("disabled");
+      callButton.style.opacity = "1";
+      callButton.style.cursor = "pointer";
     }
   }
 
