@@ -4,6 +4,17 @@
     const btnBack = document.getElementById('btnBackMenu');
     let removedSeatIds = new Set(); // 一度対応して消した卓IDを追跡
 
+    // 以前に対応済みの卓情報を localStorage から復元
+    (function restoreRemovedSeats(){
+        try{
+            const stored = localStorage.getItem('handled_seats');
+            const arr = stored ? JSON.parse(stored) : [];
+            if(Array.isArray(arr)) arr.forEach(id => removedSeatIds.add(String(id)));
+        }catch(e){
+            console.error('failed to restore handled_seats', e);
+        }
+    })();
+
     // 卓情報を取得してボタンを動的に生成
     async function loadSeatIds() {
         // サンプル席データで表示（PHPは無効）
@@ -34,7 +45,12 @@
         if (btn) {
             alert(`${seatId}番卓の呼び出しに対応しました`);
             btn.remove();
-            if (seatId) removedSeatIds.add(seatId);
+            if (seatId) {
+                removedSeatIds.add(String(seatId));
+                try{
+                    localStorage.setItem('handled_seats', JSON.stringify(Array.from(removedSeatIds)));
+                }catch(e){ console.error('failed to save handled_seats', e); }
+            }
         } else {
             alert(`${seatId}番卓の呼び出しに対応しました`);
         }

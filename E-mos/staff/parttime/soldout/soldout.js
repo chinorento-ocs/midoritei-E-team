@@ -12,13 +12,13 @@
     const btnCancel = document.getElementById('btnCancel');
     const btnConfirm = document.getElementById('btnConfirm');
 
-    // 検索処理
+    // 検索処理（空文字で全件表示）
     function performSearch() {
-        const query = searchInput.value.trim().toLowerCase();
-        
+        const query = (searchInput.value || '').trim().toLowerCase();
+
         if (!query) {
-            searchResultsDiv.innerHTML = '';
-            searchResults = [];
+            searchResults = [...mockProducts];
+            renderResults();
             return;
         }
 
@@ -98,6 +98,18 @@
             { id: '23', name: '砂肝塩' }
         ];
         searchResults = [...mockProducts];
+
+        // 既に保存されている売り切れ情報を読み込む
+        const stored = localStorage.getItem('soldout_items');
+        try {
+            const arr = stored ? JSON.parse(stored) : [];
+            if (Array.isArray(arr)) {
+                selectedItems = new Set(arr.map(String));
+            }
+        } catch (e) {
+            selectedItems = new Set();
+        }
+
         renderResults();
     }
 
@@ -148,8 +160,16 @@
         }
     });
 
-    // 確認ボタン
+    // 確認ボタン - 保存して戻る（staff 側での変更をローカル保存）
     btnConfirm.addEventListener('click', function() {
+        // selectedItems を配列にして保存
+        try {
+            const arr = Array.from(selectedItems);
+            localStorage.setItem('soldout_items', JSON.stringify(arr));
+        } catch (e) {
+            console.error('failed to save soldout items', e);
+        }
+
         window.location.href = '../menu/menu.html';
     });
 

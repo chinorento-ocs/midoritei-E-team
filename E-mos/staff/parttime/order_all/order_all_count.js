@@ -106,6 +106,20 @@
         // サーバーは無効のため、ここではサンプル成功処理として扱います
         console.warn('PHP endpoints disabled: updateServed skipped');
         alert('配膳数を（サンプルで）確定しました。');
+        // テーブル単位で配膳数を保存
+        try{
+            if(table){
+                const key = `served_${table}`;
+                const existingRaw = localStorage.getItem(key);
+                const existing = existingRaw ? JSON.parse(existingRaw) : {};
+                const merged = { ...(existing || {}) };
+                state.forEach(entry => {
+                    if(entry.menuId) merged[entry.menuId] = Number(entry.servedCount || 0);
+                });
+                localStorage.setItem(key, JSON.stringify(merged));
+            }
+        }catch(e){ console.error('failed to save served data', e); }
+
         let url = 'order_all_list.html';
         const query = new URLSearchParams();
         if(table){

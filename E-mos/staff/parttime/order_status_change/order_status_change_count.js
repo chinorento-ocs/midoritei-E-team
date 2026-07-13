@@ -75,6 +75,23 @@
         if (rows.length === 0) return;
         console.warn('PHP endpoints disabled: updateServed skipped');
         alert('配膳数を（サンプルで）確定しました。');
+        // テーブル単位で配膳数を保存
+        try{
+            if(table){
+                const key = `served_${table}`;
+                const existingRaw = localStorage.getItem(key);
+                const existing = existingRaw ? JSON.parse(existingRaw) : {};
+                const merged = { ...(existing || {}) };
+                rows.forEach(row => {
+                    const menuId = row.dataset.menuId;
+                    const valEl = row.querySelector('.count-value');
+                    const val = parseInt(valEl.textContent || '0', 10) || 0;
+                    if(menuId) merged[menuId] = val;
+                });
+                localStorage.setItem(key, JSON.stringify(merged));
+            }
+        }catch(e){ console.error('failed to save served data', e); }
+
         window.location.href = '../menu/menu.html';
     });
 })();

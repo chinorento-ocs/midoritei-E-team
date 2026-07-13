@@ -20,10 +20,23 @@
             { orderId: 'S2', menuId: 'm3', menuName: '鶏の唐揚げ', orderQty: 1, servedQty: 1 },
             { orderId: 'S2', menuId: 'm4', menuName: 'だし巻き', orderQty: 1, servedQty: 0 }
         ];
+        // テーブル単位で保存された配膳数を読み込む
+        let storedServed = {};
+        try{
+            if(table){
+                const key = `served_${table}`;
+                const raw = localStorage.getItem(key);
+                const obj = raw ? JSON.parse(raw) : null;
+                if(obj && typeof obj === 'object') storedServed = obj;
+            }
+        }catch(e){ console.error('failed to read served data', e); }
 
         orderList.innerHTML = '';
         const groupedByOrderId = {};
         sample.forEach(item => {
+            if(item.menuId && storedServed[item.menuId] != null){
+                item.servedQty = parseInt(storedServed[item.menuId], 10) || item.servedQty || 0;
+            }
             const orderId = item.orderId;
             if (!groupedByOrderId[orderId]) groupedByOrderId[orderId] = [];
             groupedByOrderId[orderId].push(item);

@@ -24,10 +24,24 @@
                 { orderId: 'A2', menuId: 'm4', menuName: 'だし巻き', orderQty: 2, servedQty: 0 }
             ]
         };
+        // テーブル単位で保存された配膳数があれば反映する
+        let storedServed = {};
+        try{
+            if(table){
+                const key = `served_${table}`;
+                const raw = localStorage.getItem(key);
+                const obj = raw ? JSON.parse(raw) : null;
+                if(obj && typeof obj === 'object') storedServed = obj;
+            }
+        }catch(e){ console.error('failed to read served data', e); }
 
         orderList.innerHTML = '';
         const groupedByOrderId = {};
         ordersResult.data.forEach(item => {
+            // storedServed にあれば上書き
+            if(item.menuId && storedServed[item.menuId] != null){
+                item.servedQty = parseInt(storedServed[item.menuId], 10) || item.servedQty || 0;
+            }
             const orderId = item.orderId;
             if (!groupedByOrderId[orderId]) groupedByOrderId[orderId] = [];
             groupedByOrderId[orderId].push(item);
