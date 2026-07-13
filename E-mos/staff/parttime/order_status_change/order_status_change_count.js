@@ -40,7 +40,7 @@
                 <div class="count-item-name">${item}</div>
                 <div class="count-control">
                     <button type="button" class="count-btn btn-decrease">−</button>
-                    <span class="count-value">${servedCount}</span>
+                    <span class="count-value">${Math.max(1, servedCount)}</span>
                     <button type="button" class="count-btn btn-increase">＋</button>
                 </div>
             `;
@@ -60,7 +60,7 @@
         if(target.classList.contains('btn-increase')){
             value = Math.min(value + 1, orderCount);
         } else if(target.classList.contains('btn-decrease')){
-            value = Math.max(0, value - 1);
+            value = Math.max(1, value - 1);
         }
         valueEl.textContent = value.toString();
     });

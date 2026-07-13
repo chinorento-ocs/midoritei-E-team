@@ -17,7 +17,7 @@
     }
 
     const selectedItems = items.map((item, index) => {
-        const count = parseInt(counts[index] || '1', 10) || 1;
+        const count = parseInt(counts[index] || '1', 10) || 1; // 元の注文数（上限）
         const orderId = orderIds[index];
         const menuId = menuIds[index];
         return { item, count, orderId, menuId };
@@ -32,11 +32,12 @@
             row.dataset.index = String(index);
             row.dataset.orderId = orderId;
             row.dataset.menuId = menuId;
+            row.dataset.max = String(count); // 上限をデータ属性に保持
             row.innerHTML = `
                 <div class="count-item-name">${item}</div>
                 <div class="count-control">
                     <button type="button" class="count-btn btn-decrease">−</button>
-                    <span class="count-value">${count}</span>
+                    <span class="count-value">1</span>
                     <button type="button" class="count-btn btn-increase">＋</button>
                 </div>
             `;
@@ -51,8 +52,9 @@
         const itemRow = target.closest('.count-item');
         const valueEl = itemRow.querySelector('.count-value');
         let value = parseInt(valueEl.textContent || '1', 10);
+        const max = parseInt(itemRow.dataset.max || '1', 10) || 1;
         if(target.classList.contains('btn-increase')){
-            value += 1;
+            value = Math.min(max, value + 1);
         } else if(target.classList.contains('btn-decrease')){
             value = Math.max(1, value - 1);
         }
@@ -67,6 +69,17 @@
         // サーバーは無効なので、ここではサンプル成功として扱います
         const rows = document.querySelectorAll('.count-item');
         if (rows.length === 0) return;
+        // バリデーション: キャンセル数が元の注文数を超えていないか確認
+        for(const row of rows){
+            const valEl = row.querySelector('.count-value');
+            const val = parseInt(valEl.textContent || '0', 10) || 0;
+            const max = parseInt(row.dataset.max || '0', 10) || 0;
+            if(val < 1 || val > max){
+                alert('キャンセル数が不正です。元の注文数以下にしてください。');
+                return;
+            }
+        }
+
         console.warn('PHP endpoints disabled: cancelItem skipped');
         alert('キャンセル数を（サンプルで）確定しました。');
         window.location.href = '../menu/menu.html';
