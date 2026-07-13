@@ -33,7 +33,14 @@
       radio.name = 'sel';
       radio.value = product.menuId;
 
-      var text = document.createTextNode(' ' + (product.menuName || '') + ' / ' + (product.categoryName || '') + ' / ' + (product.unitPrice || ''));
+      var labelText = product.menuName || '';
+      if(product.categoryName){
+        labelText += ' / ' + product.categoryName;
+      }
+      if(product.unitPrice){
+        labelText += ' / ' + product.unitPrice;
+      }
+      var text = document.createTextNode(' ' + labelText);
       label.appendChild(radio);
       label.appendChild(text);
       selectList.appendChild(label);
