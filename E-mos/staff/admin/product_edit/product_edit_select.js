@@ -87,11 +87,13 @@
   if(toReview){
     toReview.addEventListener('click', function(){
       var sel = selectList.querySelector('input[name="sel"]:checked');
-      var selectedProduct = allProducts[0];
 
-      if(sel){
-        selectedProduct = allProducts.find(function(product){ return String(product.menuId) === String(sel.value); }) || allProducts[0];
+      if(!sel){
+        alert('商品を選択してください。');
+        return;
       }
+
+      var selectedProduct = allProducts.find(function(product){ return String(product.menuId) === String(sel.value); }) || null;
 
       var text = selectedProduct ? (selectedProduct.menuName || '') : '';
       sessionStorage.setItem('product_edit_selected', text);

@@ -27,7 +27,20 @@
   function showModal(){ if(modal){ modal.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; cancel && cancel.focus(); } }
   function hideModal(){ if(modal){ modal.setAttribute('aria-hidden','true'); document.body.style.overflow=''; } }
 
-  if(submitBtn){ submitBtn.addEventListener('click', function(e){ e.preventDefault(); showModal(); }); }
+  if(submitBtn){
+    submitBtn.addEventListener('click', function(e){
+      e.preventDefault();
+      var nameVal = editName ? (editName.value || '').trim() : '';
+      var catVal = editCategory ? (editCategory.value || '').trim() : '';
+      var priceVal = editPrice ? (editPrice.value || '').trim() : '';
+
+      if(!nameVal){ alert('商品名を入力してください。'); editName && editName.focus(); return; }
+      if(!catVal){ alert('カテゴリーを入力してください。'); editCategory && editCategory.focus(); return; }
+      if(!priceVal){ alert('値段を入力してください。'); editPrice && editPrice.focus(); return; }
+
+      showModal();
+    });
+  }
   if(cancel) cancel.addEventListener('click', function(e){ e.preventDefault(); hideModal(); });
   if(ok) ok.addEventListener('click', function(e){
     e.preventDefault();

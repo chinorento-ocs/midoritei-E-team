@@ -79,7 +79,16 @@
     filterProducts(searchInput ? searchInput.value : '');
   }
 
-  deleteBtn.addEventListener('click', function(e){ e.preventDefault(); show(); });
+  deleteBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    // チェックがあるか確認
+    var anyChecked = deleteList.querySelector('input[name="product"]:checked');
+    if(!anyChecked){
+      alert('削除する商品を選択してください。');
+      return;
+    }
+    show();
+  });
   cancel.addEventListener('click', function(e){ e.preventDefault(); hide(); });
   ok.addEventListener('click', function(e){
     e.preventDefault();
