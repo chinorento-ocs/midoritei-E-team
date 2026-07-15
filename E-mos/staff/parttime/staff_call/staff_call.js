@@ -17,22 +17,24 @@
 
     // 卓情報を取得してボタンを動的に生成
     async function loadSeatIds() {
-        // 実運用ではサーバー側から使用中卓情報を取得するため、
-        // 初期表示でダミーの1〜5番卓は生成しません。
-        const sampleSeats = [];
-        if (sampleSeats.length > 0) {
-            tableList.innerHTML = '';
-            sampleSeats.forEach(seatId => {
-                if (removedSeatIds.has(seatId)) return;
-                const button = document.createElement('button');
-                button.className = 'table-btn';
-                button.type = 'button';
-                button.dataset.seatId = seatId;
-                button.textContent = `${seatId}番卓`;
-                button.addEventListener('click', callStaff);
-                tableList.appendChild(button);
-            });
-        } else {
+        // 実運用ではサーバーから使用中卓を取得しますが、
+        // オフライン時はデフォルトの卓一覧を表示してローカルで試験できます。
+        const sampleSeats = ['1','2','3','4','5','6','7','8','9','10','11','12'];
+        tableList.innerHTML = '';
+        let appended = 0;
+        sampleSeats.forEach(seatId => {
+            if (removedSeatIds.has(String(seatId))) return;
+            const button = document.createElement('button');
+            button.className = 'table-btn';
+            button.type = 'button';
+            button.dataset.seatId = String(seatId);
+            button.textContent = `${seatId}番卓`;
+            button.addEventListener('click', callStaff);
+            tableList.appendChild(button);
+            appended++;
+        });
+
+        if (appended === 0) {
             tableList.innerHTML = '<p>使用中の卓がありません</p>';
         }
     }
