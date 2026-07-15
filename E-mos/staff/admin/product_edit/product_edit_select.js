@@ -48,32 +48,48 @@
   }
 
   function loadProducts(){
-    // main_menu.html のメニュー項目を反映
-    allProducts = [
-      { menuId: '1', menuName: 'かわ', categoryName: '', unitPrice: '' },
-      { menuId: '2', menuName: 'レバー', categoryName: '', unitPrice: '' },
-      { menuId: '3', menuName: '枝豆', categoryName: '', unitPrice: '' },
-      { menuId: '4', menuName: 'だし巻き卵', categoryName: '', unitPrice: '' },
-      { menuId: '5', menuName: 'プリン', categoryName: '', unitPrice: '' },
-      { menuId: '6', menuName: '生ビール（中）', categoryName: '', unitPrice: '' },
-      { menuId: '7', menuName: 'ハイボール', categoryName: '', unitPrice: '' },
-      { menuId: '8', menuName: '焼酎ソーダ割り', categoryName: '', unitPrice: '' },
-      { menuId: '9', menuName: '日本酒（冷酒）', categoryName: '', unitPrice: '' },
-      { menuId: '10', menuName: 'チューハイ', categoryName: '', unitPrice: '' },
-      { menuId: '11', menuName: 'ウーロン茶', categoryName: '', unitPrice: '' },
-      { menuId: '12', menuName: '唐揚げ', categoryName: '', unitPrice: '' },
-      { menuId: '13', menuName: 'チーズボール', categoryName: '', unitPrice: '' },
-      { menuId: '14', menuName: '冷奴', categoryName: '', unitPrice: '' },
-      { menuId: '15', menuName: 'ポテトサラダ', categoryName: '', unitPrice: '' },
-      { menuId: '16', menuName: 'キュウリの浅漬け', categoryName: '', unitPrice: '' },
-      { menuId: '17', menuName: 'ナッツミックス', categoryName: '', unitPrice: '' },
-      { menuId: '18', menuName: 'はつ塩', categoryName: '', unitPrice: '' },
-      { menuId: '19', menuName: 'ねぎま塩', categoryName: '', unitPrice: '' },
-      { menuId: '20', menuName: 'もも塩', categoryName: '', unitPrice: '' },
-      { menuId: '21', menuName: 'ぼんじり塩', categoryName: '', unitPrice: '' },
-      { menuId: '22', menuName: 'なんこつ塩', categoryName: '', unitPrice: '' },
-      { menuId: '23', menuName: '砂肝塩', categoryName: '', unitPrice: '' }
+    // ベースの静的メニュー（既存HTMLと同じIDスキーム）
+    var staticDefaults = [
+      { menuId: '1', menuName: 'かわ', categoryName: '', unitPrice: '150' },
+      { menuId: '2', menuName: 'レバー', categoryName: '', unitPrice: '150' },
+      { menuId: '3', menuName: '枝豆', categoryName: '', unitPrice: '300' },
+      { menuId: '4', menuName: 'だし巻き卵', categoryName: '', unitPrice: '500' },
+      { menuId: '5', menuName: 'プリン', categoryName: '', unitPrice: '450' },
+      { menuId: '6', menuName: '生ビール（中）', categoryName: '', unitPrice: '600' },
+      { menuId: '7', menuName: 'ハイボール', categoryName: '', unitPrice: '600' },
+      { menuId: '8', menuName: '焼酎ソーダ割り', categoryName: '', unitPrice: '500' },
+      { menuId: '9', menuName: '日本酒（冷酒）', categoryName: '', unitPrice: '700' },
+      { menuId: '10', menuName: 'チューハイ', categoryName: '', unitPrice: '550' },
+      { menuId: '11', menuName: 'ウーロン茶', categoryName: '', unitPrice: '400' },
+      { menuId: '12', menuName: '唐揚げ', categoryName: '', unitPrice: '450' },
+      { menuId: '13', menuName: 'チーズボール', categoryName: '', unitPrice: '400' },
+      { menuId: '14', menuName: '冷奴', categoryName: '', unitPrice: '350' },
+      { menuId: '15', menuName: 'ポテトサラダ', categoryName: '', unitPrice: '380' },
+      { menuId: '16', menuName: 'キュウリの浅漬け', categoryName: '', unitPrice: '280' },
+      { menuId: '17', menuName: 'ナッツミックス', categoryName: '', unitPrice: '320' },
+      { menuId: '18', menuName: 'はつ塩', categoryName: '', unitPrice: '150' },
+      { menuId: '19', menuName: 'ねぎま塩', categoryName: '', unitPrice: '160' },
+      { menuId: '20', menuName: 'もも塩', categoryName: '', unitPrice: '140' },
+      { menuId: '21', menuName: 'ぼんじり塩', categoryName: '', unitPrice: '170' },
+      { menuId: '22', menuName: 'なんこつ塩', categoryName: '', unitPrice: '140' },
+      { menuId: '23', menuName: '砂肝塩', categoryName: '', unitPrice: '150' }
     ];
+
+    // マージ: staticDefaults をベースに localStorage.menu_items の上書き・追加を反映
+    try{
+      var stored = JSON.parse(localStorage.getItem('menu_items') || '[]');
+      allProducts = staticDefaults.slice();
+      if(Array.isArray(stored) && stored.length){
+        stored.forEach(function(it){
+          var id = String(it.menuId || it.id || '');
+          var idx = allProducts.findIndex(function(s){ return String(s.menuId) === id; });
+          var obj = { menuId: id || String(Date.now()), menuName: it.menuName || '', categoryName: it.categoryName || '', unitPrice: it.unitPrice || '' };
+          if(idx >= 0){ allProducts[idx] = obj; }
+          else { allProducts.push(obj); }
+        });
+      }
+    }catch(e){ allProducts = staticDefaults.slice(); }
+
     renderProducts(searchInput ? searchInput.value : '');
   }
 
@@ -102,6 +118,10 @@
       window.location.href = 'product_edit_review.html';
     });
   }
+
+  // 他ウィンドウ／同ウィンドウで menu_items が変更されたら再読み込み
+  window.addEventListener('menu_items_changed', function(){ loadProducts(); });
+  window.addEventListener('storage', function(e){ if(e.key === 'menu_items'){ loadProducts(); } });
 
   loadProducts();
 })();
