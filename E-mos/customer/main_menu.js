@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const categoryButtons = document.querySelectorAll(".category-nav .category");
   const sectionTitle = document.querySelector(".section-title");
   const bottomNavButtons = document.querySelectorAll(".bottom-nav button");
-  const menuCards = document.querySelectorAll(".menu-card");
+  let menuCards = document.querySelectorAll(".menu-card");
   const menuModal = document.querySelector(".menu-modal");
   const modalOverlay = document.querySelector(".menu-modal__overlay");
   const cartDrawer = document.querySelector(".cart-drawer");
@@ -143,6 +143,160 @@ document.addEventListener("DOMContentLoaded", function () {
         card.dataset.menuId = menuId;
       }
     });
+  }
+
+  function createMenuCard(item){
+    var article = document.createElement('article');
+    article.className = 'menu-card';
+    article.dataset.generated = '1';
+    if(item.unitPrice){ article.dataset.price = item.unitPrice; }
+    if(item.categoryName){ article.dataset.category = item.categoryName; }
+    if(item.menuId){ article.dataset.menuId = String(item.menuId); }
+
+    var imgDiv = document.createElement('div');
+    imgDiv.className = 'menu-card__image';
+    if(item.photoDataUrl){
+      var img = document.createElement('img');
+      img.src = item.photoDataUrl;
+      img.alt = item.menuName || '商品';
+      imgDiv.appendChild(img);
+    } else {
+      imgDiv.textContent = item.menuName || '商品';
+    }
+
+    var bodyDiv = document.createElement('div');
+    bodyDiv.className = 'menu-card__body';
+
+    var h2 = document.createElement('h2');
+    h2.textContent = item.menuName || '';
+    bodyDiv.appendChild(h2);
+
+    if(item.menuDescription){
+      var p = document.createElement('p');
+      p.textContent = item.menuDescription;
+      bodyDiv.appendChild(p);
+    }
+
+    if(item.unitPrice){
+      var priceP = document.createElement('p');
+      priceP.className = 'menu-price';
+      priceP.textContent = formatPrice(item.unitPrice);
+      bodyDiv.appendChild(priceP);
+    }
+
+    article.appendChild(imgDiv);
+    article.appendChild(bodyDiv);
+    return article;
+  }
+
+  function loadStoredMenuItems(){
+    try{
+      var stored = JSON.parse(localStorage.getItem('menu_items') || '[]');
+      if(!Array.isArray(stored) || stored.length===0) return;
+      var grid = document.querySelector('.menu-grid');
+      if(!grid) return;
+      stored.forEach(function(item){
+        // まず、既存の静的カードがあるか探す（data-menu-id で一致）
+        var matched = grid.querySelector('.menu-card[data-menu-id="' + CSS.escape(String(item.menuId)) + '"]');
+        if(matched){
+          // 元データを保存していなければ保存
+          if(!matched.dataset.originalTitle){
+            var origTitle = matched.querySelector('h2') ? matched.querySelector('h2').textContent.trim() : '';
+            var origDesc = matched.querySelector('.menu-card__body p') ? matched.querySelector('.menu-card__body p').textContent.trim() : '';
+            var origPriceEl = matched.querySelector('.menu-price');
+            var origPrice = origPriceEl ? origPriceEl.textContent.trim() : '';
+            var imgEl = matched.querySelector('.menu-card__image img');
+            var origImg = imgEl ? imgEl.src : '';
+            matched.dataset.originalTitle = origTitle;
+            matched.dataset.originalDescription = origDesc;
+            matched.dataset.originalPrice = origPrice;
+            matched.dataset.originalImage = origImg;
+            matched.dataset.originalCategory = matched.dataset.category || '';
+          }
+
+          // 上書き：タイトル、説明、価格、画像、カテゴリ
+          if(item.menuName){ var h2 = matched.querySelector('h2'); if(h2) h2.textContent = item.menuName; }
+          if(item.menuDescription){
+            var p = matched.querySelector('.menu-card__body p');
+            if(p) p.textContent = item.menuDescription;
+            else { var np = document.createElement('p'); np.textContent = item.menuDescription; matched.querySelector('.menu-card__body').appendChild(np); }
+          }
+          if(item.unitPrice){
+            var priceP = matched.querySelector('.menu-price');
+            if(priceP) priceP.textContent = formatPrice(item.unitPrice);
+            else { var pp = document.createElement('p'); pp.className='menu-price'; pp.textContent = formatPrice(item.unitPrice); matched.querySelector('.menu-card__body').appendChild(pp); }
+          }
+          if(item.photoDataUrl){
+            var imgWrap = matched.querySelector('.menu-card__image');
+            if(imgWrap){ imgWrap.innerHTML = ''; var img = document.createElement('img'); img.src = item.photoDataUrl; img.alt = item.menuName || '商品'; imgWrap.appendChild(img); }
+          }
+          if(item.categoryName){ matched.dataset.category = item.categoryName; }
+          // mark as generated override
+          matched.dataset.generated = '1';
+        } else {
+          // 静的カードが無ければ動的に追加
+          var card = createMenuCard(item);
+          var category = item.categoryName || '';
+          if(category){
+            var same = grid.querySelectorAll('.menu-card[data-category="' + CSS.escape(category) + '"]');
+            if(same && same.length){
+              var last = same[same.length-1];
+              last.parentNode.insertBefore(card, last.nextSibling);
+              return;
+            }
+          }
+          grid.appendChild(card);
+        }
+      });
+      // stored に無い静的カードはオリジナルを復元
+      try{
+        var ids = stored.map(function(it){ return String(it.menuId || it.id || ''); });
+        var allCards = grid.querySelectorAll('.menu-card[data-menu-id]');
+        allCards.forEach(function(card){
+          var mid = String(card.dataset.menuId || '');
+          if(card.dataset.originalTitle && ids.indexOf(mid) === -1){
+            // restore
+            var h2 = card.querySelector('h2'); if(h2) h2.textContent = card.dataset.originalTitle || '';
+            var body = card.querySelector('.menu-card__body');
+            if(body){
+              // restore description
+              var p = body.querySelector('p');
+              if(p) p.textContent = card.dataset.originalDescription || '';
+              // restore price
+              var origPrice = card.dataset.originalPrice || '';
+              var priceEl = body.querySelector('.menu-price');
+              if(priceEl) priceEl.textContent = origPrice;
+            }
+            // restore image
+            var imgWrap = card.querySelector('.menu-card__image');
+            if(imgWrap){
+              if(card.dataset.originalImage){ imgWrap.innerHTML = ''; var img = document.createElement('img'); img.src = card.dataset.originalImage; imgWrap.appendChild(img); }
+              else { /* leave as-is */ }
+            }
+            // restore category
+            if(card.dataset.originalCategory) card.dataset.category = card.dataset.originalCategory;
+            delete card.dataset.generated;
+          }
+        });
+      }catch(e){/* ignore */}
+    }catch(e){ console.error('failed to load menu_items', e); }
+  }
+
+  function refreshStoredMenuItems(){
+    try{
+      var grid = document.querySelector('.menu-grid');
+      if(!grid) return;
+      // 以前追加した動的カードを削除
+      var dyn = grid.querySelectorAll('.menu-card[data-generated="1"]');
+      dyn.forEach(function(n){ n.parentNode && n.parentNode.removeChild(n); });
+      // 再読み込み
+      loadStoredMenuItems();
+      // 再バインド
+      menuCards = document.querySelectorAll('.menu-card');
+      assignMenuIds();
+      syncSoldOutState();
+      bindMenuCardClicks();
+    }catch(e){ console.error('failed to refresh stored menu items', e); }
   }
 
   function isSoldOutCard(card) {
@@ -221,6 +375,10 @@ document.addEventListener("DOMContentLoaded", function () {
   // ページ読み込み時にカートを復元
   loadCartFromStorage();
   updateCartBadge();
+  // まずローカルに保存された商品をレンダリングしてから再取得する
+  loadStoredMenuItems();
+  // 再取得して静的ノードと動的ノード両方を対象にする
+  menuCards = document.querySelectorAll('.menu-card');
   assignMenuIds();
   syncSoldOutState();
 
@@ -489,15 +647,21 @@ document.addEventListener("DOMContentLoaded", function () {
     document.body.classList.remove("no-scroll");
   }
 
-  menuCards.forEach(function (card) {
-    card.addEventListener("click", function () {
-      if (card.classList.contains("is-soldout")) {
-        showToast("この商品は売り切れです。");
-        return;
-      }
-      openMenuModal(card);
+  function bindMenuCardClicks(){
+    menuCards.forEach(function (card) {
+      // remove previous listener by cloning node
+      var clone = card.cloneNode(true);
+      card.parentNode.replaceChild(clone, card);
+      clone.addEventListener("click", function () {
+        if (clone.classList.contains("is-soldout")) {
+          showToast("この商品は売り切れです。");
+          return;
+        }
+        openMenuModal(clone);
+      });
     });
-  });
+  }
+  bindMenuCardClicks();
 
   decreaseButton?.addEventListener("click", function () {
     const value = Number(quantityInput.value || "0");
@@ -624,7 +788,14 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   window.addEventListener("storage", function () {
+    // storage イベントは別タブからの変更で発火
     syncSoldOutState();
+    refreshStoredMenuItems();
+  });
+  // カスタムイベントで同ウィンドウ内の変更も反映
+  window.addEventListener('menu_items_changed', function(){
+    syncSoldOutState();
+    refreshStoredMenuItems();
   });
 });
 

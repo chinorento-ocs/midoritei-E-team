@@ -12,6 +12,20 @@
     product = null;
   }
 
+  // session に product がない場合、localStorage の menu_items から探す
+  if(!product){
+    try{
+      var idFor = sessionStorage.getItem('product_edit_id') || '';
+      if(idFor){
+        var stored = JSON.parse(localStorage.getItem('menu_items') || '[]');
+        if(Array.isArray(stored) && stored.length){
+          var f = stored.find(function(it){ return String(it.menuId || it.id || '') === String(idFor); });
+          if(f) product = f;
+        }
+      }
+    }catch(e){ /* ignore */ }
+  }
+
   if(!sel){ window.location.href = 'product_edit_select.html'; }
 
   var displayName = product && product.menuName ? product.menuName : (sel || '--');
