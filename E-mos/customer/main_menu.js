@@ -584,10 +584,37 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
+  function callStaff() {
+    const currentTableNumber = sessionStorage.getItem("tableNumber") || localStorage.getItem("tableNumber") || "1";
+    const pendingCalls = new Set(readStoredArray("pending_staff_calls"));
+    const handledSeats = new Set(readStoredArray("handled_seats"));
+
+    pendingCalls.add(String(currentTableNumber));
+    handledSeats.delete(String(currentTableNumber));
+
+    localStorage.setItem("pending_staff_calls", JSON.stringify(Array.from(pendingCalls)));
+    localStorage.setItem("handled_seats", JSON.stringify(Array.from(handledSeats)));
+
+    console.log("staff call saved", {
+      tableNumber: String(currentTableNumber),
+      pendingCalls: Array.from(pendingCalls),
+      handledSeats: Array.from(handledSeats)
+    });
+
+    localStorage.setItem("last_staff_call", JSON.stringify({
+      tableNumber: String(currentTableNumber),
+      at: new Date().toISOString()
+    }));
+
+    window.dispatchEvent(new Event("staff-call-updated"));
+    showToast("店員を呼び出しました。少しお待ちください。");
+    window.location.href = "call_cash.html";
+  }
+
   bottomNavButtons.forEach(function (button, index) {
     button.addEventListener("click", function () {
       if (index === 0) {
-        window.location.href = "call_cash.html";
+        callStaff();
       } else if (index === 1) {
         window.location.href = "order_history.html";
       } else {
@@ -600,3 +627,6 @@ document.addEventListener("DOMContentLoaded", function () {
     syncSoldOutState();
   });
 });
+
+
+
