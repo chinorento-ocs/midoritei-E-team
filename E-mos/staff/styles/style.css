@@ -36,7 +36,7 @@
   --border:#cbd5e1;
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;padding:0;font-family:Meiryo,"Yu Gothic UI",sans-serif;color:var(--text);background:var(--bg);width:100%;display:flex}
+html,body{height:100%;margin:0;padding:0;font-family:Meiryo,"Yu Gothic UI",sans-serif;color:var(--text);background:var(--bg);width:100%}
 body{display:flex;justify-content:center;align-items:flex-start;min-height:100vh}
 a{color:inherit;text-decoration:none}
 button{font:inherit}
@@ -50,7 +50,7 @@ main.center > .page-card, main.content > .page-card{width:100%;margin:0}
    admin/menu.css
    ========================== */
 /* original: staff/styles/admin/menu.css */
-html,body{height:100%;margin:0;font-family:Meiryo,"Yu Gothic UI",sans-serif;background:#f5f5f5;display:flex;justify-content:center;align-items:flex-start;width:100%}
+html,body{height:100%;margin:0;font-family:Meiryo,"Yu Gothic UI",sans-serif;background:#f5f5f5}
 .wrap{display:flex;align-items:center;justify-content:center;padding:24px}
 .card{width:360px;background:#fff;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,0.08);padding:32px 24px;position:relative}
 .title{font-size:16px;color:#222;text-align:center;margin-bottom:20px}
@@ -82,106 +82,165 @@ button:focus, a:focus {outline: none;box-shadow: none}
    admin/product_add.css
    ========================== */
 /* original: staff/styles/admin/product_add.css */
-.page-card .header-title{margin:0;padding:0 0 16px;font-size:20px;font-weight:700;color:#2563eb;border-bottom:1px solid rgba(148,163,184,0.18)}
-.page-card .form-row{padding:18px 0}
-.page-card .form-row:first-of-type{padding-top:0}
-.page-card .form-row:last-of-type{padding-bottom:0}
-.page-card .form-row label{display:block;margin-bottom:10px;font-size:15px;font-weight:600;color:#1f2937}
-.page-card .input-text,.page-card input[type="file"]{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
-.page-card .input-text:focus,.page-card input[type="file"]:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
-.page-card .required{color:#dc2626;font-size:12px;margin-left:6px}
-.page-card .small-note{font-size:12px;color:#64748b;margin-top:6px}
-.page-card .actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;padding:0;align-items:center;margin-top:18px}
-.page-card .btn,.page-card .btn-primary{min-height:48px;padding:0 18px;border-radius:14px;border:1px solid transparent;font-size:15px;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;width:100%;min-width:0}
-.page-card .btn{background:#f8fafc;color:#1f2937;border-color:#cbd5e1}
-.page-card .btn:hover,.page-card .btn:focus{background:#e2e8f0}
-.page-card .btn-primary{background:#2563eb;color:#fff}
-.page-card .btn-primary:hover,.page-card .btn-primary:focus{background:#1d4ed8}
-.page-card .tip{display:inline-block;margin-left:8px;padding:6px 10px;border-radius:999px;background:#eff6ff;color:#2563eb;font-size:12px;font-weight:700}
-.page-card .error-msg{display:block;color:#dc2626;font-size:12px;margin-top:8px}
+.container{max-width:420px;margin:20px auto;padding:18px}
+.card{background:#fff;border:1px solid #ddd;padding:18px;border-radius:4px;box-shadow:none}
+.header-title{color:#3b82f6;font-size:14px;margin-bottom:12px}
+.form-row{margin:14px 0}
+.form-row label{display:block;font-size:16px;margin-bottom:8px}
+.input-text{width:100%;padding:8px;border:1px solid #ccc;border-radius:2px}
+.required{color:#e55353;font-size:12px;margin-left:6px}
+.small-note{font-size:12px;color:#666;margin-top:6px}
+.actions{display:flex;justify-content:space-between;margin-top:18px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:8px 18px;border:1px solid #999;background:#eee;border-radius:4px;text-decoration:none;color:#222}
+.btn-primary{background:#eee}
+.tip{display:inline-block;background:#2b6cb0;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;margin-left:8px}
 
-#confirmAddModal{display:none;position:fixed;inset:0;z-index:50}
+/* product_add modal */
+#confirmAddModal{display:none}
 #confirmAddModal[aria-hidden="false"]{display:block}
-#confirmAddModal .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.24)}
-#confirmAddModal .modal-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,90%);z-index:10}
-#confirmAddModal .modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
-#confirmAddModal .modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
-#confirmAddModal .modal-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;justify-content:center}
-#confirmAddModal .modal-actions button{min-height:52px;min-width:120px;padding:16px 18px;border-radius:18px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;cursor:pointer;font-weight:700;font-size:15px;transition:transform .15s ease,box-shadow .15s ease}
-#confirmAddModal .modal-actions button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08);background:#f8fafc}
-#cancelAddBtn{background:#fff;border-color:#cbd5e1;color:#1f2937}
-#confirmAddModal .modal-actions button#okAddBtn,#confirmDeleteModal .modal-actions button#okDeleteBtn,#confirmEditModal .modal-actions button#okEditBtn{background:#2563eb;color:#fff;border-color:#2563eb}
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.15)}
+.modal-dialog{position:fixed;left:50%;top:40%;transform:translate(-50%,-40%);width:320px;max-width:90%;}
+.modal-content{background:#e9eef3;border:3px solid #2f2f2f;padding:20px;border-radius:6px;text-align:center;box-shadow:0 6px 18px rgba(0,0,0,0.12)}
+.modal-content h2{margin:0 0 18px 0;font-size:18px;color:#222}
+.modal-actions{display:flex;justify-content:space-around}
+.modal-actions button{min-width:100px;padding:8px 12px;border:1px solid #666;background:#fff;border-radius:4px;cursor:pointer}
+#okAddBtn{background:#fff}
 
+.error-msg{display:block;color:#e55353;font-size:12px;margin-top:4px}
+
+/* focus removal for inputs */
+.btn:focus, .btn:active, button:focus, a:focus, input:focus {outline: none;box-shadow: none}
 
 /* ==========================
    admin/product_delete.css
    ========================== */
-.page-card .search-row{padding-top:0}
-.page-card .search-field{position:relative}
-.page-card .input-text{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
-.page-card .input-text::placeholder{color:#64748b}
-.page-card .search-button{position:absolute;top:50%;right:8px;transform:translateY(-50%);border:none;background:#2563eb;color:#fff;width:44px;height:44px;border-radius:14px;cursor:pointer;font-size:16px}
-.page-card .search-button:hover,.page-card .search-button:focus{background:#1d4ed8}
-.page-card .list-box{max-height:240px;border:1px solid #dbeafe;border-radius:18px;background:#f8fafc;padding:16px;overflow:auto}
-.page-card .list-box label{display:flex;align-items:center;gap:12px;padding:12px 0;font-size:15px;color:#1f2937}
-.page-card .list-box label + label{border-top:1px solid rgba(148,163,184,0.18)}
-.page-card .list-box input[type="checkbox"]{accent-color:#2563eb;width:18px;height:18px}
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #edf2f7; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 68px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.16); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 16px; font-size: 20px; font-weight: 700; color: #111827; border-bottom: 1px solid rgba(148, 163, 184, 0.16)}
+.form-row {padding: 18px 24px}
+.search-row {padding-top: 22px}
+.search-field {position: relative}
+.input-text {width: 100%; min-height: 48px; padding: 14px 18px; border-radius: 16px; border: 1px solid #d1d5db; background: #ffffff; font-size: 15px; color: #0f172a; box-sizing: border-box}
+.input-text::placeholder {color: #6b7280}
+.search-button {position: absolute; top: 50%; right: 10px; transform: translateY(-50%); border: none; background: #2563eb; color: #ffffff; width: 44px; height: 44px; border-radius: 14px; cursor: pointer; font-size: 16px}
+.search-button:hover, .search-button:focus {background: #1d4ed8}
+.list-box {max-height: 220px; border: 1px solid #d1d5db; border-radius: 18px; background: #ffffff; padding: 16px; overflow: auto}
+.list-box label {display: block; padding: 12px 0; font-size: 15px; color: #1f2937}
+.list-box label + label {border-top: 1px solid rgba(148, 163, 184, 0.18)}
+.actions {display: grid;grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px; align-items: center; justify-items: stretch}
+.btn, .btn-primary {min-height: 50px; padding: 0 20px; border-radius: 16px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+.error-msg {display: none; color: #dc2626; font-size: 12px; margin-top: 8px}
 
-#confirmDeleteModal{display:none;position:fixed;inset:0;z-index:50}
-#confirmDeleteModal[aria-hidden="false"]{display:block}
-#confirmDeleteModal .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.24)}
-#confirmDeleteModal .modal-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,90%);z-index:10}
-#confirmDeleteModal .modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
-#confirmDeleteModal .modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
-#confirmDeleteModal .modal-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-#confirmDeleteModal .modal-actions button{min-height:52px;min-width:120px;padding:16px 18px;border-radius:18px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;cursor:pointer;font-weight:700;font-size:15px;transition:transform .15s ease,box-shadow .15s ease}
-#confirmDeleteModal .modal-actions button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08);background:#f8fafc}
-#cancelDeleteBtn{background:#fff;border-color:#cbd5e1;color:#1f2937}
-#okDeleteBtn{background:#2563eb;color:#fff;border-color:#2563eb}
+#confirmDeleteModal {display:none; position:fixed; inset:0;}
+#confirmDeleteModal[aria-hidden="false"] { display:block; }
+.modal-backdrop {position:absolute; inset:0;background:rgba(0,0,0,.5);}
+.modal-dialog {position:relative; width:320px; margin:200px auto;}
+.modal-content {background:#fff; padding:20px;border-radius:12px; text-align:center;}
+.modal-actions {margin-top:15px;display:flex; justify-content:space-around;}
 
+@media (max-width: 460px) {.card {border-radius: 18px} .header-title {font-size: 18px; padding: 20px 18px 14px} .form-row, .actions {padding-left: 18px; padding-right: 18px}}
 
 /* ==========================
    admin/product_edit_form.css
    ========================== */
-.page-card .form-row:first-of-type{padding-top:0}
-.page-card .form-row:last-of-type{padding-bottom:0}
-.page-card .form-row label{display:block;margin-bottom:10px;font-size:15px;font-weight:600;color:#1f2937}
-.page-card .input-text,.page-card input[type="file"]{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
-.page-card .input-text:focus,.page-card input[type="file"]:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
-.page-card .error-msg{display:block;color:#dc2626;font-size:12px;margin-top:8px}
+/* original: staff/styles/admin/product_edit_form.css */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
+.form-row {padding: 18px 24px}
+.form-row:first-of-type {padding-top: 24px}
+.form-row:last-of-type {padding-bottom: 24px}
+.form-row label {display: block; margin-bottom: 10px; font-size: 14px; color: #1f2937}
+.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
+input[type="file"] {width: 100%; padding: 12px 14px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; color: #0f172a; box-sizing: border-box}
+.input-text:focus, input[type="file"]:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
+.error-msg {display: block; color: #dc2626; font-size: 12px; margin-top: 8px}
+actions {display: grid;grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px; align-items: center; justify-items: stretch}
+.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; width: 100%; min-width: 0}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
 
-#confirmEditModal{display:none;position:fixed;inset:0;z-index:50}
+#confirmEditModal{display:none}
 #confirmEditModal[aria-hidden="false"]{display:block}
-#confirmEditModal .modal-backdrop{position:fixed;inset:0;background:rgba(15,23,42,0.24)}
-#confirmEditModal .modal-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,90%);z-index:10}
-#confirmEditModal .modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
-#confirmEditModal .modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
-#confirmEditModal .modal-actions{display:flex;justify-content:center;gap:14px}
-#confirmEditModal .modal-actions button{min-height:52px;min-width:120px;padding:16px 18px;border-radius:18px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;cursor:pointer;font-weight:700;font-size:15px;transition:transform .15s ease,box-shadow .15s ease}
-#confirmEditModal .modal-actions button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08);background:#f8fafc}
-#cancelEditBtn{background:#fff;border-color:#cbd5e1;color:#1f2937}
-#okEditBtn{background:#2563eb;color:#fff;border-color:#2563eb}
+.modal-backdrop{position:fixed;inset:0;background:rgba(23,33,61,0.24)}
+.modal-dialog{position:fixed;left:50%;top:44%;transform:translate(-50%,-44%);width:88%;max-width:360px}
+.modal-content{background:#fff;border-radius:18px;padding:24px;box-shadow:0 22px 48px rgba(16,32,80,0.18);text-align:center}
+.modal-content h2{margin:0 0 18px;font-size:18px;color:#1d2a45}
+.modal-actions{display:flex;justify-content:center;gap:14px}
+.modal-actions button{min-width:110px;padding:12px 14px;border-radius:12px;border:1px solid #8f99ab;background:#ffffff;cursor:pointer;font-weight:700}
 
+@media (max-width: 460px) {.card{border-radius:18px}.header-title{font-size:18px;padding:20px 18px 14px}.form-row,.actions{padding-left:18px;padding-right:18px}}
 
 /* ==========================
    admin/product_edit_review.css
    ========================== */
-.page-card .list-box{background:#f8fafc;border:1px solid #dbeafe;border-radius:18px;padding:18px;min-height:72px;font-size:15px;color:#1f2937}
-.page-card .error-msg{display:none;color:#dc2626;font-size:12px;margin-top:8px}
+/* original: staff/styles/admin/product_edit_review.css */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
+.form-row {padding: 18px 24px}
+.form-row:first-of-type {padding-top: 24px}
+.form-row:last-of-type {padding-bottom: 24px}
+.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
+.input-text:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
+.list-box {background: #f8fafc; border: 1px solid #dbeafe; border-radius: 18px; padding: 18px; min-height: 56px}
+.list-box {font-size: 15px; color: #1f2937}
+.actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px}
+.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
+
+button {font: inherit}
+.error-msg {display: none; color: #dc2626; font-size: 12px; margin-top: 8px}
+
+@media (max-width: 460px) {.card {border-radius: 18px}.header-title {font-size: 18px; padding: 20px 18px 14px}.form-row, .actions {padding-left: 18px; padding-right: 18px}}
 
 /* ==========================
    admin/product_edit_select.css
    ========================== */
-.page-card .form-row > div[style]{position:relative}
-.page-card .input-text{width:100%;min-height:48px;padding:12px 16px;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;font-size:15px;color:#0f172a;box-sizing:border-box}
-.page-card #searchBtn{position:absolute;right:8px;top:50%;transform:translateY(-50%);padding:10px 12px;border-radius:14px;border:none;background:#2563eb;color:#fff;cursor:pointer;font-size:16px;line-height:1}
-.page-card #searchBtn:hover,.page-card #searchBtn:focus{background:#1d4ed8}
-.page-card .list-box{background:#f8fafc;border:1px solid #dbeafe;border-radius:18px;padding:18px}
-.page-card .list-box label{display:flex;align-items:center;gap:12px;font-size:15px;color:#1f2937;margin-bottom:14px}
-.page-card .list-box label:last-child{margin-bottom:0}
-.page-card .list-box input[type="radio"]{accent-color:#2563eb;width:18px;height:18px}
+/* original: staff/styles/admin/product_edit_select.css */
+html, body {min-height: 100%; margin: 0; font-family: Meiryo, "Yu Gothic UI", sans-serif; background: #eef2fb; color: #1f2937}
+body {display: flex; justify-content: center; align-items: center; padding: 32px 16px}
+.container {width: min(520px, 100%)}
+.card {background: #ffffff; border-radius: 24px; box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12); border: 1px solid rgba(148, 163, 184, 0.18); overflow: hidden}
+.header-title {margin: 0; padding: 24px 24px 18px; font-size: 20px; font-weight: 700; color: #2563eb; border-bottom: 1px solid rgba(148, 163, 184, 0.18)}
+.form-row {padding: 18px 24px}
+.form-row:first-of-type {padding-top: 24px}
+.form-row:last-of-type {padding-bottom: 24px}
+.form-row > div[style] {position: relative}
+.input-text {width: 100%; min-height: 46px; padding: 12px 16px; border-radius: 14px; border: 1px solid #cbd5e1; background: #f8fafc; font-size: 14px; color: #0f172a; box-sizing: border-box}
+.input-text:focus {outline: none; border-color: #2563eb; box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.16)}
+#searchBtn {position: absolute; right: 6px; top: 4px; padding: 10px 12px; border-radius: 12px; border: none; background: #2563eb; color: #ffffff; cursor: pointer; font-size: 16px; line-height: 1}
+#searchBtn:hover, #searchBtn:focus {background: #1d4ed8}
+.list-box {background: #f8fafc; border: 1px solid #dbeafe; border-radius: 18px; padding: 18px}
+.list-box label {display: flex; align-items: center; gap: 12px; font-size: 15px; color: #1f2937; margin-bottom: 14px}
+.list-box label:last-child {margin-bottom: 0}
+.list-box input[type="radio"] {accent-color: #2563eb; width: 18px; height: 18px}
+.actions {display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; padding: 0 24px 24px}
+.btn, .btn-primary {min-height: 48px; padding: 0 18px; border-radius: 14px; border: 1px solid transparent; font-size: 15px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; text-decoration: none}
+.btn {background: #f8fafc; color: #1f2937; border-color: #cbd5e1}
+.btn:hover, .btn:focus {background: #e2e8f0}
+.btn-primary {background: #2563eb; color: #ffffff}
+.btn-primary:hover, .btn-primary:focus {background: #1d4ed8}
 
-@media (max-width: 460px){.page-card{padding:20px}.page-card .header-title{font-size:18px}.page-card .form-row{padding-left:0;padding-right:0}.page-card .actions{grid-template-columns:1fr}}
+button, a {font: inherit}
+
+@media (max-width: 460px) {.card {border-radius: 18px}.header-title {font-size: 18px; padding: 20px 18px 14px}.form-row, .actions {padding-left: 18px; padding-right: 18px}}
+
 /* ==========================
    parttime/menu.css
    ========================== */
@@ -191,8 +250,8 @@ body{margin:0;font-family:"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;backgrou
 .content{width:100%;display:flex;justify-content:center}
 .page-card{width:100%;max-width:420px;background:var(--card);border-radius:28px;box-shadow:0 22px 40px rgba(15,23,42,.08);padding:24px;display:flex;flex-direction:column;gap:18px;position:relative}
 .button-list{display:flex;flex-direction:column;gap:12px}
-.menu-button{width:100%;padding:16px;border-radius:16px;border:1px solid var(--border);background:#f8fafc;color:#1f2937;cursor:pointer;transition:.15s}
-.menu-button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08);background:#e2e8f0}
+.menu-button{width:100%;padding:16px;border-radius:16px;border:1px solid var(--border);background:#d1d5db;cursor:pointer;transition:.15s}
+.menu-button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08)}
 @media(max-width:420px){.page-card{padding:20px;border-radius:24px}.menu-button{padding:14px;font-size:14px}}
 
 /* ==========================
@@ -213,14 +272,10 @@ body{margin:0;font-family:"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;backgrou
 .count-value{min-width:44px;text-align:center;font-size:18px;font-weight:700}
 .count-limit{font-size:12px;color:#94a3b8;text-align:right}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.menu-btn{width:100%;padding:16px 18px;font-size:16px;text-align:center;border:1px solid #cbd5e1;border-radius:16px;background:#f8fafc;cursor:pointer;color:#1f2937;transition:transform .15s ease,box-shadow .15s ease}
-.menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08);background:#e2e8f0}
-.menu-btn.outline{background:#fff;border-color:var(--border)}    .actions .menu-btn{border:1px solid transparent;min-height:52px;border-radius:18px}
-    .actions .menu-btn:not(.outline){background:#2563eb;color:#fff;border-color:#2563eb}
-    .actions .menu-btn.outline{background:#fff;color:#1f2937;border-color:#cbd5e1}
-    .actions .menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08)}
-    .actions .menu-btn:not(.outline):hover{background:#1d4ed8}
-    .actions .menu-btn.outline:hover{background:#f8fafc}
+.menu-btn{width:100%;padding:16px 18px;font-size:16px;text-align:center;border:1px solid var(--border);border-radius:16px;background:#eff6ff;cursor:pointer;color:var(--text);transition:transform .15s ease,box-shadow .15s ease}
+.menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08)}
+.menu-btn.outline{background:#fff;border-color:var(--border)}
+
 @media(max-width:420px){.count-btn{width:42px;height:42px}}
 
 /* ==========================
@@ -263,21 +318,23 @@ body{margin:0;font-family:"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;backgrou
 .lead{text-align:center;font-size:16px;margin:0;color:#334155;line-height:1.6}
 .table-input{width:100%;height:54px;border:2px solid #d1d5db;border-radius:16px;padding:0 18px;font-size:17px;text-align:left}
 .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
-.btn{width:100%;padding:16px 18px;border-radius:16px;font-size:16px;cursor:pointer;border:1px solid #cbd5e1;background:#f8fafc;color:#1f2937;transition:transform .15s ease,box-shadow .15s ease}
-.btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08);background:#e2e8f0}
+.btn{width:100%;padding:16px 18px;border-radius:16px;font-size:16px;cursor:pointer;border:1px solid var(--border);background:var(--button);color:var(--text);transition:transform .15s ease,box-shadow .15s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08)}
 .btn.outline{background:#fff}
-.btn.primary{background:#2563eb;color:#fff;border-color:#2563eb}
-.qr-area{display:flex;flex-direction:column;align-items:center;gap:14px;margin-top:12px;padding:18px;border:1px solid #e2e8f0;border-radius:22px;background:#f8fafc}
-
-@media(max-width:420px){.qr-image{width:220px;height:220px}.modal-content{padding:18px}}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.primary.confirm-btn{background:#0f172a;border-color:#0f172a;font-weight:700;box-shadow:0 8px 20px rgba(15,23,42,0.2)}
+.hidden{display:none !important}
+.qr-area{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;margin-top:12px;padding:18px 24px;border:1px solid #e2e8f0;border-radius:22px;background:#f8fafc;box-sizing:border-box;width:100%}
+.qr-note{margin:0;text-align:center}
+.qr-image{display:block;margin:0 auto;max-width:100%;height:auto}
 
 /* ==========================
    parttime/table_menu.css
    ========================== */
 /* original: staff/styles/parttime/table_menu.css */
 .page-card{width:100%;max-width:420px;background:var(--card);border-radius:28px;box-shadow:0 20px 40px rgba(15,23,42,0.08);padding:24px;display:flex;flex-direction:column;gap:16px}
-.menu-btn{width:100%;padding:16px 18px;font-size:16px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:16px;cursor:pointer;text-align:center;color:#1f2937;transition:transform .15s ease,box-shadow .15s ease}
-.menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08);background:#e2e8f0}
+.menu-btn{width:100%;padding:16px 18px;font-size:16px;border:1px solid var(--button-border);background:var(--button);border-radius:16px;cursor:pointer;text-align:center;color:var(--text);transition:transform .15s ease,box-shadow .15s ease}
+.menu-btn:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,0.08)}
 
 @media(max-width:420px){.page-card{padding:20px;border-radius:24px}}
 
@@ -304,7 +361,7 @@ body{margin:0;font-family:"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;backgrou
    ========================== */
 /* original: staff/styles/login.css */
 :root{--card-w:320px;--accent:#e6eef8;--muted:#777}
-html,body{height:100%;margin:0;font-family: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;background:#f5f5f5;display:flex;justify-content:center;align-items:flex-start;width:100%}
+html,body{height:100%;margin:0;font-family: "Yu Gothic UI", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;background:#f5f5f5}
 .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px}
 .card{width:var(--card-w);background:#fff;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.08);padding:26px 28px;box-sizing:border-box}
 .title{font-size:14px;color:var(--muted);text-align:left;margin-bottom:18px}
@@ -328,20 +385,6 @@ label{display:block;font-size:18px;color:#222;margin-bottom:8px}
 .soldout-search-input:focus{outline:none;border-color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,0.16)}
 .soldout-search-btn{width:48px;height:48px;padding:0;border-radius:14px;border:1px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-size:18px;transition:transform .15s ease}
 .soldout-search-btn:hover{transform:translateY(-1px)}
-
-/* Fix: ensure soldout page's #searchBtn uses inline layout, not absolute positioning
-    (avoids conflict with generic .page-card #searchBtn rule) */
-.page-card .soldout-search-box #searchBtn,
-.soldout-search-btn#searchBtn{
-   position: static !important;
-   top: auto !important;
-   right: auto !important;
-   transform: none !important;
-   margin: 0;
-   display: inline-flex;
-   align-items: center;
-   justify-content: center;
-}
 .soldout-label{display:block;margin-bottom:12px;font-size:14px;color:#64748b;font-weight:700}
 .soldout-results-box{min-height:120px;padding:16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;margin-bottom:16px}
 .soldout-list{display:flex;flex-direction:column;gap:12px}
@@ -356,10 +399,8 @@ label{display:block;font-size:18px;color:#222;margin-bottom:8px}
 #confirmModal .modal-content{width:min(360px,100%);margin:auto;padding:32px 24px;border-radius:18px;background:#d4d9e7;border:3px solid #5a6b8a;box-shadow:0 24px 48px rgba(15,23,42,0.12);text-align:center}
 #confirmModal .modal-content p{margin:0 0 28px;font-size:20px;color:#2f2f2f;line-height:1.6;font-weight:500}
 #confirmModal .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:16px;justify-content:center}
-#confirmModal .modal-actions button{min-width:100px;padding:12px 18px;border-radius:18px;border:1px solid #cbd5e1;background:#fff;color:#1f2937;font-size:16px;font-weight:700;cursor:pointer;transition:transform .15s ease,box-shadow .15s ease}
-#confirmModal .modal-actions button:hover{transform:translateY(-1px);box-shadow:0 10px 18px rgba(15,23,42,.08);background:#f8fafc}
-#confirmModal .modal-actions button#okBtn,#confirmModal .modal-actions button#btnConfirm{background:#2563eb;color:#fff;border-color:#2563eb}
-#confirmModal .modal-actions button#cancelBtn,#confirmModal .modal-actions button#btnCancel{background:#fff;color:#1f2937;border-color:#cbd5e1}
+#confirmModal .modal-actions button{min-width:100px;padding:12px 18px;border-radius:10px;border:2px solid #7a8ba8;background:#c7d2e8;color:#2f2f2f;font-size:16px;font-weight:700;cursor:pointer;transition:background-color .15s ease}
+#confirmModal .modal-actions button:hover{background:#b3bed3}
 
 /* ==========================
    parttime/staff_call.css

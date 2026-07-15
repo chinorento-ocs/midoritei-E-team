@@ -16,9 +16,8 @@
     }
 
     function makeQrUrl(data, size=300){
-        const base = 'https://chart.googleapis.com/chart';
-        const params = new URLSearchParams({cht:'qr',chs:`${size}x${size}`,chl:data,choe:'UTF-8'});
-        return `${base}?${params.toString()}`;
+        const encodedData = encodeURIComponent(data);
+        return `https://api.qrserver.com/v1/create-qr-code/?size=${size}x${size}&data=${encodedData}`;
     }
 
     const modal = document.getElementById('confirmationModal');
@@ -41,6 +40,7 @@
         const payload = buildPayload();
         const url = makeQrUrl(payload, 300);
         qrImage.src = url;
+        qrImage.alt = `テーブル${tableNumber}用QRコード`;
         qrArea.classList.remove('hidden');
         modal.classList.add('hidden');
     }

@@ -18,7 +18,7 @@
 
             <div class="actions">
                 <button id="btnBack" class="btn outline">戻る</button>
-                <button id="btnIssue" class="btn primary">発行</button>
+                <button id="btnIssue" class="btn primary confirm-btn">発行</button>
             </div>
 
             <div id="confirmationModal" class="modal hidden">
@@ -26,14 +26,14 @@
                     <p>QRコードを生成しますか？</p>
                     <div class="modal-actions">
                         <button id="btnCancel" class="btn outline">いいえ</button>
-                        <button id="btnConfirm" class="btn primary">はい</button>
+                        <button id="btnConfirm" class="btn primary confirm-btn">はい</button>
                     </div>
                 </div>
             </div>
 
             <div id="qrArea" class="qr-area hidden">
                 <p class="qr-note">生成されたQRコードを読み取ってください。</p>
-                <img id="qrImage" alt="QRコード" class="qr-image" src="">
+                <img id="qrImage" alt="QRコード" class="qr-image" src="" width="300" height="300">
             </div>
         </div>
     </main>
