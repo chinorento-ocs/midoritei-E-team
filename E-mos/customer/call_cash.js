@@ -34,11 +34,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     if (callMessage) {
-      callMessage.textContent = isHandled ? "スタッフ対応済みです。" : "店員がまいります。";
+      callMessage.textContent = "店員がまいります。";
     }
 
     if (callSubMessage) {
-      callSubMessage.textContent = isHandled ? "お待たせしてすみません。" : "しばらくお待ちください。";
+      callSubMessage.textContent = "しばらくお待ちください。";
     }
 
     if (callButton) {
