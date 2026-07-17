@@ -101,6 +101,7 @@
           try{ window.dispatchEvent(new CustomEvent('menu_items_changed',{ detail: { action: 'edit', id: id } })); }catch(e){}
           if(modal){ hideModal(); }
           alert('商品情報を更新しました。');
+          window.location.href = '../menu/menu.html';
       }
 
       if(photoInput && photoInput.files && photoInput.files[0]){
