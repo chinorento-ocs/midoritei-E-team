@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const callModalButton = document.querySelector(".call-modal__button");
   const payModalButton = document.querySelector(".pay-modal__button");
   const seatLabel = document.querySelector(".pay-card__table");
+  const payAmount = document.querySelector(".pay-card__yen");
   const callMessage = document.querySelector(".call-modal__message");
   const callSubMessage = document.querySelector(".call-modal__submessage");
 
@@ -22,6 +23,29 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function getCurrentTableNumber() {
     return "1";
+  }
+
+  function getStoredOrderHistory() {
+    try {
+      return JSON.parse(sessionStorage.getItem("orderHistory") || "[]");
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function updatePayAmount() {
+    if (!payAmount) {
+      return;
+    }
+
+    const history = getStoredOrderHistory();
+    const total = history.reduce(function (sum, order) {
+      return sum + (Array.isArray(order.items) ? order.items.reduce(function (orderSum, item) {
+        return orderSum + Number(item.price || 0) * Number(item.quantity || 0);
+      }, 0) : 0);
+    }, 0);
+
+    payAmount.textContent = `¥${Number(total).toLocaleString()}`;
   }
 
   function applyHandledSeatState() {
@@ -84,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function openPayModal() {
     if (!payModal) return;
+    updatePayAmount();
     payModal.classList.remove("hidden");
   }
 
@@ -108,8 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
     payModalButton.addEventListener("click", closePayModal);
   }
 
+  updatePayAmount();
   applyHandledSeatState();
   window.addEventListener("storage", function () {
+    updatePayAmount();
     applyHandledSeatState();
   });
 });
