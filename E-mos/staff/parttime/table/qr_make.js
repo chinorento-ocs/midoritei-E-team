@@ -7,13 +7,9 @@
 
     let tableNumber = null;
 
-    function buildPayload(){
-        return JSON.stringify({
-            type: 'table',
-            table: tableNumber,
-            ts: new Date().toISOString()
-        });
-    }
+    function buildPayload(){ 
+        return `${location.origin}/E-mos/customer/start_people.html?table=${encodeURIComponent(tableNumber)}`; 
+    } 
 
     function makeQrUrl(data, size=300){
         const encodedData = encodeURIComponent(data);
